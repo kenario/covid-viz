@@ -1,4 +1,4 @@
-import { constants } from '../shared/constants'
+import { covidEP } from '../shared/constants/'
 import { ActionContext } from 'vuex'
 import { CovidCountryData } from '../types/'
 
@@ -24,7 +24,7 @@ export const covid = {
   },
   actions: {
     getCovidData: async ({ commit }: ActionContext<RootState, RootState>): Promise<void> => {
-      const res = await fetch(constants.COVID_API_BASE_URL + constants.COVID_API_COUNTRIES)
+      const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTRIES)
       const data = await res.json()
       const countries = data.data.rows
       commit('setCovidData', countries)
