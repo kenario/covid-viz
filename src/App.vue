@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <div
-      v-for="(country, index) in getCountries"
-      :key="index"
-    >
-      {{ country }}
+    <div>
+      {{ getCovidData }}
     </div>
   </div>
 </template>
@@ -18,7 +15,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
-      'getCountries'
+      'getCovidData'
     ])
   },
 

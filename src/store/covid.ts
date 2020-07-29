@@ -1,33 +1,32 @@
 import { covidEP } from '../shared/constants/'
 import { ActionContext } from 'vuex'
-import { CovidCountryData } from '../types/'
+import { CovidData } from '../types/'
 
 interface RootState {
   value: string;
 }
 
 interface CovidState {
-  countries: CovidCountryData;
+  covidData: CovidData;
 }
 
 export const covid = {
   state: () => ({
-    countries: {} as CovidCountryData
+    covidData: {} as CovidData
   }),
   getters: {
-    getCountries: (state: CovidState) => state.countries
+    getCovidData: (state: CovidState): CovidData => state.covidData
   },
   mutations: {
-    setCovidData: (state: CovidState, data: CovidCountryData): void => {
-      state.countries = data
+    setCovidData: (state: CovidState, data: CovidData): void => {
+      state.covidData = data
     }
   },
   actions: {
     getCovidData: async ({ commit }: ActionContext<RootState, RootState>): Promise<void> => {
-      const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTRIES)
+      const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTRY)
       const data = await res.json()
-      const countries = data.data.rows
-      commit('setCovidData', countries)
+      commit('setCovidData', data)
     }
   }
 }

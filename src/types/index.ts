@@ -1,1 +1,1 @@
-export * from './CovidCountryData'
+export * from './CovidData'
