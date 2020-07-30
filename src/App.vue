@@ -1,37 +1,31 @@
 <template>
   <div id="app">
-    <div>
-      {{ getCovidData }}
-    </div>
+    <CovidVis />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import CovidVis from './components/CovidVis.vue'
 
 export default Vue.extend({
   name: 'App',
 
-  computed: {
-    ...mapGetters([
-      'getCovidData'
-    ])
-  },
-
-  created(): void {
-    this.$store.dispatch('getCovidData')
+  components: {
+    CovidVis
   }
 })
 </script>
 
 <style lang="scss">
+body {
+  margin: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
