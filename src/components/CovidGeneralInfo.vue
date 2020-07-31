@@ -1,0 +1,57 @@
+<template>
+  <div class="covid-vis-general-info-container">
+    <div
+      class="covid-vis-general-info"
+      v-for="(label, index) in infoLabels"
+      :key="index"
+    >
+      <div class="covid-vis-general-info-label">
+        {{ label | firstLetterUppercase }}
+      </div>
+
+      <div class="covid-vis-general-info-value">
+        <template v-if="label === 'updated'">
+          {{ moment(info[label]) }}
+        </template>
+
+        <template v-else>
+          {{ info[label] }}
+        </template>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import moment from 'moment'
+import { CovidGeneralInfo } from '../types'
+
+export default Vue.extend({
+  name: 'CovidGeneralInfo',
+
+  props: {
+    info: Object as () => CovidGeneralInfo
+  },
+
+  data: () => ({
+    infoLabels: [] as string[]
+  }),
+
+  created() {
+    this.infoLabels = Object.keys(this.info)
+  },
+
+  filters: {
+    firstLetterUppercase: (word: string): string => word.charAt(0).toUpperCase() + word.slice(1)
+  },
+
+  methods: {
+    moment: (time: number) => moment(time)
+  }
+})
+</script>
+
+<style scoped lang="scss">
+
+</style>
