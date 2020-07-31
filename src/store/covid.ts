@@ -1,6 +1,6 @@
-import { covidEP } from '../shared/constants/'
 import { ActionContext } from 'vuex'
-import { CovidData } from '../types/'
+import { covidEP } from '../shared/constants/'
+import { CovidData, CovidGeneralInfo } from '../types/'
 
 interface RootState {
   value: string;
@@ -15,7 +15,18 @@ export const covid = {
     covidData: {} as CovidData
   }),
   getters: {
-    getCovidData: (state: CovidState): CovidData => state.covidData
+    getCovidGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+      const data: CovidData = state.covidData
+
+      return {
+        country: data.country,
+        cases: data.cases,
+        deaths: data.deaths,
+        recovered: data.recovered,
+        tests: data.tests,
+        updated: data.updated
+      }
+    }
   },
   mutations: {
     setCovidData: (state: CovidState, data: CovidData): void => {
