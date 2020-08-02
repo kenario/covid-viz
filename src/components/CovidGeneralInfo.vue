@@ -11,7 +11,7 @@
 
       <div class="covid-vis-general-info-value">
         <template v-if="label === 'updated'">
-          {{ moment(info[label]) }}
+          {{ moment(info[label]).format('MMMM Do YYYY, h:mm:ss a') }}
         </template>
 
         <template v-else>
@@ -56,5 +56,14 @@ export default Vue.extend({
 .covid-vis-general-info-container {
   grid-column: 2 / 3;
   grid-row: 3 / 4;
+}
+.covid-vis-general-info {
+  text-align: left;
+  margin: 10px 0px 10px 0px;
+}
+.covid-vis-general-info-label {
+  background-color: black;
+  color: white;
+  font-size: 12px;
 }
 </style>
