@@ -53,5 +53,8 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-
+.covid-vis-general-info-container {
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+}
 </style>

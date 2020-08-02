@@ -18,8 +18,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-body {
+html, body {
   margin: 0;
+  height: 100vh;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -27,5 +28,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 </style>

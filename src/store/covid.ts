@@ -24,7 +24,8 @@ export const covid = {
         deaths: data.deaths,
         recovered: data.recovered,
         tests: data.tests,
-        updated: data.updated
+        updated: data.updated,
+        casesToday: data.todayCases
       }
     }
   },

@@ -25,6 +25,8 @@ export default Vue.extend({
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-column: 1 / 6;
+  grid-row: 0 / 1;
 }
 .header-name {
   color: white;

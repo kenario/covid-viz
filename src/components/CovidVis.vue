@@ -1,7 +1,7 @@
 <template>
   <div id="covid-vis">
     <Header />
-    <CovidGeneralInfo :info="getCovidGeneralInfo" />
+    <CovidGeneralInfo :info="getCovidGeneralInfo"/>
   </div>
 </template>
 
@@ -32,5 +32,10 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-
+#covid-vis {
+  display: grid;
+  grid-template-columns: 10px 1fr 10px 1fr 10px;
+  grid-template-rows: 80px 10px 0.4fr 10px 1fr 10px;
+  height: 100%;
+}
 </style>
