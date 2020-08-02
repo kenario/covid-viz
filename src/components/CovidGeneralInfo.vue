@@ -64,6 +64,10 @@ export default Vue.extend({
 .covid-vis-general-info-label {
   background-color: black;
   color: white;
-  font-size: 12px;
+  font-size: 11px;
+  padding: 5px 0px 5px 5px;
+}
+.covid-vis-general-info-value {
+  padding: 5px 0px 0px 10px;
 }
 </style>

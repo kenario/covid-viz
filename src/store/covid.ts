@@ -8,11 +8,13 @@ interface RootState {
 
 interface CovidState {
   covidData: CovidData;
+  covidDataAllCountries: CovidData[];
 }
 
 export const covid = {
   state: () => ({
-    covidData: {} as CovidData
+    covidData: {} as CovidData,
+    covidDataAllCountries: [] as CovidData[]
   }),
   getters: {
     getCovidGeneralInfo: (state: CovidState): CovidGeneralInfo => {
@@ -27,11 +29,16 @@ export const covid = {
         updated: data.updated,
         casesToday: data.todayCases
       }
-    }
+    },
+    getAllAffectedCountries: (state: CovidState): string[] =>
+      state.covidDataAllCountries.map((data: CovidData): string => data.country!)
   },
   mutations: {
     setCovidData: (state: CovidState, data: CovidData): void => {
       state.covidData = data
+    },
+    setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {
+      state.covidDataAllCountries = data
     }
   },
   actions: {
@@ -39,6 +46,11 @@ export const covid = {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTRY)
       const data = await res.json()
       commit('setCovidData', data)
+    },
+    getCovidDataAllCountries: async ({ commit }: ActionContext<RootState, RootState>): Promise<void> => {
+      const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
+      const data = await res.json()
+      commit('setCovidDataAllCountries', data)
     }
   }
 }

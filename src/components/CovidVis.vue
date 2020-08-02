@@ -21,12 +21,14 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
-      'getCovidGeneralInfo'
+      'getCovidGeneralInfo',
+      'getAllAffectedCountries'
     ])
   },
 
   mounted() {
     this.$store.dispatch('getCovidData')
+    this.$store.dispatch('getCovidDataAllCountries')
   }
 })
 </script>
