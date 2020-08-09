@@ -41,9 +41,8 @@ export const covid = {
   },
   mutations: {
     setSelectedCovidData: (state: CovidState, country: string): void => {
-      state.selectedCovidData = state.covidDataAllCountries.find(
-        (data: CovidData): boolean => data.country!.includes(country)
-      )!
+      state.selectedCovidData = state.covidDataAllCountries
+        .find((data: CovidData): boolean => data.country!.toLowerCase().includes(country.toLowerCase()))!
     },
 
     setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {

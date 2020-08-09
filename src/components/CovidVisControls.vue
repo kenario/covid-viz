@@ -1,6 +1,10 @@
 <template>
   <div class="covid-vis-controls-container">
-    <DropdownFilter :items="getAllAffectedCountries" />
+    <DropdownFilter
+      :label="'Country'"
+      :items="getAllAffectedCountries"
+      @selectItem="setSelectedCountry"
+    />
   </div>
 </template>
 
@@ -20,6 +24,12 @@ export default Vue.extend({
     ...mapGetters([
       'getAllAffectedCountries'
     ])
+  },
+
+  methods: {
+    setSelectedCountry: function(country: string): void {
+      this.$store.commit('setSelectedCovidData', country)
+    }
   }
 })
 </script>

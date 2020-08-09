@@ -1,14 +1,14 @@
 <template>
   <div class="dropdown-filter">
       <div class="dropdown-filter-label">
-        Filter by country:
+        {{ label }}:
       </div>
 
       <input
         class="dropdown-input"
-        v-model="country"
+        v-model="item"
         @focus="displayDropdown = true"
-        @blur="displayDropdown = false"
+        @blur="emitSelectedItem()"
       >
       <div
         class="dropdown-content"
@@ -16,7 +16,7 @@
       >
         <div
           class="dropdown-item"
-          v-for="(item, index) in items"
+          v-for="(item, index) in items.filter(i => i.toLowerCase().includes(item.toLowerCase()))"
           :key="index"
         >
           {{ item }}
@@ -32,13 +32,21 @@ export default Vue.extend({
   name: 'DropdownFilter',
 
   props: {
+    label: String,
     items: Array as () => string[]
   },
 
   data: () => ({
-    country: '',
+    item: '',
     displayDropdown: false
-  })
+  }),
+
+  methods: {
+    emitSelectedItem(): void {
+      this.$emit('selectItem', this.item)
+      this.displayDropdown = false
+    }
+  }
 })
 </script>
 
@@ -50,9 +58,6 @@ export default Vue.extend({
 .dropdown-input {
   width: calc(100% - 4px); // this is iffy
 }
-/**
- * height and width need to not be reconfigured
- */
 .dropdown-content {
   width: 100%;
   height: 100%;
