@@ -1,14 +1,13 @@
 <template>
   <div id="covid-vis">
     <Header />
-    <CovidGeneralInfo :info="getCovidGeneralInfo"/>
+    <CovidGeneralInfo />
     <CovidVisControls />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 import Header from './Header.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
@@ -20,12 +19,6 @@ export default Vue.extend({
     Header,
     CovidGeneralInfo,
     CovidVisControls
-  },
-
-  computed: {
-    ...mapGetters([
-      'getCovidGeneralInfo'
-    ])
   },
 
   created() {

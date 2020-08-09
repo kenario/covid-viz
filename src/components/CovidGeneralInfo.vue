@@ -11,11 +11,11 @@
 
       <div class="covid-vis-general-info-value">
         <template v-if="label === 'updated'">
-          {{ moment(info[label]).format('MMMM Do YYYY, h:mm:ss a') }}
+          {{ moment(getCovidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
         </template>
 
         <template v-else>
-          {{ info[label] }}
+          {{ getCovidGeneralInfo[label] }}
         </template>
       </div>
     </div>
@@ -25,13 +25,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
-import { CovidGeneralInfo } from '../types'
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'CovidGeneralInfo',
 
-  props: {
-    info: Object as () => CovidGeneralInfo
+  computed: {
+    ...mapGetters([
+      'getCovidGeneralInfo'
+    ])
   },
 
   data: () => ({
@@ -39,7 +41,7 @@ export default Vue.extend({
   }),
 
   created() {
-    this.infoLabels = Object.keys(this.info)
+    this.infoLabels = Object.keys(this.getCovidGeneralInfo)
   },
 
   filters: {
