@@ -2,6 +2,7 @@
   <div id="covid-vis">
     <Header />
     <CovidGeneralInfo :info="getCovidGeneralInfo"/>
+    <CovidVisControls />
   </div>
 </template>
 
@@ -10,19 +11,20 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Header from './Header.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
+import CovidVisControls from './CovidVisControls.vue'
 
 export default Vue.extend({
   name: 'CovidVis',
 
   components: {
     Header,
-    CovidGeneralInfo
+    CovidGeneralInfo,
+    CovidVisControls
   },
 
   computed: {
     ...mapGetters([
-      'getCovidGeneralInfo',
-      'getAllAffectedCountries'
+      'getCovidGeneralInfo'
     ])
   },
 
