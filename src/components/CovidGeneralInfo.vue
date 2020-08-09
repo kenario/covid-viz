@@ -52,7 +52,7 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .covid-vis-general-info-container {
   grid-column: 2 / 3;
   grid-row: 3 / 4;
@@ -65,9 +65,9 @@ export default Vue.extend({
   background-color: black;
   color: white;
   font-size: 11px;
-  padding: 5px 0px 5px 5px;
+  padding: 5px 0px 5px 3px;
 }
 .covid-vis-general-info-value {
-  padding: 5px 0px 0px 10px;
+  padding: 5px 0px 0px 15px;
 }
 </style>

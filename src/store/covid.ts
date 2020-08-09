@@ -30,6 +30,7 @@ export const covid = {
         casesToday: data.todayCases
       }
     },
+
     getAllAffectedCountries: (state: CovidState): string[] =>
       state.covidDataAllCountries.map((data: CovidData): string => data.country!)
   },
@@ -37,6 +38,7 @@ export const covid = {
     setCovidData: (state: CovidState, data: CovidData): void => {
       state.covidData = data
     },
+
     setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {
       state.covidDataAllCountries = data
     }
@@ -47,6 +49,7 @@ export const covid = {
       const data = await res.json()
       commit('setCovidData', data)
     },
+
     getCovidDataAllCountries: async ({ commit }: ActionContext<RootState, RootState>): Promise<void> => {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
       const data = await res.json()
