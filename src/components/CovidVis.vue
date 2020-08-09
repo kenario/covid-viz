@@ -28,8 +28,7 @@ export default Vue.extend({
     ])
   },
 
-  mounted() {
-    this.$store.dispatch('getCovidData')
+  created() {
     this.$store.dispatch('getCovidDataAllCountries')
   }
 })
