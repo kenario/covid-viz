@@ -1,8 +1,3 @@
-/**
- * All non-null assertions are related to countries, since any country related operations takes the country
- * from the API and is sure to exist.
- */
-
 import { ActionContext } from 'vuex'
 import { covidEP } from '../shared/constants/'
 import { CovidData, CovidGeneralInfo } from '../types/'
@@ -40,6 +35,11 @@ export const covid = {
       state.covidDataAllCountries.map((data: CovidData): string => data.country!)
   },
   mutations: {
+    /**
+     * Iterates through all countries, converts countries and country to lowercase, and assigns to
+     * selectedCovidDdata state.  Asserts that country is not null, since country comes from the Covid
+     * API and is sure to exist.
+     */
     setSelectedCovidData: (state: CovidState, country: string): void => {
       state.selectedCovidData = state.covidDataAllCountries
         .find((data: CovidData): boolean => data.country!.toLowerCase().includes(country.toLowerCase()))!

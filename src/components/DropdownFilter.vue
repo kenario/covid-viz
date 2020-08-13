@@ -8,16 +8,17 @@
         class="dropdown-input"
         v-model="item"
         @focus="displayDropdown = true"
-        @blur="emitSelectedItem()"
       >
       <div
         class="dropdown-content"
         v-if="displayDropdown"
+        @blur="onItemClick()"
       >
         <div
           class="dropdown-item"
           v-for="(item, index) in items.filter(i => i.toLowerCase().includes(item.toLowerCase()))"
           :key="index"
+          @click="onItemClick(item)"
         >
           {{ item }}
         </div>
@@ -42,8 +43,13 @@ export default Vue.extend({
   }),
 
   methods: {
-    emitSelectedItem(): void {
-      this.$emit('selectItem', this.item)
+    onItemClick(item?: string): void {
+      if (item) {
+        this.$emit('selectItem', item)
+      } else if (this.items.includes(this.item)) {
+        this.$emit('selectItem', this.item)
+      }
+
       this.displayDropdown = false
     }
   }
@@ -65,5 +71,9 @@ export default Vue.extend({
   border-style: solid;
   border-width: 1px;
   overflow-y: scroll;
+}
+.dropdown-item:hover {
+  background-color: lightblue;
+  cursor: pointer;
 }
 </style>
