@@ -28,7 +28,7 @@ export default Vue.extend({
 
   methods: {
     setSelectedCountry: function(country: string): void {
-      this.$store.commit('setSelectedCovidData', country)
+      this.$store.commit('setSelectedCountry', country)
     }
   }
 })

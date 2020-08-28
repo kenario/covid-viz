@@ -1,29 +1,29 @@
 <template>
   <div class="dropdown-filter">
-      <div class="dropdown-filter-label">
-        {{ label }}:
-      </div>
+    <div class="dropdown-filter-label">
+      {{ label }}:
+    </div>
 
-      <input
-        class="dropdown-input"
-        v-model="item"
-        @focus="displayDropdown = true"
-      >
+    <input
+      class="dropdown-input"
+      v-model="item"
+      :text="item"
+      @focus="displayDropdown = true"
+    >
+    <div
+      class="dropdown-content"
+      v-if="displayDropdown"
+    >
       <div
-        class="dropdown-content"
-        v-if="displayDropdown"
-        @blur="onItemClick()"
+        class="dropdown-item"
+        v-for="(item, index) in items.filter(i => i.toLowerCase().includes(item.toLowerCase()))"
+        :key="index"
+        @click="onItemClick(item)"
       >
-        <div
-          class="dropdown-item"
-          v-for="(item, index) in items.filter(i => i.toLowerCase().includes(item.toLowerCase()))"
-          :key="index"
-          @click="onItemClick(item)"
-        >
-          {{ item }}
-        </div>
+        {{ item }}
       </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">

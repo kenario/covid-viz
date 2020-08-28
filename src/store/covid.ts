@@ -7,12 +7,14 @@ interface RootState {
 }
 
 interface CovidState {
+  selectedCountry: string;
   selectedCovidData: CovidData;
   covidDataAllCountries: CovidData[];
 }
 
 export const covid = {
   state: () => ({
+    selectedCountry: '',
     selectedCovidData: {} as CovidData,
     covidDataAllCountries: [] as CovidData[]
   }),
@@ -37,10 +39,11 @@ export const covid = {
   mutations: {
     /**
      * Iterates through all countries, converts countries and country to lowercase, and assigns to
-     * selectedCovidDdata state.  Asserts that country is not null, since country comes from the Covid
+     * selectedCovidData state.  Asserts that country is not null, since country comes from the Covid
      * API and is sure to exist.
      */
-    setSelectedCovidData: (state: CovidState, country: string): void => {
+    setSelectedCountry: (state: CovidState, country: string): void => {
+      state.selectedCountry = country
       state.selectedCovidData = state.covidDataAllCountries
         .find((data: CovidData): boolean => data.country!.toLowerCase().includes(country.toLowerCase()))!
     },
