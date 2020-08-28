@@ -61,7 +61,7 @@ export const covid = {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
       const data = await res.json()
       commit('setCovidDataAllCountries', data)
-      commit('setSelectedCovidData', 'USA')
+      commit('setSelectedCountry', 'USA')
     }
   }
 }
