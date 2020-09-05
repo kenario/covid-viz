@@ -3,7 +3,8 @@ import { covidEP } from '../shared/constants/'
 import {
   CovidData,
   CovidGeneralInfo,
-  CovidHistoricalData
+  CovidHistoricalData,
+  CovidHistoricalDataParams
 } from '../types/'
 
 export const covid = {
@@ -70,10 +71,11 @@ export const covid = {
      * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
      * specified.
      */
-    getHistoricalCountryData: async ({ commit }: ActionContext<RS, RS>, payload: HistoricalDataParams): Promise<void> => {
+    getHistoricalCountryData: async ({ commit }: ActionContext<RS, RS>, payload: CovidHistoricalDataParams): Promise<void> => {
       const path = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
         .replace('country', payload.country)
         .replace('numOfDays', payload.numOfDays || '')
+
       const res = await fetch(covidEP.COVID_API_BASE_URL + path)
       const data = await res.json()
 
@@ -105,9 +107,4 @@ interface CovidState {
   selectedCovidData: CovidData;
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
-}
-
-interface HistoricalDataParams {
-  country: string;
-  numOfDays?: string;
 }
