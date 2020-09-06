@@ -12,6 +12,7 @@ export interface CovidHistoricalData {
 }
 
 interface HistoricalDataCategories {
+  [key: string]: DateValue[];
   cases: DateValue[];
   deaths: DateValue[];
   recovered: DateValue[];
