@@ -1,3 +1,5 @@
+import { DateValue } from './DateValue'
+
 /**
  * Historical Country Data for specific country and default or specified number of days from the
  * NovelCOVID API.
@@ -13,9 +15,4 @@ interface HistoricalDataCategories {
   cases: DateValue[];
   deaths: DateValue[];
   recovered: DateValue[];
-}
-
-interface DateValue {
-  date: string;
-  value: number;
 }

@@ -1,6 +1,7 @@
 import { ActionContext } from 'vuex'
 import { covidEP } from '../shared/constants/'
 import {
+  DateValue,
   CovidData,
   CovidGeneralInfo,
   CovidHistoricalData,
@@ -86,12 +87,12 @@ export const covid = {
         country: data.country,
         province: data.province,
         timeline: {
-          cases: Object.entries(data.timeline.cases).map(x => { return { date: x[0], value: x[1] as number } }),
-          deaths: Object.entries(data.timeline.deaths).map(x => { return { date: x[0], value: x[1] as number } }),
-          recovered: Object.entries(data.timeline.recovered).map(x => { return { date: x[0], value: x[1] as number } })
+          cases: mapHistoricaDataToDateValue(data.timeline.cases),
+          deaths: mapHistoricaDataToDateValue(data.timeline.deaths),
+          recovered: mapHistoricaDataToDateValue(data.timeline.recovered)
         }
       }
-
+      console.log(formattedData)
       commit('setHistoricalCountryData', formattedData)
     }
   }
@@ -108,3 +109,9 @@ interface CovidState {
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }
+
+/**
+ * Helper function for mapping historical data.
+ */
+const mapHistoricaDataToDateValue = (data: object): DateValue[] =>
+  Object.entries(data).map((x: unknown[]): DateValue => { return { date: x[0] as string, value: x[1] as number } })
