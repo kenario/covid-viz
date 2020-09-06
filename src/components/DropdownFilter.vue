@@ -6,8 +6,8 @@
 
     <input
       class="dropdown-input"
-      v-model="item"
-      :text="item"
+      v-model="selectedItem"
+      :text="selectedItem"
       @focus="displayDropdown = true"
     >
     <div
@@ -34,20 +34,26 @@ export default Vue.extend({
 
   props: {
     label: String,
+    defaultItem: String,
     items: Array as () => string[]
   },
 
   data: () => ({
-    item: '',
+    selectedItem: '',
     displayDropdown: false
   }),
+
+  mounted() {
+    this.selectedItem = this.defaultItem
+  },
 
   methods: {
     onItemClick(item?: string): void {
       if (item) {
+        this.selectedItem = item
         this.$emit('selectItem', item)
-      } else if (this.items.includes(this.item)) {
-        this.$emit('selectItem', this.item)
+      } else if (this.items.includes(this.selectedItem)) {
+        this.$emit('selectItem', this.selectedItem)
       }
 
       this.displayDropdown = false

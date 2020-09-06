@@ -3,6 +3,7 @@
     <dropdown-filter
       :label="'Country'"
       :items="getAllAffectedCountries"
+      :defaultItem="getSelectedCountry"
       @selectItem="setSelectedCountry"
     />
   </div>
@@ -22,6 +23,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getSelectedCountry',
       'getAllAffectedCountries'
     ])
   },

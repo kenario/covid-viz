@@ -16,6 +16,14 @@ export const covid = {
     covidHistoricalCountryData: {} as CovidHistoricalData
   }),
   getters: {
+    getSelectedCountry: (state: CovidState): string => state.selectedCountry,
+
+    getAllAffectedCountries: (state: CovidState): string[] =>
+      state.covidDataAllCountries.map((data: CovidData): string => data.country!),
+
+    getCovidChartLabels: (state: CovidState): string[] =>
+      state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
+
     /**
      * Map covid data into CovidGeneralInfo type.
      */
@@ -32,12 +40,6 @@ export const covid = {
         casesToday: data.todayCases
       }
     },
-
-    getAllAffectedCountries: (state: CovidState): string[] =>
-      state.covidDataAllCountries.map((data: CovidData): string => data.country!),
-
-    getCovidChartLabels: (state: CovidState): string[] =>
-      state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
     /**
      * Map historical data values for cases, deaths, and recovered to CovidLineChart data structure.
