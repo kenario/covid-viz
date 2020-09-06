@@ -5,7 +5,8 @@ import {
   CovidData,
   CovidGeneralInfo,
   CovidHistoricalData,
-  CovidHistoricalDataParams
+  CovidHistoricalDataParams,
+  CovidLineChart
 } from '../types/'
 
 export const covid = {
@@ -34,7 +35,25 @@ export const covid = {
     },
 
     getAllAffectedCountries: (state: CovidState): string[] =>
-      state.covidDataAllCountries.map((data: CovidData): string => data.country!)
+      state.covidDataAllCountries.map((data: CovidData): string => data.country!),
+
+    getCovidChartLabels: (state: CovidState): string[] =>
+      state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
+
+    getCovidChartData: (state: CovidState): CovidLineChart[] => {
+      const covidChartData: CovidLineChart[] = []
+
+      if (state.covidHistoricalCountryData.timeline) {
+        Object.keys(state.covidHistoricalCountryData.timeline).forEach((key: string): void => {
+          covidChartData.push({
+            label: key,
+            data: state.covidHistoricalCountryData.timeline[key].map(x => x.value)
+          })
+        })
+      }
+
+      return covidChartData
+    }
   },
   mutations: {
     /**
@@ -92,7 +111,7 @@ export const covid = {
           recovered: mapHistoricaDataToDateValue(data.timeline.recovered)
         }
       }
-      console.log(formattedData)
+
       commit('setHistoricalCountryData', formattedData)
     }
   }
