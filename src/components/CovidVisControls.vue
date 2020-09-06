@@ -1,6 +1,6 @@
 <template>
   <div class="covid-vis-controls-container">
-    <DropdownFilter
+    <dropdown-filter
       :label="'Country'"
       :items="getAllAffectedCountries"
       @selectItem="setSelectedCountry"

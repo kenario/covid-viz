@@ -29,24 +29,7 @@ export default Vue.extend({
         labels: [],
         datasets: [{
           label: '# of Votes',
-          data: [],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
+          data: []
         }]
       },
       options: {
@@ -73,9 +56,31 @@ export default Vue.extend({
 
     // eslint-disable-next-line
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
+
+      /**
+       * Add styling to the lines.
+       */
+      newData.forEach((data: CovidLineChart, index: number): void => {
+        const lineColor: string = this.rgbGenerator()
+        data.pointBackgroundColor = lineColor
+        data.backgroundColor = lineColor
+        data.fill = index
+      })
+
+      /**
+       * If data props changes, update charts data
+       */
       this.chart.data.datasets = newData
       this.chart.update()
     }
+  },
+
+  methods: {
+    rgbGenerator: function(): string {
+      return `rgba(${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},1)`
+    },
+
+    randomInteger: (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min)
   }
 })
 </script>

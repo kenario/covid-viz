@@ -40,7 +40,7 @@ export const covid = {
       state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
     /**
-     * Map historical data for cases, deaths, and recovered to CovidLineChart data structure.
+     * Map historical data values for cases, deaths, and recovered to CovidLineChart data structure.
      */
     getCovidChartData: (state: CovidState): CovidLineChart[] => {
       const covidChartData: CovidLineChart[] = []

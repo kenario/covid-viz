@@ -1,9 +1,9 @@
 <template>
   <div id="covid-vis">
     <Header />
-    <CovidGeneralInfo />
-    <CovidVisControls />
-    <CovidChart />
+    <covid-general-info />
+    <covid-vis-controls />
+    <covid-chart />
   </div>
 </template>
 
