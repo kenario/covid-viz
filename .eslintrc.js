@@ -16,7 +16,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-function-paren': 0,
     '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/no-use-before-define': false
+    '@typescript-eslint/no-use-before-define': 0
   },
   overrides: [
     {
