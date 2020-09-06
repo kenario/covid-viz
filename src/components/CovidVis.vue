@@ -3,6 +3,7 @@
     <Header />
     <CovidGeneralInfo />
     <CovidVisControls />
+    <CovidChart />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import Vue from 'vue'
 import Header from './Header.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
+import CovidChart from './CovidChart.vue'
 
 export default Vue.extend({
   name: 'CovidVis',
@@ -18,11 +20,13 @@ export default Vue.extend({
   components: {
     Header,
     CovidGeneralInfo,
-    CovidVisControls
+    CovidVisControls,
+    CovidChart
   },
 
   created() {
     this.$store.dispatch('getCovidDataAllCountries')
+    this.$store.dispatch('getHistoricalCountryData', { country: 'USA' }) // extract HistoricalDataParasm type
   }
 })
 </script>
