@@ -3,10 +3,9 @@ import { covidEP } from '../shared/constants/'
 import {
   DateValue,
   CovidData,
+  CovidLineChart,
   CovidGeneralInfo,
-  CovidHistoricalData,
-  CovidHistoricalDataParams,
-  CovidLineChart
+  CovidHistoricalData
 } from '../types/'
 
 export const covid = {
@@ -40,6 +39,9 @@ export const covid = {
     getCovidChartLabels: (state: CovidState): string[] =>
       state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
+    /**
+     * Map historical data for cases, deaths, and recovered to CovidLineChart data structure.
+     */
     getCovidChartData: (state: CovidState): CovidLineChart[] => {
       const covidChartData: CovidLineChart[] = []
 
@@ -56,15 +58,18 @@ export const covid = {
     }
   },
   mutations: {
+    setSelectedCountry: (state: CovidState, country: string): void => {
+      state.selectedCountry = country
+    },
+
     /**
      * Iterates through all countries, converts countries and country to lowercase, and assigns to
      * selectedCovidData state.  Asserts that country is not null, since country comes from the Covid
      * API and is sure to exist.
      */
-    setSelectedCountry: (state: CovidState, country: string): void => {
-      state.selectedCountry = country
+    setSelectedCovidData: (state: CovidState): void => {
       state.selectedCovidData = state.covidDataAllCountries
-        .find((data: CovidData): boolean => data.country!.toLowerCase().includes(country.toLowerCase()))!
+        .find((data: CovidData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
     },
 
     setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {
@@ -84,18 +89,17 @@ export const covid = {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
       const data = await res.json()
       commit('setCovidDataAllCountries', data)
-      commit('setSelectedCountry', 'USA')
+      commit('setSelectedCovidData')
     },
 
     /**
      * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
      * specified.
      */
-    getHistoricalCountryData: async ({ commit }: ActionContext<RS, RS>, payload: CovidHistoricalDataParams): Promise<void> => {
+    getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidState, RS>): Promise<void> => {
       const path = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
-        .replace('country', payload.country)
-        .replace('numOfDays', payload.numOfDays || '')
-
+        .replace('country', state.selectedCountry)
+        .replace('numOfDays', '')
       const res = await fetch(covidEP.COVID_API_BASE_URL + path)
       const data = await res.json()
 

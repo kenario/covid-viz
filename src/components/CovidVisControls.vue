@@ -27,8 +27,10 @@ export default Vue.extend({
   },
 
   methods: {
-    setSelectedCountry: function(country: string): void {
+    setSelectedCountry: async function(country: string): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
+      this.$store.commit('setSelectedCovidData')
+      await this.$store.dispatch('getHistoricalCountryData')
     }
   }
 })

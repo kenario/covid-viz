@@ -24,9 +24,10 @@ export default Vue.extend({
     CovidChart
   },
 
-  created() {
-    this.$store.dispatch('getCovidDataAllCountries')
-    this.$store.dispatch('getHistoricalCountryData', { country: 'USA' }) // extract HistoricalDataParasm type
+  async created() {
+    this.$store.commit('setSelectedCountry', 'USA')
+    await this.$store.dispatch('getCovidDataAllCountries')
+    await this.$store.dispatch('getHistoricalCountryData')
   }
 })
 </script>
