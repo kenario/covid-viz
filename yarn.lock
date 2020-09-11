@@ -5472,6 +5472,11 @@ js-beautify@^1.6.12:
     mkdirp "~1.0.3"
     nopt "^4.0.3"
 
+js-datepicker@^5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/js-datepicker/-/js-datepicker-5.16.0.tgz#1a4bcc01453a9f79700fba2866f091b55f27f766"
+  integrity sha512-PXS1YzaksNDj5VpaPg8iFn775L9eYM2b49MgoHqDfz51vjTTMowr3R/mgYSC7NeWFRyJiZJJ4oKrHaSe7tSk/g==
+
 js-message@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.5.tgz#2300d24b1af08e89dd095bc1a4c9c9cfcb892d15"

@@ -16,7 +16,7 @@
     >
       <div
         class="dropdown-item"
-        v-for="(item, index) in items.filter(i => i.toLowerCase().includes(item.toLowerCase()))"
+        v-for="(item, index) in items.filter(i => i.toLowerCase().includes(selectedItem.toLowerCase()))"
         :key="index"
         @click="onItemClick(item)"
       >
