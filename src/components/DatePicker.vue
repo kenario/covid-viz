@@ -1,23 +1,62 @@
 <template>
   <div class="date-picker-container">
-    <div id="date-picker">
+    <div class="date-picker-label">
+      {{ label }}:
     </div>
+
+    <input class="date-picker">
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import flatpickr from 'flatpickr'
+import 'flatpickr/dist/flatpickr.css'
 
 export default Vue.extend({
-  name: 'Date Picker',
+  name: 'DatePicker',
 
-  created() {
-    flatpickr('#date-picker', {})
+  props: {
+    label: String
+  },
+
+  data: () => ({
+    datePicker: {} as flatpickr.Instance
+  }),
+
+  mounted() {
+    /**
+     * Initialize date picker variable.
+     */
+    this.datePicker = flatpickr(this.$el.childNodes[this.$el.childNodes.length - 1], {
+      dateFormat: 'F j, Y',
+      mode: 'range'
+    })
+
+    /**
+     * Adds function to execute when a change happens.
+     */
+    this.datePicker.config.onChange.push(this.onDateSelect)
+  },
+
+  methods: {
+    /**
+     * When two dates are selected, emit 'selectDate' event.
+     */
+    onDateSelect(selectedDates: Date[]): void {
+      if (selectedDates.length === 2) {
+        this.$emit('selectDate', selectedDates)
+      }
+    }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-
+.date-picker-container {
+    width: 250px;
+}
+.date-picker {
+  width: calc(100% - 4px);
+}
 </style>

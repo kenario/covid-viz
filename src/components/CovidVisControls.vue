@@ -6,6 +6,11 @@
       :defaultItem="getSelectedCountry"
       @selectItem="setSelectedCountry"
     />
+
+    <date-picker
+      :label="'Dates'"
+      @selectDate="test"
+    />
   </div>
 </template>
 
@@ -13,12 +18,14 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import DropdownFilter from './DropdownFilter.vue'
+import DatePicker from './DatePicker.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
 
   components: {
-    DropdownFilter
+    DropdownFilter,
+    DatePicker
   },
 
   computed: {
@@ -33,6 +40,10 @@ export default Vue.extend({
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidData')
       await this.$store.dispatch('getHistoricalCountryData')
+    },
+
+    test(event: Event): void {
+      console.log(event)
     }
   }
 })
