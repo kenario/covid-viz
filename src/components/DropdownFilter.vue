@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown-filter">
+  <div class="dropdown-filter-container">
     <div class="dropdown-filter-label">
       {{ label }}:
     </div>
@@ -12,7 +12,7 @@
     >
     <div
       class="dropdown-content"
-      v-if="displayDropdown"
+      :style="displayDropdown ? 'display: block' : 'display: none'"
     >
       <div
         class="dropdown-item"
@@ -63,8 +63,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.dropdown-filter {
-  height: 300px;
+.dropdown-filter-container {
   width: 250px;
 }
 .dropdown-input {
@@ -72,7 +71,7 @@ export default Vue.extend({
 }
 .dropdown-content {
   width: 100%;
-  height: 100%;
+  height: 300px;
   border-color: black;
   border-style: solid;
   border-width: 1px;
