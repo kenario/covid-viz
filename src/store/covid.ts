@@ -1,7 +1,9 @@
+import moment from 'moment'
 import { ActionContext } from 'vuex'
 import { covidEP } from '../shared/constants/'
 import {
   DateValue,
+  DateRange,
   CovidData,
   CovidLineChart,
   CovidGeneralInfo,
@@ -11,6 +13,7 @@ import {
 export const covid = {
   state: () => ({
     selectedCountry: '',
+    selectedDates: {} as DateRange,
     selectedCovidData: {} as CovidData,
     covidDataAllCountries: [] as CovidData[],
     covidHistoricalCountryData: {} as CovidHistoricalData
@@ -64,6 +67,10 @@ export const covid = {
       state.selectedCountry = country
     },
 
+    setSelectedDates: (state: CovidState, dates: DateRange): void => {
+      state.selectedDates = dates
+    },
+
     /**
      * Iterates through all countries, converts countries and country to lowercase, and assigns to
      * selectedCovidData state.  Asserts that country is not null, since country comes from the Covid
@@ -99,11 +106,35 @@ export const covid = {
      * specified.
      */
     getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidState, RS>): Promise<void> => {
+      let numOfDays = ''
+
+      const today = moment.utc()
+      const startDate = moment.utc(state.selectedDates.startDate)
+      const endDate = moment.utc(state.selectedDates.endDate)
+      const endDateNotToday = !today.isSame(endDate, 'day')
+      const specificDates = Object.values(state.selectedDates).length === 2
+
+      /**
+       * If we have specific dates we calculate how many days to query.
+       */
+      if (specificDates) {
+        numOfDays = today.diff(startDate, 'days').toString()
+      }
+
       const path = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
         .replace('country', state.selectedCountry)
-        .replace('numOfDays', '')
+        .replace('numOfDays', numOfDays)
       const res = await fetch(covidEP.COVID_API_BASE_URL + path)
       const data = await res.json()
+
+      /**
+       * If the specified dates end date is not today, we calculate which dates to include.
+       */
+      if (endDateNotToday) {
+        trimToSpecificDateRange(data.timeline.cases, startDate, endDate)
+        trimToSpecificDateRange(data.timeline.deaths, startDate, endDate)
+        trimToSpecificDateRange(data.timeline.recovered, startDate, endDate)
+      }
 
       /**
        * Map cases, deaths, and recovered into CovidHistoricalData timeline type.
@@ -130,13 +161,32 @@ interface RS {
 
 interface CovidState {
   selectedCountry: string;
+  selectedDates: DateRange;
   selectedCovidData: CovidData;
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }
 
 /**
+ * Helper function that trims the queried dates to a specific range.
+ */
+const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: moment.Moment): any => {
+  Object.keys(data).forEach((key: string): void => {
+    const date = moment.utc(key)
+
+    if (date.isBefore(startDate, 'day') || date.isAfter(endDate, 'day')) {
+      delete data[key]
+    }
+  })
+}
+
+/**
  * Helper function for mapping historical data.
  */
-const mapHistoricaDataToDateValue = (data: object): DateValue[] =>
-  Object.entries(data).map((x: unknown[]): DateValue => { return { date: x[0] as string, value: x[1] as number } })
+const mapHistoricaDataToDateValue = (data: any): DateValue[] =>
+  Object.entries(data).map((x: unknown[]): DateValue => {
+    return {
+      date: x[0] as string,
+      value: x[1] as number
+    }
+  })

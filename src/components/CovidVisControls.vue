@@ -9,7 +9,7 @@
 
     <date-picker
       :label="'Dates'"
-      @selectDate="test"
+      @selectDate="setSelectedDateRange"
     />
   </div>
 </template>
@@ -17,8 +17,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import DropdownFilter from './DropdownFilter.vue'
 import DatePicker from './DatePicker.vue'
+import { DateRange } from '../types/DateRange'
+import DropdownFilter from './DropdownFilter.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
@@ -42,8 +43,10 @@ export default Vue.extend({
       await this.$store.dispatch('getHistoricalCountryData')
     },
 
-    test(event: Event): void {
-      console.log(event)
+    setSelectedDateRange: async function(dates: Date[]): Promise<void> {
+      const dateRange: DateRange = { startDate: dates[0], endDate: dates[1] }
+      this.$store.commit('setSelectedDates', dateRange)
+      await this.$store.dispatch('getHistoricalCountryData')
     }
   }
 })
