@@ -170,6 +170,7 @@ interface CovidState {
 /**
  * Helper function that trims the queried dates to a specific range.
  */
+// eslint-disable-next-line
 const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: moment.Moment): any => {
   Object.keys(data).forEach((key: string): void => {
     const date = moment.utc(key)
@@ -183,6 +184,7 @@ const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: m
 /**
  * Helper function for mapping historical data.
  */
+// eslint-disable-next-line
 const mapHistoricaDataToDateValue = (data: any): DateValue[] =>
   Object.entries(data).map((x: unknown[]): DateValue => {
     return {
