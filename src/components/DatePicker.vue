@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import moment from 'moment'
 import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'
 
@@ -30,7 +31,10 @@ export default Vue.extend({
      */
     this.datePicker = flatpickr(this.$el.childNodes[this.$el.childNodes.length - 1], {
       dateFormat: 'F j, Y',
-      mode: 'range'
+      mode: 'range',
+      disable: [
+        (date): boolean => moment.utc(date).isAfter(moment.utc())
+      ]
     })
 
     /**
