@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import Chart from './Chart.vue'
+import Chart from '../shared/components/Chart.vue'
 
 export default Vue.extend({
   name: 'CovidChart',

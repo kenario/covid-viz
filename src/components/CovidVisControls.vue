@@ -17,9 +17,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import DatePicker from './DatePicker.vue'
 import { DateRange } from '../types/DateRange'
-import DropdownFilter from './DropdownFilter.vue'
+import DatePicker from '../shared/components/DatePicker.vue'
+import DropdownFilter from '../shared/components/DropdownFilter.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
