@@ -13,6 +13,7 @@ import {
 export const covid = {
   state: () => ({
     selectedCountry: '',
+    selectedCovidDataType: '',
     selectedDates: {} as DateRange,
     selectedCovidData: {} as CovidData,
     covidDataAllCountries: [] as CovidData[],
@@ -163,6 +164,7 @@ interface CovidState {
   selectedCountry: string;
   selectedDates: DateRange;
   selectedCovidData: CovidData;
+  selectedCovidDataType: string;
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }

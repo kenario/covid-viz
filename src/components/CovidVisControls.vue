@@ -1,11 +1,19 @@
 <template>
   <div class="covid-vis-controls-container">
-    <dropdown-filter
+    <dropdown
       :label="'Country'"
-      :items="getAllAffectedCountries"
-      :defaultItem="getSelectedCountry"
-      @selectItem="setSelectedCountry"
-    />
+      :hasSearch="true"
+      :selectedItem="getSelectedCountry"
+    >
+      <template v-slot="{ searchText, toggleDropdown }">
+        <single-select
+          :searchText="searchText"
+          :items="getAllAffectedCountries"
+          :toggleDropdown="toggleDropdown"
+          @selectedItem="setSelectedCountry"
+        />
+      </template>
+    </dropdown>
 
     <date-picker
       :label="'Dates'"
@@ -18,15 +26,17 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { DateRange } from '../types/DateRange'
+import SingleSelect from '../shared/components/selects/SingleSelect.vue'
 import DatePicker from '../shared/components/DatePicker.vue'
-import DropdownFilter from '../shared/components/DropdownFilter.vue'
+import Dropdown from '../shared/components/Dropdown.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
 
   components: {
-    DropdownFilter,
-    DatePicker
+    Dropdown,
+    DatePicker,
+    SingleSelect
   },
 
   computed: {
