@@ -41,7 +41,7 @@ export default Vue.extend({
   props: {
     label: String,
     selectedItem: String,
-    hasSearch: Boolean
+    hasSearch: { type: Boolean, default: false }
   },
 
   data: () => ({

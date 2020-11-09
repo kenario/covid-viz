@@ -17,8 +17,8 @@ export default Vue.extend({
   name: 'SingleSelect',
 
   props: {
+    toggleDropdown: Function,
     items: Array as () => string[],
-    toggleDropdown: { type: Function, required: true },
     searchText: { type: String, default: '' }
   },
 

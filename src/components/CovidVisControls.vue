@@ -1,5 +1,6 @@
 <template>
   <div class="covid-vis-controls-container">
+    <!-- Country dropdown -->
     <dropdown
       :label="'Country'"
       :hasSearch="true"
@@ -15,10 +16,25 @@
       </template>
     </dropdown>
 
+    <!-- Date picker -->
     <date-picker
       :label="'Dates'"
       @selectDate="setSelectedDateRange"
     />
+
+    <!-- Data type dropdown -->
+    <dropdown
+      :label="'Data Type'"
+      :selectedItem="dataTypesSelected"
+    >
+      <template>
+        <multi-select
+          :items="dataTypes"
+          :allItemsCheckedOnMount="true"
+          @checkedItems="setSelectedDataType"
+        ></multi-select>
+      </template>
+    </dropdown>
   </div>
 </template>
 
@@ -26,9 +42,10 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import { DateRange } from '../types/DateRange'
-import SingleSelect from '../shared/components/selects/SingleSelect.vue'
-import DatePicker from '../shared/components/DatePicker.vue'
 import Dropdown from '../shared/components/Dropdown.vue'
+import DatePicker from '../shared/components/DatePicker.vue'
+import MultiSelect from '../shared/components/selects/MultiSelect.vue'
+import SingleSelect from '../shared/components/selects/SingleSelect.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
@@ -36,6 +53,7 @@ export default Vue.extend({
   components: {
     Dropdown,
     DatePicker,
+    MultiSelect,
     SingleSelect
   },
 
@@ -45,6 +63,11 @@ export default Vue.extend({
       'getAllAffectedCountries'
     ])
   },
+
+  data: () => ({
+    dataTypes: ['cases', 'deaths', 'recovered'],
+    dataTypesSelected: ''
+  }),
 
   methods: {
     setSelectedCountry: async function(country: string): Promise<void> {
@@ -57,6 +80,11 @@ export default Vue.extend({
       const dateRange: DateRange = { startDate: dates[0], endDate: dates[1] }
       this.$store.commit('setSelectedDates', dateRange)
       await this.$store.dispatch('getHistoricalCountryData')
+    },
+
+    setSelectedDataType: function(dataType: string[]): void {
+      this.dataTypesSelected = dataType.join(', ')
+      this.$store.commit('setSelectedCovidDataType', dataType)
     }
   }
 })

@@ -13,9 +13,9 @@ import {
 export const covid = {
   state: () => ({
     selectedCountry: '',
-    selectedCovidDataType: '',
     selectedDates: {} as DateRange,
     selectedCovidData: {} as CovidData,
+    selectedCovidDataType: [] as string[],
     covidDataAllCountries: [] as CovidData[],
     covidHistoricalCountryData: {} as CovidHistoricalData
   }),
@@ -27,7 +27,6 @@ export const covid = {
 
     getCovidChartLabels: (state: CovidState): string[] =>
       state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
-
     /**
      * Map covid data into CovidGeneralInfo type.
      */
@@ -44,18 +43,18 @@ export const covid = {
         casesToday: data.todayCases
       }
     },
-
     /**
-     * Map historical data values for cases, deaths, and recovered to CovidLineChart data structure.
+     * Map historical data values for the chosen data types: cases, deaths, and recovered to
+     * CovidLineChart data structure.
      */
     getCovidChartData: (state: CovidState): CovidLineChart[] => {
       const covidChartData: CovidLineChart[] = []
 
       if (state.covidHistoricalCountryData.timeline) {
-        Object.keys(state.covidHistoricalCountryData.timeline).forEach((key: string): void => {
+        state.selectedCovidDataType.forEach((type: string): void => {
           covidChartData.push({
-            label: key,
-            data: state.covidHistoricalCountryData.timeline[key].map(x => x.value)
+            label: type,
+            data: state.covidHistoricalCountryData.timeline[type].map(t => t.value)
           })
         })
       }
@@ -71,7 +70,6 @@ export const covid = {
     setSelectedDates: (state: CovidState, dates: DateRange): void => {
       state.selectedDates = dates
     },
-
     /**
      * Iterates through all countries, converts countries and country to lowercase, and assigns to
      * selectedCovidData state.  Asserts that country is not null, since country comes from the Covid
@@ -88,6 +86,10 @@ export const covid = {
 
     setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
       state.covidHistoricalCountryData = data
+    },
+
+    setSelectedCovidDataType: (state: CovidState, dataType: string[]): void => {
+      state.selectedCovidDataType = dataType
     }
   },
   actions: {
@@ -101,7 +103,6 @@ export const covid = {
       commit('setCovidDataAllCountries', data)
       commit('setSelectedCovidData')
     },
-
     /**
      * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
      * specified.
@@ -114,7 +115,6 @@ export const covid = {
       const endDate = moment.utc(state.selectedDates.endDate)
       const endDateNotToday = !today.isSame(endDate, 'day')
       const specificDates = Object.values(state.selectedDates).length === 2
-
       /**
        * If we have specific dates we calculate how many days to query.
        */
@@ -127,7 +127,6 @@ export const covid = {
         .replace('numOfDays', numOfDays)
       const res = await fetch(covidEP.COVID_API_BASE_URL + path)
       const data = await res.json()
-
       /**
        * If the specified dates end date is not today, we calculate which dates to include.
        */
@@ -136,7 +135,6 @@ export const covid = {
         trimToSpecificDateRange(data.timeline.deaths, startDate, endDate)
         trimToSpecificDateRange(data.timeline.recovered, startDate, endDate)
       }
-
       /**
        * Map cases, deaths, and recovered into CovidHistoricalData timeline type.
        */
@@ -164,7 +162,7 @@ interface CovidState {
   selectedCountry: string;
   selectedDates: DateRange;
   selectedCovidData: CovidData;
-  selectedCovidDataType: string;
+  selectedCovidDataType: string[];
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }
