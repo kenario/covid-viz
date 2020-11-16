@@ -15,13 +15,11 @@
         />
       </template>
     </dropdown>
-
-    <!-- Date picker -->
+    <!-- Date picker dropdown -->
     <date-picker
       :label="'Dates'"
       @selectDate="setSelectedDateRange"
     />
-
     <!-- Data type dropdown -->
     <dropdown
       :label="'Data Type'"
@@ -32,7 +30,20 @@
           :items="dataTypes"
           :allItemsCheckedOnMount="true"
           @checkedItems="setSelectedDataType"
-        ></multi-select>
+        />
+      </template>
+    </dropdown>
+    <!-- Result type dropdown -->
+    <dropdown
+      :label="'Results Type'"
+      :selectedItem="getSelectedResultType"
+    >
+      <template v-slot="{ toggleDropdown }">
+        <single-select
+          :items="resultTypes"
+          :toggleDropdown="toggleDropdown"
+          @selectedItem="setSelectedResultType"
+        />
       </template>
     </dropdown>
   </div>
@@ -41,7 +52,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange } from '../types/DateRange'
+import { DateRange, ResultType } from '../types/'
 import Dropdown from '../shared/components/Dropdown.vue'
 import DatePicker from '../shared/components/DatePicker.vue'
 import MultiSelect from '../shared/components/selects/MultiSelect.vue'
@@ -60,12 +71,21 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedCountry',
+      'getSelectedResultType',
       'getAllAffectedCountries'
     ])
   },
 
   data: () => ({
-    dataTypes: ['cases', 'deaths', 'recovered'],
+    resultTypes: [
+      'total',
+      'totalPerDay'
+    ],
+    dataTypes: [
+      'cases',
+      'deaths',
+      'recovered'
+    ],
     dataTypesSelected: ''
   }),
 
@@ -85,6 +105,10 @@ export default Vue.extend({
     setSelectedDataType: function(dataType: string[]): void {
       this.dataTypesSelected = dataType.join(', ')
       this.$store.commit('setSelectedCovidDataType', dataType)
+    },
+
+    setSelectedResultType: function(resultType: ResultType): void {
+      this.$store.commit('setSelectedResultType', resultType)
     }
   }
 })

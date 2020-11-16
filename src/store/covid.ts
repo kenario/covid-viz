@@ -5,6 +5,7 @@ import {
   DateValue,
   DateRange,
   CovidData,
+  ResultType,
   CovidLineChart,
   CovidGeneralInfo,
   CovidHistoricalData
@@ -13,6 +14,7 @@ import {
 export const covid = {
   state: () => ({
     selectedCountry: '',
+    selectedResultType: '',
     selectedDates: {} as DateRange,
     selectedCovidData: {} as CovidData,
     selectedCovidDataType: [] as string[],
@@ -21,6 +23,8 @@ export const covid = {
   }),
   getters: {
     getSelectedCountry: (state: CovidState): string => state.selectedCountry,
+
+    getSelectedResultType: (state: CovidState): string => state.selectedResultType,
 
     getAllAffectedCountries: (state: CovidState): string[] =>
       state.covidDataAllCountries.map((data: CovidData): string => data.country!),
@@ -54,7 +58,7 @@ export const covid = {
         state.selectedCovidDataType.forEach((type: string): void => {
           covidChartData.push({
             label: type,
-            data: state.covidHistoricalCountryData.timeline[type].map(t => t.value)
+            data: determineCovidChartData(state.covidHistoricalCountryData.timeline[type], state.selectedResultType)
           })
         })
       }
@@ -90,6 +94,10 @@ export const covid = {
 
     setSelectedCovidDataType: (state: CovidState, dataType: string[]): void => {
       state.selectedCovidDataType = dataType
+    },
+
+    setSelectedResultType: (state: CovidState, resultType: ResultType): void => {
+      state.selectedResultType = resultType
     }
   },
   actions: {
@@ -162,11 +170,11 @@ interface CovidState {
   selectedCountry: string;
   selectedDates: DateRange;
   selectedCovidData: CovidData;
+  selectedResultType: ResultType;
   selectedCovidDataType: string[];
   covidDataAllCountries: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }
-
 /**
  * Helper function that trims the queried dates to a specific range.
  */
@@ -180,7 +188,6 @@ const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: m
     }
   })
 }
-
 /**
  * Helper function for mapping historical data.
  */
@@ -192,3 +199,27 @@ const mapHistoricaDataToDateValue = (data: any): DateValue[] =>
       value: x[1] as number
     }
   })
+/**
+ * Creates covid chart data based on the selected result type.
+ */
+// eslint-disable-next-line
+const determineCovidChartData = (data: any, resultType: ResultType): number[] => {
+  let result: number[] = []
+
+  if (resultType === 'total') {
+    // eslint-disable-next-line
+    result = data.map((d: any) => d.value)
+  } else if (resultType === 'totalPerDay') {
+    /**
+     * next element - current element, gives us the data for the current day.  This excludes
+     * the very last day.
+     */
+    for (let x = 0; x < data.length; x++) {
+      if (x + 1 < data.length) {
+        result.push((data[x + 1].value - data[x].value))
+      }
+    }
+  }
+
+  return result
+}

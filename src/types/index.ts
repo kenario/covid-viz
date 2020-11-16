@@ -1,6 +1,7 @@
 export * from './CovidData'
 export * from './DateValue'
 export * from './DateRange'
+export * from './ResultType'
 export * from './CovidLineChart'
 export * from './CovidGeneralInfo'
 export * from './CovidHistoricalData'

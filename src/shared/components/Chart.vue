@@ -7,7 +7,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Chart } from 'chart.js'
-import { CovidLineChart } from '../types/CovidLineChart'
+import { CovidLineChart } from '../../types/'
 
 export default Vue.extend({
   name: 'Chart',
@@ -56,7 +56,7 @@ export default Vue.extend({
 
     // eslint-disable-next-line
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
-
+      console.log('here: ', newData)
       /**
        * Add styling to the lines.
        */
@@ -66,7 +66,6 @@ export default Vue.extend({
         data.backgroundColor = lineColor
         data.fill = index
       })
-
       /**
        * If data props changes, update charts data
        */
