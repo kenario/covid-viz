@@ -5,15 +5,33 @@ import {
   DateValue,
   DateRange,
   CovidData,
+  GraphType,
   ResultType,
   CovidLineChart,
   CovidGeneralInfo,
   CovidHistoricalData
 } from '../types/'
 
+// RootState
+interface RS {
+  value: string;
+}
+
+interface CovidState {
+  selectedCountry: string;
+  selectedDates: DateRange;
+  selectedCovidData: CovidData;
+  selectedGraphType: GraphType;
+  selectedResultType: ResultType;
+  selectedCovidDataType: string[];
+  covidDataAllCountries: CovidData[];
+  covidHistoricalCountryData: CovidHistoricalData;
+}
+
 export const covid = {
   state: () => ({
     selectedCountry: '',
+    selectedGraphType: '',
     selectedResultType: '',
     selectedDates: {} as DateRange,
     selectedCovidData: {} as CovidData,
@@ -23,6 +41,8 @@ export const covid = {
   }),
   getters: {
     getSelectedCountry: (state: CovidState): string => state.selectedCountry,
+
+    getSelectedGraphType: (state: CovidState): string => state.selectedGraphType,
 
     getSelectedResultType: (state: CovidState): string => state.selectedResultType,
 
@@ -98,6 +118,10 @@ export const covid = {
 
     setSelectedResultType: (state: CovidState, resultType: ResultType): void => {
       state.selectedResultType = resultType
+    },
+
+    setSelectedGraphType: (state: CovidState, graphType: GraphType): void => {
+      state.selectedGraphType = graphType
     }
   },
   actions: {
@@ -159,21 +183,6 @@ export const covid = {
       commit('setHistoricalCountryData', formattedData)
     }
   }
-}
-
-// RootState
-interface RS {
-  value: string;
-}
-
-interface CovidState {
-  selectedCountry: string;
-  selectedDates: DateRange;
-  selectedCovidData: CovidData;
-  selectedResultType: ResultType;
-  selectedCovidDataType: string[];
-  covidDataAllCountries: CovidData[];
-  covidHistoricalCountryData: CovidHistoricalData;
 }
 /**
  * Helper function that trims the queried dates to a specific range.

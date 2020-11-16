@@ -6,15 +6,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Chart } from 'chart.js'
-import { CovidLineChart } from '../../types/'
+import { Chart, ChartConfiguration } from 'chart.js'
+import { CovidLineChart, GraphType } from '../../types/'
 
 export default Vue.extend({
   name: 'Chart',
 
   props: {
+    data: Array as () => CovidLineChart[],
     labels: Array as () => string[],
-    data: Array as () => CovidLineChart[]
+    type: String
   },
 
   data: () => ({
@@ -22,26 +23,7 @@ export default Vue.extend({
   }),
 
   mounted() {
-    const ctx = document.getElementById('chart') as HTMLCanvasElement
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: '# of Votes',
-          data: []
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    })
+    this.chart = this.createNewChart()
   },
 
   watch: {
@@ -56,7 +38,6 @@ export default Vue.extend({
 
     // eslint-disable-next-line
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
-      console.log('here: ', newData)
       /**
        * Add styling to the lines.
        */
@@ -71,6 +52,12 @@ export default Vue.extend({
        */
       this.chart.data.datasets = newData
       this.chart.update()
+    },
+
+    // eslint-disable-next-line
+    type(newType: GraphType, oldType: GraphType): void {
+      this.chart.destroy()
+      this.chart = this.createNewChart()
     }
   },
 
@@ -79,7 +66,34 @@ export default Vue.extend({
       return `rgba(${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},1)`
     },
 
-    randomInteger: (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min)
+    randomInteger: (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min),
+
+    createNewChart: function(): Chart {
+      const ctx = document.getElementById('chart') as HTMLCanvasElement
+      return new Chart(ctx, this.generateChartConfig())
+    },
+
+    generateChartConfig: function(): ChartConfiguration {
+      return {
+        type: this.type as GraphType,
+        data: {
+          labels: [],
+          datasets: [{
+            label: '# of Votes',
+            data: []
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      }
+    }
   }
 })
 </script>

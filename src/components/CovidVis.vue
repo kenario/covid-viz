@@ -26,6 +26,7 @@ export default Vue.extend({
 
   async created() {
     this.$store.commit('setSelectedCountry', 'USA')
+    this.$store.commit('setSelectedGraphType', 'line')
     this.$store.commit('setSelectedResultType', 'total')
     await this.$store.dispatch('getCovidDataAllCountries')
     await this.$store.dispatch('getHistoricalCountryData')

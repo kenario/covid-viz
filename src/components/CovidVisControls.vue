@@ -46,13 +46,26 @@
         />
       </template>
     </dropdown>
+    <!-- Type of graph dropdown -->
+    <dropdown
+      :label="'Graph Type'"
+      :selectedItem="getSelectedGraphType"
+    >
+      <template v-slot="{ toggleDropdown }">
+        <single-select
+          :items="graphTypes"
+          :toggleDropdown="toggleDropdown"
+          @selectedItem="setSelectedGraphType"
+        ></single-select>
+      </template>
+    </dropdown>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType } from '../types/'
+import { DateRange, ResultType, GraphType } from '../types/'
 import Dropdown from '../shared/components/Dropdown.vue'
 import DatePicker from '../shared/components/DatePicker.vue'
 import MultiSelect from '../shared/components/selects/MultiSelect.vue'
@@ -71,6 +84,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedCountry',
+      'getSelectedGraphType',
       'getSelectedResultType',
       'getAllAffectedCountries'
     ])
@@ -85,6 +99,10 @@ export default Vue.extend({
       'cases',
       'deaths',
       'recovered'
+    ],
+    graphTypes: [
+      'line',
+      'bar'
     ],
     dataTypesSelected: ''
   }),
@@ -109,6 +127,10 @@ export default Vue.extend({
 
     setSelectedResultType: function(resultType: ResultType): void {
       this.$store.commit('setSelectedResultType', resultType)
+    },
+
+    setSelectedGraphType: function(graphType: GraphType): void {
+      this.$store.commit('setSelectedGraphType', graphType)
     }
   }
 })

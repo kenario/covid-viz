@@ -2,6 +2,7 @@
   <div class="covid-vis-chart-container">
     <Chart
       :labels="getCovidChartLabels"
+      :type="getSelectedGraphType"
       :data="getCovidChartData"
     />
   </div>
@@ -21,6 +22,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getSelectedGraphType',
       'getCovidGeneralInfo',
       'getCovidChartLabels',
       'getCovidChartData'
