@@ -35,7 +35,6 @@ export default Vue.extend({
       this.chart.data.labels = newLabels
       this.chart.update()
     },
-
     // eslint-disable-next-line
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
       /**
@@ -53,11 +52,16 @@ export default Vue.extend({
       this.chart.data.datasets = newData
       this.chart.update()
     },
-
     // eslint-disable-next-line
     type(newType: GraphType, oldType: GraphType): void {
+      /**
+       * Re-creates the chart into the new given type, updates with the current labels and data.
+       */
       this.chart.destroy()
       this.chart = this.createNewChart()
+      this.chart.data.labels = this.labels
+      this.chart.data.datasets = this.data
+      this.chart.update()
     }
   },
 
