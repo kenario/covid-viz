@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Header from './Header.vue'
 import CovidChart from './CovidChart.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
@@ -23,6 +24,12 @@ export default Vue.extend({
     CovidGeneralInfo,
     CovidVisControls,
     CovidChart
+  },
+
+  computed: {
+    ...mapGetters([
+      'getAllAffectedCountries'
+    ])
   },
 
   data: () => ({

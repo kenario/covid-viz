@@ -7,6 +7,7 @@ import {
   CovidData,
   GraphType,
   ResultType,
+  CountryInfo,
   CovidLineChart,
   CovidGeneralInfo,
   CovidHistoricalData
@@ -46,8 +47,10 @@ export const covid = {
 
     getSelectedResultType: (state: CovidState): string => state.selectedResultType,
 
-    getAllAffectedCountries: (state: CovidState): string[] =>
-      state.covidDataAllCountries.map((data: CovidData): string => data.country!),
+    getAllAffectedCountries: (state: CovidState): CountryInfo[] =>
+      state.covidDataAllCountries.map((data: CovidData): CountryInfo => {
+        return { name: data.country!, countryCode: data.countryInfo?.iso2! }
+      }),
 
     getCovidChartLabels: (state: CovidState): string[] =>
       state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),

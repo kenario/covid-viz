@@ -9,7 +9,7 @@
       <template v-slot="{ searchText, toggleDropdown }">
         <single-select
           :searchText="searchText"
-          :items="getAllAffectedCountries"
+          :items="getAllAffectedCountries.map(countryInfo => countryInfo.name)"
           :toggleDropdown="toggleDropdown"
           @selectedItem="setSelectedCountry"
         />
