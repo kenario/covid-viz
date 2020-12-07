@@ -10,9 +10,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import Header from './Header.vue'
+import CovidChart from './CovidChart.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
-import CovidChart from './CovidChart.vue'
+import { geolocationEP } from '../shared/constants/geolocationEP'
 
 export default Vue.extend({
   name: 'CovidVis',
@@ -25,7 +26,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    location: 'us'
+    location: 'USA'
   }),
 
   created() {
@@ -45,7 +46,7 @@ export default Vue.extend({
     locateUser(): void {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
-          const res = await fetch(`http://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+          const res = await fetch(geolocationEP(position.coords.latitude, position.coords.longitude))
           const data = await res.json()
           this.$store.commit('setSelectedCountry', data.address.country_code)
         })
