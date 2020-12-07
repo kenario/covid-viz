@@ -24,12 +24,33 @@ export default Vue.extend({
     CovidChart
   },
 
-  async created() {
-    this.$store.commit('setSelectedCountry', 'USA')
+  data: () => ({
+    location: 'us'
+  }),
+
+  created() {
     this.$store.commit('setSelectedGraphType', 'line')
     this.$store.commit('setSelectedResultType', 'total')
+  },
+
+  async mounted() {
     await this.$store.dispatch('getCovidDataAllCountries')
+    this.$store.commit('setSelectedCountry', this.location)
+    this.$store.commit('setSelectedCovidData')
     await this.$store.dispatch('getHistoricalCountryData')
+    // this.locateUser()
+  },
+
+  methods: {
+    locateUser(): void {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
+          const res = await fetch(`http://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+          const data = await res.json()
+          this.$store.commit('setSelectedCountry', data.address.country_code)
+        })
+      }
+    }
   }
 })
 </script>
