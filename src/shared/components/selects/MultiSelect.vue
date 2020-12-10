@@ -30,10 +30,7 @@ export default Vue.extend({
   }),
 
   mounted() {
-    if (this.allItemsCheckedOnMount) {
-      this.checkedItems = this.items
-      this.$emit('checkedItems', this.checkedItems)
-    }
+    if (this.allItemsCheckedOnMount) this.checkedItems = this.items
   },
 
   watch: {

@@ -136,7 +136,6 @@ export const covid = {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
       const data = await res.json()
       commit('setCovidDataAllCountries', data)
-      commit('setSelectedCovidData')
     },
     /**
      * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
