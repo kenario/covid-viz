@@ -44,27 +44,31 @@ export default Vue.extend({
 
   async mounted() {
     await this.$store.dispatch('getCovidDataAllCountries')
-    this.locateUser()
-
     this.$store.commit('setSelectedCountry', this.location)
     this.$store.commit('setSelectedCovidData')
     await this.$store.dispatch('getHistoricalCountryData')
+    this.locateUser()
   },
 
   methods: {
     /**
-     * If geolocation is avilable then we compare the location to the country codes of the countries
-     * affected by covid and mutate the selectedCountry state with that country.
+     * If geolocation is available and the user clicks allow then we compare the location to the
+     * country codes of the countries affected by covid.
      */
     locateUser(): void {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
           const res = await fetch(geolocationEP(position.coords.latitude, position.coords.longitude))
           const data = await res.json()
-          const country: string = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
+          this.location = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
             data.address.country_code.toUpperCase() === countryInfo.countryCode).name
-
-          this.$store.commit('setSelectedCountry', country)
+          /**
+           * Mutate the selectedCountry and selectedCovidData state with that country.  Afterwards we
+           * ping that countries historical data.
+           */
+          this.$store.commit('setSelectedCountry', this.location)
+          this.$store.commit('setSelectedCovidData')
+          await this.$store.dispatch('getHistoricalCountryData')
         })
       }
     }
