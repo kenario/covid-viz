@@ -46,12 +46,16 @@ export const covid = {
     getSelectedGraphType: (state: CovidState): string => state.selectedGraphType,
 
     getSelectedResultType: (state: CovidState): string => state.selectedResultType,
-
+    /**
+     * Map all affected countries names and country codes.
+     */
     getAllAffectedCountries: (state: CovidState): CountryInfo[] =>
       state.covidDataAllCountries.map((data: CovidData): CountryInfo => {
         return { name: data.country!, countryCode: data.countryInfo?.iso2! }
       }),
-
+    /**
+     * Map the dates provided by the selected countries historical data.
+     */
     getCovidChartLabels: (state: CovidState): string[] =>
       state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
     /**
@@ -129,8 +133,7 @@ export const covid = {
   },
   actions: {
     /**
-     * Gets covid data for all countries and sets the default selected covid data.  Should be prior choice or
-     * location, respectively.  Currently set to USA, will change.
+     * Gets covid data for all countries.
      */
     getCovidDataAllCountries: async ({ commit }: ActionContext<RS, RS>): Promise<void> => {
       const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
