@@ -1,14 +1,14 @@
 <template>
-  <div class="date-picker-container">
-    <div class="date-picker-label">
+  <div class='date-picker-container'>
+    <div class='date-picker-label'>
       {{ label }}:
     </div>
 
-    <input class="date-picker">
+    <input class='date-picker'>
   </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 import Vue from 'vue'
 import moment from 'moment'
 import flatpickr from 'flatpickr'
@@ -27,16 +27,16 @@ export default Vue.extend({
 
   mounted() {
     /**
-     * Initialize date picker variable.
+     * Initialize date picker variable on the input element.
      */
     this.datePicker = flatpickr(this.$el.childNodes[this.$el.childNodes.length - 1], {
       dateFormat: 'F j, Y',
       mode: 'range',
       disable: [
         (date): boolean => moment.utc(date).isAfter(moment.utc())
-      ]
+      ],
+      defaultDate: this.getDefaultDates(30)
     })
-
     /**
      * Adds function to execute when a change happens.
      */
@@ -44,6 +44,10 @@ export default Vue.extend({
   },
 
   methods: {
+    getDefaultDates: (startDate: number): Date[] => [
+      moment().utc().toDate(),
+      moment().utc().subtract(startDate, 'days').toDate()
+    ],
     /**
      * When two dates are selected, emit 'selectDate' event.
      */
@@ -56,7 +60,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .date-picker-container {
     width: 250px;
 }
