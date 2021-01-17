@@ -1,7 +1,31 @@
-import { CovidData } from '../../../../src/types'
+import moment from 'moment'
+import { CovidData, CovidHistoricalData, DateValue, CountryInfo } from '../../../../src/types'
 import { randomInteger } from '../../../../src/shared/randomInteger'
 
-export const mockState = {
+export const covidConstants = {
+  affectedCountries: [
+    { name: 'Redania', countryCode: 'RE' },
+    { name: 'Temeria', countryCode: 'TE' },
+    { name: 'Nilfgaard', countryCode: 'NI' },
+    { name: 'Toussaint', countryCode: 'TO' },
+    { name: 'Zerrikania', countryCode: 'ZE' }
+  ],
+
+  datesAndValues: () => {
+    const datesAndValues: DateValue[] = []
+
+    for (let x = 0; x < 5; x++) {
+      datesAndValues.push({
+        date: moment.utc().subtract(x, 'days').toString(),
+        value: x
+      })
+    }
+
+    return datesAndValues
+  }
+}
+
+export const covidStateMocks = {
   generateCovidDataAllCountries: (): CovidData[] => {
     const result: CovidData[] = []
     const min = 0
@@ -10,10 +34,10 @@ export const mockState = {
     for (let x = 0; x < 5; x++) {
       result.push({
         updated: randomInteger(min, max),
-        country: `${randomInteger(min, max)}`,
+        country: covidConstants.affectedCountries[x].name,
         countryInfo: {
           _id: randomInteger(min, max),
-          iso2: `${randomInteger(min, max)}`,
+          iso2: covidConstants.affectedCountries[x].countryCode,
           iso3: `${randomInteger(min, max)}`,
           lat: randomInteger(min, max),
           long: randomInteger(min, max),
@@ -43,5 +67,22 @@ export const mockState = {
     }
 
     return result
+  },
+
+  generateCovidHistoricalCountryData: (): CovidHistoricalData => {
+    const datesAndValues: DateValue[] = covidConstants.datesAndValues()
+
+    return {
+      country: 'Gondor',
+      province: [
+        'Shire',
+        'Prancing Pony'
+      ],
+      timeline: {
+        cases: datesAndValues,
+        deaths: datesAndValues,
+        recovered: datesAndValues
+      }
+    }
   }
 }

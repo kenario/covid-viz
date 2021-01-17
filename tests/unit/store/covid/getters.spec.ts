@@ -1,6 +1,6 @@
 import { expect } from 'chai'
-import { mockState } from './mockState'
-import { CovidState, CountryInfo, CovidData } from '../../../../src/types'
+import { covidConstants, covidStateMocks } from './covidMocks'
+import { CovidState, CountryInfo, CovidData, DateValue } from '../../../../src/types'
 import { state, getters } from '../../../../src/store/covid'
 
 const {
@@ -13,18 +13,20 @@ const {
 let covidState: CovidState = state()
 
 describe('Covid Store getters', (): void => {
-  beforeEach((): void => {
-    covidState.covidDataAllCountries = mockState.generateCovidDataAllCountries()
-  })
-
   afterEach((): void => {
     covidState = state()
   })
 
   it('can get all affected countries', (): void => {
-    const expected: CountryInfo[] = covidState.covidDataAllCountries.map((data: CovidData): CountryInfo => {
-      return { name: data.country!, countryCode: data.countryInfo?.iso2! }
-    })
-    expect(getAllAffectedCountries(covidState)).to.eql(expected)
+    covidState.covidDataAllCountries = covidStateMocks.generateCovidDataAllCountries()
+
+    expect(getAllAffectedCountries(covidState)).to.eql(covidConstants.affectedCountries)
+  })
+
+  it('can get chart labels needed for covid chart', (): void => {
+    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+
+    expect(getCovidChartLabels(covidState)).to
+      .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })
 })
