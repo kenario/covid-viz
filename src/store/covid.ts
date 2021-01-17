@@ -6,6 +6,7 @@ import {
   DateRange,
   CovidData,
   GraphType,
+  CovidState,
   ResultType,
   CountryInfo,
   CovidLineChart,
@@ -18,18 +19,7 @@ interface RS {
   value: string;
 }
 
-interface CovidState {
-  selectedCountry: string;
-  selectedDates: DateRange;
-  selectedCovidData: CovidData;
-  selectedGraphType: GraphType;
-  selectedResultType: ResultType;
-  selectedCovidDataType: string[];
-  covidDataAllCountries: CovidData[];
-  covidHistoricalCountryData: CovidHistoricalData;
-}
-
-const state = () => ({
+export const state = () => ({
   selectedCountry: '',
   selectedGraphType: '',
   selectedResultType: '',
@@ -181,9 +171,9 @@ export const actions = {
       country: data.country,
       province: data.province,
       timeline: {
-        cases: mapHistoricaDataToDateValue(data.timeline.cases),
-        deaths: mapHistoricaDataToDateValue(data.timeline.deaths),
-        recovered: mapHistoricaDataToDateValue(data.timeline.recovered)
+        cases: mapHistoricalDataToDateValue(data.timeline.cases),
+        deaths: mapHistoricalDataToDateValue(data.timeline.deaths),
+        recovered: mapHistoricalDataToDateValue(data.timeline.recovered)
       }
     }
 
@@ -208,7 +198,7 @@ const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: m
  * Helper function for mapping historical data.
  */
 // eslint-disable-next-line
-const mapHistoricaDataToDateValue = (data: any): DateValue[] =>
+const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
   Object.entries(data).map((x: unknown[]): DateValue => {
     return {
       date: x[0] as string,
@@ -231,6 +221,9 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
      * the very last day.
      */
     for (let x = 0; x < data.length; x++) {
+      /**
+       * TODO: change conditional to match data not from today.
+       */
       if (x + 1 < data.length) {
         result.push((data[x + 1].value - data[x].value))
       }
