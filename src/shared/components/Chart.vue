@@ -8,6 +8,7 @@
 import Vue from 'vue'
 import { Chart, ChartConfiguration } from 'chart.js'
 import { CovidLineChart, GraphType } from '../../types/'
+import { randomInteger } from '../../shared/randomInteger'
 
 export default Vue.extend({
   name: 'Chart',
@@ -67,10 +68,8 @@ export default Vue.extend({
 
   methods: {
     rgbGenerator: function(): string {
-      return `rgba(${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},${this.randomInteger(50, 200)},1)`
+      return `rgba(${randomInteger(50, 200)},${randomInteger(50, 200)},${randomInteger(50, 200)},1)`
     },
-
-    randomInteger: (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min),
 
     createNewChart: function(): Chart {
       const ctx = document.getElementById('chart') as HTMLCanvasElement
