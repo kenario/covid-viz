@@ -1,1 +1,1 @@
-export type ResultType = 'total' | 'totalPerDay'
+export type ResultType = 'total' | 'totalPerDay' | ''

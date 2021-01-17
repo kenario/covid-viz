@@ -1,1 +1,1 @@
-export type GraphType = 'line' | 'bar'
+export type GraphType = 'line' | 'bar' | ''

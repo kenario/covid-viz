@@ -21,8 +21,8 @@ interface RS {
 
 export const state = () => ({
   selectedCountry: '',
-  selectedGraphType: '',
-  selectedResultType: '',
+  selectedGraphType: '' as GraphType,
+  selectedResultType: '' as ResultType,
   selectedDates: {} as DateRange,
   selectedCovidData: {} as CovidData,
   selectedCovidDataType: [] as string[],
