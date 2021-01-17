@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { covidConstants, covidStateMocks } from './covidMocks'
-import { CovidState, DateValue, CovidLineChart } from '../../../../src/types'
-import { state, getters } from '../../../../src/store/covid'
+import { CovidState, DateValue, CovidLineChart } from '@/types'
+import { state, getters } from '@/store/covid'
 
 const {
   getAllAffectedCountries,
