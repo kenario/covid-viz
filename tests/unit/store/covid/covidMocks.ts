@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { CovidData, CovidHistoricalData, DateValue, CountryInfo } from '../../../../src/types'
+import { CovidData, CovidHistoricalData, DateValue } from '../../../../src/types'
 import { randomInteger } from '../../../../src/shared/randomInteger'
 
 export const covidConstants = {
@@ -22,6 +22,16 @@ export const covidConstants = {
     }
 
     return datesAndValues
+  },
+
+  generalInfo: {
+    country: 'Skellige',
+    cases: 0,
+    deaths: 1,
+    recovered: 2,
+    tests: 3,
+    updated: 4,
+    casesToday: 5
   }
 }
 

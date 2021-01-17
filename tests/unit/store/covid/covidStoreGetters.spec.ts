@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { covidConstants, covidStateMocks } from './covidMocks'
-import { CovidState, CountryInfo, CovidData, DateValue } from '../../../../src/types'
+import { CovidState, DateValue, CovidLineChart } from '../../../../src/types'
 import { state, getters } from '../../../../src/store/covid'
 
 const {
@@ -28,5 +28,44 @@ describe('Covid Store getters', (): void => {
 
     expect(getCovidChartLabels(covidState)).to
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
+  })
+
+  it('can get covid general info', (): void => {
+    covidState.selectedCovidData = covidStateMocks.generateCovidDataAllCountries()[0]
+    covidState.selectedCovidData.country = covidConstants.generalInfo.country
+    covidState.selectedCovidData.cases = covidConstants.generalInfo.cases
+    covidState.selectedCovidData.deaths = covidConstants.generalInfo.deaths
+    covidState.selectedCovidData.recovered = covidConstants.generalInfo.recovered
+    covidState.selectedCovidData.tests = covidConstants.generalInfo.tests
+    covidState.selectedCovidData.updated = covidConstants.generalInfo.updated
+    covidState.selectedCovidData.todayCases = covidConstants.generalInfo.casesToday
+
+    expect(getCovidGeneralInfo(covidState)).to.eql(covidConstants.generalInfo)
+  })
+
+  it('can get covid chart data that are overall totals', (): void => {
+    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedCovidDataType = ['cases']
+    covidState.selectedResultType = 'total'
+
+    const expected: CovidLineChart = {
+      label: 'cases',
+      data: covidConstants.datesAndValues().map((dv: DateValue): number => dv.value)
+    }
+
+    expect(getCovidChartData(covidState)).to.eql([expected])
+  })
+
+  it('can get covid chart data that are totalPerDay', (): void => {
+    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedCovidDataType = ['cases']
+    covidState.selectedResultType = 'totalPerDay'
+
+    const expected: CovidLineChart = {
+      label: 'cases',
+      data: [1, 1, 1, 1]
+    }
+
+    expect(getCovidChartData(covidState)).to.eql([expected])
   })
 })
