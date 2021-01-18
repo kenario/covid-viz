@@ -1,3 +1,4 @@
+import sinon from 'sinon'
 import { expect } from 'chai'
 import { state, actions } from '@/store/covid'
 
