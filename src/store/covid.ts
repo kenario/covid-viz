@@ -1,3 +1,4 @@
+import axios, { AxiosResponse } from 'axios'
 import moment from 'moment'
 import { ActionContext } from 'vuex'
 import { covidEP } from '../shared/constants/'
@@ -124,13 +125,9 @@ export const mutations = {
 }
 
 export const actions = {
-  /**
-   * Gets covid data for all countries.
-   */
-  getCovidDataAllCountries: async ({ commit }: ActionContext<RS, RS>): Promise<void> => {
-    const res = await fetch(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
-    const data = await res.json()
-    commit('setCovidDataAllCountries', data)
+  getCovidDataAllCountries: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+    const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
+    commit('setCovidDataAllCountries', res.data)
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
