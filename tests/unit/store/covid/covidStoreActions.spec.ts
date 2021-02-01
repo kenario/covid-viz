@@ -1,10 +1,10 @@
 import sinon from 'sinon'
 import { expect } from 'chai'
-import { covidEP } from '@/shared/constants'
 import { ActionContext } from 'vuex'
-import { CovidData, CovidState } from '@/types'
+import { CovidData, CovidHistoricalData, CovidState } from '@/types'
 import { state, actions } from '@/store/covid'
 import { covidStateMocks } from './covidMocks'
+import moment from 'moment'
 import axios from 'axios'
 
 interface RS {
@@ -22,10 +22,16 @@ describe('Covid Store actions', (): void => {
     rootGetters: {},
     rootState: { value: '' }
   }
-  const commitSpy: sinon.SinonSpy = sinon.spy(actionObject, 'commit')
-  const axiosGetStub: sinon.SinonStub = sinon.stub(axios, 'get')
+  let axiosGetStub: sinon.SinonStub
+  let commitSpy: sinon.SinonSpy
 
-  after((): void => {
+  beforeEach((): void => {
+    commitSpy = sinon.spy(actionObject, 'commit')
+    axiosGetStub = sinon.stub(axios, 'get')
+  })
+
+  afterEach((): void => {
+    commitSpy.restore()
     axiosGetStub.restore()
   })
 
@@ -35,5 +41,17 @@ describe('Covid Store actions', (): void => {
 
     await getCovidDataAllCountries(actionObject)
     expect(commitSpy.called).to.be.true
+  })
+
+  it('can fetch historical covid data within a date range ', async (): Promise<void> => {
+    const covidHistoricalCountryData: CovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
+    const mockDates: Date[] = [moment.utc().subtract(1, 'days').toDate(), moment.utc().toDate()]
+    const expected = '1'
+
+    axiosGetStub.resolves({ data: covidHistoricalCountryData })
+    actionObject.state.selectedDates = { startDate: mockDates[0], endDate: mockDates[1] }
+
+    await getHistoricalCountryData(actionObject)
+    expect((axiosGetStub.getCall(0).args[0] as string).includes(expected)).to.be.true
   })
 })

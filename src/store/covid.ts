@@ -140,37 +140,36 @@ export const actions = {
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
     const endDateNotToday = !today.isSame(endDate, 'day')
-    const specificDates = Object.values(state.selectedDates).length === 2
+    const hasSpecificDates = Object.values(state.selectedDates).length === 2
     /**
      * If we have specific dates we calculate how many days to query.
      */
-    if (specificDates) {
+    if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
     }
 
     const path = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
       .replace('country', state.selectedCountry)
       .replace('numOfDays', numOfDays)
-    const res = await fetch(covidEP.COVID_API_BASE_URL + path)
-    const data = await res.json()
+    const res = await axios.get(covidEP.COVID_API_BASE_URL + path)
     /**
      * If the specified dates end date is not today, we calculate which dates to include.
      */
     if (endDateNotToday) {
-      trimToSpecificDateRange(data.timeline.cases, startDate, endDate)
-      trimToSpecificDateRange(data.timeline.deaths, startDate, endDate)
-      trimToSpecificDateRange(data.timeline.recovered, startDate, endDate)
+      trimToSpecificDateRange(res.data.timeline.cases, startDate, endDate)
+      trimToSpecificDateRange(res.data.timeline.deaths, startDate, endDate)
+      trimToSpecificDateRange(res.data.timeline.recovered, startDate, endDate)
     }
     /**
      * Map cases, deaths, and recovered into CovidHistoricalData timeline type.
      */
     const formattedData: CovidHistoricalData = {
-      country: data.country,
-      province: data.province,
+      country: res.data.country,
+      province: res.data.province,
       timeline: {
-        cases: mapHistoricalDataToDateValue(data.timeline.cases),
-        deaths: mapHistoricalDataToDateValue(data.timeline.deaths),
-        recovered: mapHistoricalDataToDateValue(data.timeline.recovered)
+        cases: mapHistoricalDataToDateValue(res.data.timeline.cases),
+        deaths: mapHistoricalDataToDateValue(res.data.timeline.deaths),
+        recovered: mapHistoricalDataToDateValue(res.data.timeline.recovered)
       }
     }
 
