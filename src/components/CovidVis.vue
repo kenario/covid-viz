@@ -3,9 +3,26 @@
     fluid
     class="ma-0 pa-0"
   >
-    <Header />
-    <covid-general-info />
-    <covid-vis-controls />
+    <v-row
+      class="ma-0"
+    >
+      <Header />
+    </v-row>
+
+    <v-row>
+      <v-col
+        class="ma-2 pt-0 pb-0"
+      >
+        <covid-general-info />
+      </v-col>
+
+      <v-col
+        class="ma-2 pt-0 pb-0"
+      >
+        <covid-vis-controls />
+      </v-col>
+    </v-row>
+
     <covid-chart />
   </v-container>
 </template>

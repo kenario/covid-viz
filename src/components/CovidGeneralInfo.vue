@@ -1,25 +1,40 @@
 <template>
-  <div class="covid-vis-general-info-container">
-    <div
-      class="covid-vis-general-info"
-      v-for="(label, index) in infoLabels"
-      :key="index"
+  <v-card>
+    <v-list
+      dense
+      :color="$vuetify.theme.themes.light.primary"
     >
-      <div class="covid-vis-general-info-label">
-        {{ label | firstLetterUppercase }}
-      </div>
+      <v-list-item
+        two-line
+        v-for="(label, l) in infoLabels"
+        :key="l"
+      >
+        <v-list-item-content>
+          <v-list-item-title
+            :style="{ color: $vuetify.theme.themes.light.accent }"
+          >
+            {{ label | firstLetterUppercase }}
+          </v-list-item-title>
 
-      <div class="covid-vis-general-info-value">
-        <template v-if="label === 'updated'">
-          {{ moment(getCovidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
-        </template>
+          <v-list-item-subtitle
+            :style="{ color: $vuetify.theme.themes.light.secondary }"
+          >
+            <template
+              v-if="label === 'updated'"
+            >
+              {{ moment(getCovidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
+            </template>
 
-        <template v-else>
-          {{ getCovidGeneralInfo[label] }}
-        </template>
-      </div>
-    </div>
-  </div>
+            <template
+              v-else
+            >
+              {{ getCovidGeneralInfo[label] }}
+            </template>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -28,6 +43,7 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 
 export default Vue.extend({
+
   name: 'CovidGeneralInfo',
 
   computed: {
@@ -53,23 +69,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.covid-vis-general-info-container {
-  grid-column: 2 / 3;
-  grid-row: 3 / 4;
-}
-.covid-vis-general-info {
-  text-align: left;
-  margin: 10px 0px 10px 0px;
-}
-.covid-vis-general-info-label {
-  background-color: black;
-  color: white;
-  font-size: 11px;
-  padding: 5px 0px 5px 3px;
-}
-.covid-vis-general-info-value {
-  padding: 5px 0px 0px 15px;
-}
-</style>
