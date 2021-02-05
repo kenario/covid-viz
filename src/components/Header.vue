@@ -5,12 +5,12 @@
     <v-row
       :justify="'center'"
     >
-      <div
+      <v-toolbar-title
         class="header-title text-h4 font-weight-light"
         :style="{ color: $vuetify.theme.themes.light.secondary }"
       >
         {{ headerName }}
-      </div>
+      </v-toolbar-title>
     </v-row>
   </v-toolbar>
 </template>
