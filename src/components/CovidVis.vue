@@ -1,10 +1,13 @@
 <template>
-  <div id="covid-vis">
+  <v-container
+    fluid
+    class="ma-0 pa-0"
+  >
     <Header />
     <covid-general-info />
     <covid-vis-controls />
     <covid-chart />
-  </div>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -96,12 +99,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style scoped lang="scss">
-#covid-vis {
-  display: grid;
-  grid-template-columns: 10px 1fr 10px 1fr 10px;
-  grid-template-rows: 80px 10px 0.4fr 10px 1fr 10px;
-  height: 100%;
-}
-</style>
