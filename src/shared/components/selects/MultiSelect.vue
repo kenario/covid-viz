@@ -10,23 +10,26 @@
         type="checkbox"
         v-model="checkedItems"
       >
-      <label>{{ item }}</label>
+      <label>{{ item.name }}</label>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+
 import Vue from 'vue'
+import { SelectItem } from '../../../types'
+
 export default Vue.extend({
   name: 'MultiSelect',
 
   props: {
-    items: Array as () => string[],
+    items: Array as () => SelectItem[],
     allItemsCheckedOnMount: Boolean
   },
 
   data: () => ({
-    checkedItems: [] as string[]
+    checkedItems: [] as SelectItem[]
   }),
 
   mounted() {
@@ -34,7 +37,7 @@ export default Vue.extend({
   },
 
   watch: {
-    checkedItems: function(newItems: string[]) {
+    checkedItems: function(newItems: SelectItem[]) {
       this.$emit('checkedItems', newItems)
     }
   }

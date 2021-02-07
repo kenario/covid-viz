@@ -104,9 +104,9 @@ export default Vue.extend({
       { name: 'Total Per Day', value: 'totalPerDay' }
     ],
     dataTypes: [
-      'cases',
-      'deaths',
-      'recovered'
+      { name: 'Cases', value: 'cases' },
+      { name: 'Deaths', value: 'deaths' },
+      { name: 'Recovered', value: 'recovered' }
     ],
     graphTypes: [
       { name: 'Line', value: 'line' },
@@ -128,8 +128,8 @@ export default Vue.extend({
       await this.$store.dispatch('getHistoricalCountryData')
     },
 
-    setSelectedDataType: function(dataType: string[]): void {
-      this.dataTypesSelected = dataType.join(', ')
+    setSelectedDataType: function(dataType: SelectItem[]): void {
+      this.dataTypesSelected = dataType.map((data: SelectItem): string => data.name).join(', ')
       this.$store.commit('setSelectedCovidDataType', dataType)
     },
 
