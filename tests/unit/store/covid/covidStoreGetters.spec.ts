@@ -45,8 +45,8 @@ describe('Covid Store getters', (): void => {
 
   it('can get covid chart data that are overall totals', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
-    covidState.selectedCovidDataType = ['cases']
-    covidState.selectedResultType = 'total'
+    covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
+    covidState.selectedResultType = { name: 'Total', value: 'total' }
 
     const expected: CovidLineChart = {
       label: 'cases',
@@ -58,8 +58,8 @@ describe('Covid Store getters', (): void => {
 
   it('can get covid chart data that are totalPerDay', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
-    covidState.selectedCovidDataType = ['cases']
-    covidState.selectedResultType = 'totalPerDay'
+    covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
+    covidState.selectedResultType = { name: 'Total Per Day', value: 'totalPerDay' }
 
     const expected: CovidLineChart = {
       label: 'cases',

@@ -78,7 +78,7 @@ export default Vue.extend({
 
     generateChartConfig: function(): ChartConfiguration {
       return {
-        type: this.type as GraphType,
+        type: this.type,
         data: {
           labels: [],
           datasets: [{

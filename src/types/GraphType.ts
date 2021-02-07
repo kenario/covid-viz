@@ -1,4 +1,4 @@
 export type GraphType = {
-  name: 'Line' | 'Bar',
-  value: 'line' | 'bar'
+  name: 'Line' | 'Bar';
+  value: 'line' | 'bar';
 }
