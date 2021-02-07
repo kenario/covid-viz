@@ -9,10 +9,11 @@
 
     <div
       class="dropdown-button"
+      :style="{ borderColor: $vuetify.theme.themes.light.secondary }"
       @click="toggleDropdown"
     >
       <div
-        class="dropdown-button-label"
+        class="dropdown-button-label pl-1 pt-1 pb-1"
         :style="{ color: $vuetify.theme.themes.light.secondary }"
       >
         {{ selectedItem }}
@@ -21,10 +22,13 @@
 
     <div
       class="dropdown-content"
-      :style="displayDropdown ? 'display: block' : 'display: none'"
+      :style="{
+        display: displayDropdown ? 'block' : 'none',
+        backgroundColor: $vuetify.theme.themes.light.secondary
+       }"
     >
       <input
-        class="dropdown-input"
+        class="dropdown-search-bar mt-1 mb-1 ml-1 pa-1"
         v-if="hasSearch"
         v-model="selectedItem"
         :text="selectedItem"
@@ -73,22 +77,25 @@ export default Vue.extend({
 .dropdown-button {
   border-style: solid;
   border-width: 1px;
-  border-color: gray;
 }
 .dropdown-button:hover {
   cursor: pointer;
 }
-.dropdown-input {
-  width: calc(95% - 4px); // this is iffy
-  margin: 5px 0px 5px 0px;
+.dropdown-search-bar {
+  width: calc(95% + 2px); // this is iffy
+  height: 25px;
+  background-color: white;
+  border-radius: 2px 2px 2px 2px;
 }
 .dropdown-content {
   width: 100%;
   height: 300px;
-  border-color: black;
-  border-style: solid;
+  border-radius: 0px 0px 5px 5px;
   border-width: 1px;
   overflow-y: auto;
+  position: relative;
+  box-shadow: 1px 1px 3px;
+
 }
 .dropdown-item:hover {
   background-color: lightblue;

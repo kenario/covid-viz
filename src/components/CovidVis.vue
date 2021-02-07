@@ -28,6 +28,9 @@
 </template>
 
 <script lang="ts">
+/**
+ * Application entry point especially for store related initializations.
+ */
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Header from './Header.vue'
