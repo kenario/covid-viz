@@ -11,13 +11,13 @@
 
     <v-row>
       <v-col
-        class="ma-2 pt-0 pb-0"
+        class="ml-2 mt-2 mb-2 mr-0 pt-0 pb-0"
       >
         <covid-general-info />
       </v-col>
 
       <v-col
-        class="ma-2 pt-0 pb-0"
+        class="ml-0 mt-2 mb-2 mr-2 pt-0 pb-0"
       >
         <covid-vis-controls />
       </v-col>

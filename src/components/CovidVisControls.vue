@@ -1,65 +1,72 @@
 <template>
-  <div class="covid-vis-controls-container">
-    <!-- Country dropdown -->
-    <dropdown
-      :label="'Country'"
-      :hasSearch="true"
-      :selectedItem="getSelectedCountry"
-    >
-      <template v-slot="{ searchText, toggleDropdown }">
-        <single-select
-          :searchText="searchText"
-          :items="getAllAffectedCountries.map(countryInfo => countryInfo.name)"
-          :toggleDropdown="toggleDropdown"
-          @selectedItem="setSelectedCountry"
-        />
-      </template>
-    </dropdown>
-    <!-- Date picker dropdown -->
-    <date-picker
-      :label="'Dates'"
-      @selectDate="setSelectedDateRange"
-    />
-    <!-- Data type dropdown -->
-    <dropdown
-      :label="'Data Type'"
-      :selectedItem="dataTypesSelected"
-    >
-      <template>
-        <multi-select
-          :items="dataTypes"
-          :allItemsCheckedOnMount="true"
-          @checkedItems="setSelectedDataType"
-        />
-      </template>
-    </dropdown>
-    <!-- Result type dropdown -->
-    <dropdown
-      :label="'Results Type'"
-      :selectedItem="getSelectedResultType"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :items="resultTypes"
-          :toggleDropdown="toggleDropdown"
-          @selectedItem="setSelectedResultType"
-        />
-      </template>
-    </dropdown>
-    <!-- Type of graph dropdown -->
-    <dropdown
-      :label="'Graph Type'"
-      :selectedItem="getSelectedGraphType"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :items="graphTypes"
-          :toggleDropdown="toggleDropdown"
-          @selectedItem="setSelectedGraphType"
-        ></single-select>
-      </template>
-    </dropdown>
-  </div>
+  <v-card
+    :color="$vuetify.theme.themes.light.primary"
+    min-height="436"
+    width="100%"
+  >
+    <div class="pl-5 pr-5 pt-2 pb-2">
+
+      <!-- Country dropdown -->
+      <dropdown
+        :label="'Country'"
+        :hasSearch="true"
+        :selectedItem="getSelectedCountry"
+      >
+        <template v-slot="{ searchText, toggleDropdown }">
+          <single-select
+            :searchText="searchText"
+            :items="getAllAffectedCountries.map(countryInfo => countryInfo.name)"
+            :toggleDropdown="toggleDropdown"
+            @selectedItem="setSelectedCountry"
+          />
+        </template>
+      </dropdown>
+      <!-- Date picker dropdown -->
+      <date-picker
+        :label="'Dates'"
+        @selectDate="setSelectedDateRange"
+      />
+      <!-- Data type dropdown -->
+      <dropdown
+        :label="'Data Type'"
+        :selectedItem="dataTypesSelected"
+      >
+        <template>
+          <multi-select
+            :items="dataTypes"
+            :allItemsCheckedOnMount="true"
+            @checkedItems="setSelectedDataType"
+          />
+        </template>
+      </dropdown>
+      <!-- Result type dropdown -->
+      <dropdown
+        :label="'Results Type'"
+        :selectedItem="getSelectedResultType"
+      >
+        <template v-slot="{ toggleDropdown }">
+          <single-select
+            :items="resultTypes"
+            :toggleDropdown="toggleDropdown"
+            @selectedItem="setSelectedResultType"
+          />
+        </template>
+      </dropdown>
+      <!-- Type of graph dropdown -->
+      <dropdown
+        :label="'Graph Type'"
+        :selectedItem="getSelectedGraphType"
+      >
+        <template v-slot="{ toggleDropdown }">
+          <single-select
+            :items="graphTypes"
+            :toggleDropdown="toggleDropdown"
+            @selectedItem="setSelectedGraphType"
+          ></single-select>
+        </template>
+      </dropdown>
+    </div>
+  </v-card>
 </template>
 
 <script lang="ts">
@@ -135,10 +142,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.covid-vis-controls-container {
-  grid-column: 4 / 5;
-  grid-row: 3 / 4;
-}
-</style>
