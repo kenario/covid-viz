@@ -27,7 +27,7 @@ export const state = () => ({
   selectedResultType: {} as ResultType,
   selectedDates: {} as DateRange,
   selectedCovidData: {} as CovidData,
-  selectedCovidDataType: [] as string[],
+  selectedCovidDataType: [] as SelectItem[],
   covidDataAllCountries: [] as CovidData[],
   covidHistoricalCountryData: {} as CovidHistoricalData
 })
@@ -74,10 +74,10 @@ export const getters = {
     const covidChartData: CovidLineChart[] = []
 
     if (state.covidHistoricalCountryData.timeline) {
-      state.selectedCovidDataType.forEach((type: string): void => {
+      state.selectedCovidDataType.forEach((type: SelectItem): void => {
         covidChartData.push({
-          label: type,
-          data: determineCovidChartData(state.covidHistoricalCountryData.timeline[type], state.selectedResultType)
+          label: type.value,
+          data: determineCovidChartData(state.covidHistoricalCountryData.timeline[type.value], state.selectedResultType)
         })
       })
     }
