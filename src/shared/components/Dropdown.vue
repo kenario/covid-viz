@@ -95,6 +95,9 @@ export default Vue.extend({
   background-color: white;
   border-radius: 2px 2px 2px 2px;
 }
+/**
+ * Mozilla firefox scrollbar, for all browsers, had to use rgb function since hex didn't seem to work.
+ */
 .dropdown-content {
   width: 100%;
   height: 300px;
@@ -103,7 +106,21 @@ export default Vue.extend({
   overflow-y: auto;
   position: relative;
   box-shadow: 1px 1px 3px;
-
+  scrollbar-width: thin;
+  scrollbar-color: rgb(218, 127, 70) rgb(206, 213, 174);
+}
+/**
+ * All other browsers scrollbar.
+ */
+.dropdown-content::-webkit-scrollbar {
+  width: 4px;
+}
+.dropdown-content::-webkit-scrollbar-track {
+  background: rgb(206, 213, 174);
+  border-radius: 2px;
+}
+.dropdown-content::-webkit-scrollbar-thumb {
+  background-color: rgb(218, 127, 70);
 }
 .dropdown-item:hover {
   background-color: lightblue;
