@@ -46,8 +46,7 @@
         <template v-slot="{ toggleDropdown }">
           <single-select
             :items="resultTypes"
-            :toggleDropdown="toggleDropdown"
-            @selectedItem="setSelectedResultType"
+            @selectedItem="setSelectedResultType($event); toggleDropdown()"
           />
         </template>
       </dropdown>
@@ -59,8 +58,7 @@
         <template v-slot="{ toggleDropdown }">
           <single-select
             :items="graphTypes"
-            :toggleDropdown="toggleDropdown"
-            @selectedItem="setSelectedGraphType"
+            @selectedItem="setSelectedGraphType($event); toggleDropdown()"
           ></single-select>
         </template>
       </dropdown>

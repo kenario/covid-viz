@@ -1,5 +1,8 @@
 <template>
-  <div class="dropdown-container pt-1 pb-1">
+  <div
+    class="dropdown-container pt-1 pb-1"
+    v-click-outside="closeOpenedDropdown"
+  >
     <div
       class="dropdown-label mt-1 mb-1"
       :style="{ color: $vuetify.theme.themes.light.accent }"
@@ -26,7 +29,7 @@
         display: displayDropdown ? 'block' : 'none',
         backgroundColor: $vuetify.theme.themes.light.secondary,
         color: $vuetify.theme.themes.light.primary
-       }"
+      }"
     >
       <input
         class="dropdown-search-bar pa-1 mb-1"
@@ -63,6 +66,11 @@ export default Vue.extend({
   }),
 
   methods: {
+    closeOpenedDropdown() {
+      if (this.displayDropdown) {
+        this.displayDropdown = false
+      }
+    },
     toggleDropdown() {
       this.displayDropdown = !this.displayDropdown
     },
@@ -105,7 +113,7 @@ export default Vue.extend({
   border-width: 1px;
   overflow-y: auto;
   position: relative;
-  box-shadow: 1px 1px 3px;
+  box-shadow: 3px 3px 3px;
   scrollbar-width: thin;
   scrollbar-color: #DA7F46 #CED5AE;
 }

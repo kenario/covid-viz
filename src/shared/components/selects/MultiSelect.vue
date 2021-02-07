@@ -62,4 +62,7 @@ export default Vue.extend({
   font-weight: 500;
   line-height: 1rem;
 }
+.multi-select-label:hover {
+  cursor: pointer;
+}
 </style>
