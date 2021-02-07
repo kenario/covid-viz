@@ -8,6 +8,7 @@ import {
   CovidData,
   GraphType,
   CovidState,
+  SelectItem,
   ResultType,
   CountryInfo,
   CovidLineChart,
@@ -22,8 +23,8 @@ interface RS {
 
 export const state = () => ({
   selectedCountry: '',
-  selectedGraphType: '' as GraphType,
-  selectedResultType: '' as ResultType,
+  selectedGraphType: {} as GraphType,
+  selectedResultType: {} as ResultType,
   selectedDates: {} as DateRange,
   selectedCovidData: {} as CovidData,
   selectedCovidDataType: [] as string[],
@@ -34,9 +35,9 @@ export const state = () => ({
 export const getters = {
   getSelectedCountry: (state: CovidState): string => state.selectedCountry,
 
-  getSelectedGraphType: (state: CovidState): string => state.selectedGraphType,
+  getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
 
-  getSelectedResultType: (state: CovidState): string => state.selectedResultType,
+  getSelectedResultType: (state: CovidState): ResultType => state.selectedResultType,
   /**
    * Map all affected countries names and country codes.
    */
@@ -86,8 +87,8 @@ export const getters = {
 }
 
 export const mutations = {
-  setSelectedCountry: (state: CovidState, country: string): void => {
-    state.selectedCountry = country
+  setSelectedCountry: (state: CovidState, country: SelectItem): void => {
+    state.selectedCountry = country.name
   },
 
   setSelectedDates: (state: CovidState, dates: DateRange): void => {
@@ -208,10 +209,10 @@ const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
 const determineCovidChartData = (data: any, resultType: ResultType): number[] => {
   let result: number[] = []
 
-  if (resultType === 'total') {
+  if (resultType.value === 'total') {
     // eslint-disable-next-line
     result = data.map((d: any) => d.value)
-  } else if (resultType === 'totalPerDay') {
+  } else if (resultType.value === 'totalPerDay') {
     /**
      * next element - current element, gives us the data for the current day.  This excludes
      * the very last day.

@@ -15,7 +15,7 @@
         <template v-slot="{ searchText, toggleDropdown }">
           <single-select
             :searchText="searchText"
-            :items="getAllAffectedCountries.map(countryInfo => countryInfo.name)"
+            :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
             :toggleDropdown="toggleDropdown"
             @selectedItem="setSelectedCountry"
           />
@@ -42,7 +42,7 @@
       <!-- Result type dropdown -->
       <dropdown
         :label="'Results Type'"
-        :selectedItem="getSelectedResultType"
+        :selectedItem="getSelectedResultType.name"
       >
         <template v-slot="{ toggleDropdown }">
           <single-select
@@ -55,7 +55,7 @@
       <!-- Type of graph dropdown -->
       <dropdown
         :label="'Graph Type'"
-        :selectedItem="getSelectedGraphType"
+        :selectedItem="getSelectedGraphType.name"
       >
         <template v-slot="{ toggleDropdown }">
           <single-select
@@ -70,9 +70,10 @@
 </template>
 
 <script lang="ts">
+
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType } from '../types/'
+import { DateRange, ResultType, GraphType, SelectItem } from '../types/'
 import Dropdown from '../shared/components/Dropdown.vue'
 import DatePicker from '../shared/components/DatePicker.vue'
 import MultiSelect from '../shared/components/selects/MultiSelect.vue'
@@ -99,8 +100,8 @@ export default Vue.extend({
 
   data: () => ({
     resultTypes: [
-      'total',
-      'totalPerDay'
+      { name: 'Total', value: 'total' },
+      { name: 'Total Per Day', value: 'totalPerDay' }
     ],
     dataTypes: [
       'cases',
@@ -108,14 +109,14 @@ export default Vue.extend({
       'recovered'
     ],
     graphTypes: [
-      'line',
-      'bar'
+      { name: 'Line', value: 'line' },
+      { name: 'Bar', value: 'bar' }
     ],
     dataTypesSelected: ''
   }),
 
   methods: {
-    setSelectedCountry: async function(country: string): Promise<void> {
+    setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidData')
       await this.$store.dispatch('getHistoricalCountryData')

@@ -76,13 +76,13 @@ export default Vue.extend({
   }),
 
   created() {
-    this.$store.commit('setSelectedGraphType', 'line')
-    this.$store.commit('setSelectedResultType', 'total')
+    this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
+    this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
   },
 
   async mounted() {
     await this.$store.dispatch('getCovidDataAllCountries')
-    this.$store.commit('setSelectedCountry', this.location)
+    this.$store.commit('setSelectedCountry', { name: this.location, value: this.location })
     this.$store.commit('setSelectedCovidData')
     await this.$store.dispatch('getHistoricalCountryData')
     this.locateUser()
@@ -107,7 +107,7 @@ export default Vue.extend({
            * Mutate the selectedCountry and selectedCovidData state with that country.  Afterwards we
            * ping that countries historical data.
            */
-          this.$store.commit('setSelectedCountry', this.location)
+          this.$store.commit('setSelectedCountry', { name: this.location, value: this.location })
           this.$store.commit('setSelectedCovidData')
           await this.$store.dispatch('getHistoricalCountryData')
         })

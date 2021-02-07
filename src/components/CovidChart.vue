@@ -2,7 +2,7 @@
   <div class="covid-vis-chart-container">
     <Chart
       :labels="getCovidChartLabels"
-      :type="getSelectedGraphType"
+      :type="getSelectedGraphType.value"
       :data="getCovidChartData"
     />
   </div>
