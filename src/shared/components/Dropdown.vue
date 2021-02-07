@@ -100,14 +100,14 @@ export default Vue.extend({
  */
 .dropdown-content {
   width: 100%;
-  height: 300px;
+  max-height: 300px;
   border-radius: 0px 0px 5px 5px;
   border-width: 1px;
   overflow-y: auto;
   position: relative;
   box-shadow: 1px 1px 3px;
   scrollbar-width: thin;
-  scrollbar-color: rgb(218, 127, 70) rgb(206, 213, 174);
+  scrollbar-color: #DA7F46 #CED5AE;
 }
 /**
  * All other browsers scrollbar.
@@ -116,7 +116,7 @@ export default Vue.extend({
   width: 4px;
 }
 .dropdown-content::-webkit-scrollbar-track {
-  background: rgb(206, 213, 174);
+  background: #CED5AE;
   border-radius: 2px;
 }
 .dropdown-content::-webkit-scrollbar-thumb {

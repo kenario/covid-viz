@@ -5,12 +5,20 @@
       v-for="(item, index) in items"
       :key="index"
     >
-      <input
-        :value="item"
-        type="checkbox"
+      <v-checkbox
+        dense
+        class="ma-0"
         v-model="checkedItems"
+        :value="item.value"
+        :color="$vuetify.theme.themes.light.primary"
+        @click="itemCheck"
       >
-      <label>{{ item.name }}</label>
+        <template v-slot:label>
+          <label class="multi-select-label">
+            {{ item.name }}
+          </label>
+        </template>
+      </v-checkbox>
     </div>
   </div>
 </template>
@@ -29,21 +37,29 @@ export default Vue.extend({
   },
 
   data: () => ({
-    checkedItems: [] as SelectItem[]
+    checkedItems: [] as string[]
   }),
 
   mounted() {
-    if (this.allItemsCheckedOnMount) this.checkedItems = this.items
+    if (this.allItemsCheckedOnMount) {
+      this.checkedItems = this.items.map((item: SelectItem): string => item.value)
+      this.itemCheck()
+    }
   },
 
-  watch: {
-    checkedItems: function(newItems: SelectItem[]) {
-      this.$emit('checkedItems', newItems)
+  methods: {
+    itemCheck: function() {
+      this.$emit('itemCheck', this.items.filter((item: SelectItem): boolean => this.checkedItems.includes(item.value)))
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-
+.multi-select-label {
+  color: #184F63;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
 </style>

@@ -34,7 +34,7 @@
           <multi-select
             :items="dataTypes"
             :allItemsCheckedOnMount="true"
-            @checkedItems="setSelectedDataType"
+            @itemCheck="setSelectedDataType"
           />
         </template>
       </dropdown>
