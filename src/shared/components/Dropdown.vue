@@ -21,22 +21,25 @@
     </div>
 
     <div
-      class="dropdown-content"
+      class="dropdown-content pa-1"
       :style="{
         display: displayDropdown ? 'block' : 'none',
-        backgroundColor: $vuetify.theme.themes.light.secondary
+        backgroundColor: $vuetify.theme.themes.light.secondary,
+        color: $vuetify.theme.themes.light.primary
        }"
     >
       <input
-        class="dropdown-search-bar mt-1 mb-1 ml-1 pa-1"
+        class="dropdown-search-bar pa-1 mb-1"
+        :style="{ color: $vuetify.theme.themes.light.primary }"
         v-if="hasSearch"
-        v-model="selectedItem"
-        :text="selectedItem"
+        v-model="searchText"
+        :text="searchText"
       >
 
       <slot
-        :searchText="selectedItem"
+        :searchText="searchText"
         :toggleDropdown="toggleDropdown"
+        :clearSearchText="clearSearchText"
       ></slot>
     </div>
   </div>
@@ -55,12 +58,16 @@ export default Vue.extend({
   },
 
   data: () => ({
-    displayDropdown: false
+    displayDropdown: false,
+    searchText: ''
   }),
 
   methods: {
     toggleDropdown() {
       this.displayDropdown = !this.displayDropdown
+    },
+    clearSearchText() {
+      this.searchText = ''
     }
   }
 })
@@ -77,12 +84,13 @@ export default Vue.extend({
 .dropdown-button {
   border-style: solid;
   border-width: 1px;
+  min-height: 26px;
 }
 .dropdown-button:hover {
   cursor: pointer;
 }
 .dropdown-search-bar {
-  width: calc(95% + 2px); // this is iffy
+  width: calc(99%); // this is iffy
   height: 25px;
   background-color: white;
   border-radius: 2px 2px 2px 2px;

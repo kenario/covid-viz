@@ -22,7 +22,6 @@ export default Vue.extend({
   name: 'SingleSelect',
 
   props: {
-    toggleDropdown: Function,
     items: Array as () => SelectItem[],
     searchText: { type: String, default: '' }
   },
@@ -37,7 +36,6 @@ export default Vue.extend({
 
   methods: {
     emitItemSelected(item: string): void {
-      this.toggleDropdown()
       this.$emit('selectedItem', item)
     }
   }
@@ -45,6 +43,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+  .single-select-item {
+    padding-left: 2px;
+  }
   .single-select-item:hover {
     cursor: pointer;
   }
