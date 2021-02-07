@@ -1,1 +1,4 @@
-export type ResultType = 'total' | 'totalPerDay' | ''
+export type ResultType = {
+  name: 'Total' | 'Total Per Day',
+  value: 'total' | 'totalPerDay'
+}

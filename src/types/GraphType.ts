@@ -1,1 +1,4 @@
-export type GraphType = 'line' | 'bar' | ''
+export type GraphType = {
+  name: 'Line' | 'Bar',
+  value: 'line' | 'bar'
+}
