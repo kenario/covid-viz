@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { CovidLineChart } from '../../types/'
 import { Chart, ChartConfiguration } from 'chart.js'
-import { CovidLineChart, GraphType } from '../../types/'
 import { randomInteger } from '../../shared/randomInteger'
 
 export default Vue.extend({
@@ -28,16 +28,14 @@ export default Vue.extend({
   },
 
   watch: {
-    // eslint-disable-next-line
-    labels(newLabels: string[], oldLabels: string[]): void {
+    labels(newLabels: string[]): void {
       /**
        * If labels prop changes, update the charts labels.
        */
       this.chart.data.labels = newLabels
       this.chart.update()
     },
-    // eslint-disable-next-line
-    data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
+    data(newData: CovidLineChart[]): void {
       /**
        * Add styling to the lines.
        */
@@ -53,8 +51,7 @@ export default Vue.extend({
       this.chart.data.datasets = newData
       this.chart.update()
     },
-    // eslint-disable-next-line
-    type(newType: GraphType, oldType: GraphType): void {
+    type(): void {
       /**
        * Re-creates the chart into the new given type, updates with the current labels and data.
        */
@@ -100,7 +97,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-
-</style>

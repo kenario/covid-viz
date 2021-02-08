@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Chart from '../shared/components/Chart.vue'
@@ -23,7 +24,6 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedGraphType',
-      'getCovidGeneralInfo',
       'getCovidChartLabels',
       'getCovidChartData'
     ])

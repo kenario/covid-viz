@@ -13,7 +13,7 @@
           <v-list-item-title
             :style="{ color: $vuetify.theme.themes.light.accent }"
           >
-            {{ label | firstLetterUppercase }}
+            {{ label | turnFirstLetterUppercase }}
           </v-list-item-title>
 
           <v-list-item-subtitle
@@ -61,7 +61,7 @@ export default Vue.extend({
   },
 
   filters: {
-    firstLetterUppercase: (word: string): string => word.charAt(0).toUpperCase() + word.slice(1)
+    turnFirstLetterUppercase: (word: string): string => word.charAt(0).toUpperCase() + word.slice(1)
   },
 
   methods: {

@@ -28,9 +28,7 @@
 </template>
 
 <script lang="ts">
-/**
- * Application entry point especially for store related initializations.
- */
+
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Header from './Header.vue'
@@ -77,7 +75,9 @@ export default Vue.extend({
   data: () => ({
     location: 'USA'
   }),
-
+  /**
+   * Created and Mount hook represent the Vuex store's entry point for initializing data.
+   */
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
     this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })

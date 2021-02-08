@@ -218,9 +218,6 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
      * the very last day.
      */
     for (let x = 0; x < data.length; x++) {
-      /**
-       * TODO: change conditional to match data not from today.
-       */
       if (x + 1 < data.length) {
         result.push((data[x + 1].value - data[x].value))
       }
