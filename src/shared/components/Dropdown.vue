@@ -84,9 +84,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .dropdown-container {
   width: 250px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1rem;
   height: 60px;
 }
 .dropdown-button {

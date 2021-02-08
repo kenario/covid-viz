@@ -1,5 +1,6 @@
 <template>
   <v-card
+    class="covid-vis-controls-container"
     :color="$vuetify.theme.themes.light.primary"
     min-height="436"
     width="100%"
@@ -140,3 +141,11 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss">
+.covid-vis-controls-container {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
+</style>
