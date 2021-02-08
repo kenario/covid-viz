@@ -31,19 +31,7 @@
         color: $vuetify.theme.themes.light.primary
       }"
     >
-      <input
-        class="dropdown-search-bar pa-1 mb-1"
-        :style="{ color: $vuetify.theme.themes.light.primary }"
-        v-if="hasSearch"
-        v-model="searchText"
-        :text="searchText"
-      >
-
-      <slot
-        :searchText="searchText"
-        :toggleDropdown="toggleDropdown"
-        :clearSearchText="clearSearchText"
-      ></slot>
+      <slot :toggleDropdown="toggleDropdown" />
     </div>
   </div>
 </template>
@@ -56,13 +44,11 @@ export default Vue.extend({
 
   props: {
     label: String,
-    selectedItem: String,
-    hasSearch: { type: Boolean, default: false }
+    selectedItem: String
   },
 
   data: () => ({
-    displayDropdown: false,
-    searchText: ''
+    displayDropdown: false
   }),
 
   methods: {
@@ -73,9 +59,6 @@ export default Vue.extend({
     },
     toggleDropdown() {
       this.displayDropdown = !this.displayDropdown
-    },
-    clearSearchText() {
-      this.searchText = ''
     }
   }
 })
@@ -93,12 +76,6 @@ export default Vue.extend({
 }
 .dropdown-button:hover {
   cursor: pointer;
-}
-.dropdown-search-bar {
-  width: calc(99% + 3px); // this is iffy
-  height: 25px;
-  background-color: white;
-  border-radius: 2px 2px 2px 2px;
 }
 /**
  * Mozilla firefox scrollbar, for all browsers, had to use rgb function since hex didn't seem to work.

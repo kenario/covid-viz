@@ -13,11 +13,11 @@
         :hasSearch="true"
         :selectedItem="getSelectedCountry"
       >
-        <template v-slot="{ searchText, toggleDropdown, clearSearchText }">
+        <template v-slot="{ toggleDropdown }">
           <single-select
-            :searchText="searchText"
+            :hasSearchBar="true"
             :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
-            @selectedItem="setSelectedCountry($event); toggleDropdown(); clearSearchText()"
+            @selectedItem="setSelectedCountry($event); toggleDropdown()"
           />
         </template>
       </dropdown>

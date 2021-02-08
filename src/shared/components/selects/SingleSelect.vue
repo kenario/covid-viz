@@ -2,11 +2,19 @@
   <div
     class="single-select-container"
   >
+    <input
+      class="dropdown-search-bar pa-1 mb-1"
+      :style="{ color: $vuetify.theme.themes.light.primary }"
+      v-if="hasSearchBar"
+      v-model="searchText"
+      :text="searchText"
+    >
+
     <div
       class="single-select-item"
       v-for="(item, index) in filteredItems"
       :key="index"
-      @click="emitItemSelected(item)"
+      @click="emitItemSelected(item); clearSearchText()"
     >
       {{ item.name }}
     </div>
@@ -23,12 +31,19 @@ export default Vue.extend({
 
   props: {
     items: Array as () => SelectItem[],
-    searchText: { type: String, default: '' }
+    hasSearchBar: { type: Boolean, default: false }
   },
 
+  data: () => ({
+    searchText: ''
+  }),
+
   computed: {
+    /**
+     * If we have a search bar, we filter the items to those that match the search text.
+     */
     filteredItems() {
-      return this.searchText.length > 0
+      return this.hasSearchBar
         ? this.items.filter(i => i.value.toLowerCase().includes(this.searchText.toLowerCase()))
         : this.items
     }
@@ -37,17 +52,26 @@ export default Vue.extend({
   methods: {
     emitItemSelected(item: string): void {
       this.$emit('selectedItem', item)
+    },
+    clearSearchText() {
+      this.searchText = ''
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-  .single-select-item {
-    padding-left: 2px;
-  }
-  .single-select-item:hover {
-    background-color: #e3e9c8;
-    cursor: pointer;
-  }
+.single-select-item {
+  padding-left: 2px;
+}
+.single-select-item:hover {
+  background-color: #e3e9c8;
+  cursor: pointer;
+}
+.dropdown-search-bar {
+  width: calc(99% + 3px); // this is iffy
+  height: 25px;
+  background-color: white;
+  border-radius: 2px 2px 2px 2px;
+}
 </style>
