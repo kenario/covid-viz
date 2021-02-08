@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <canvas id="chart" width="500" height="500"></canvas>
+    <canvas id="chart"></canvas>
   </div>
 </template>
 
@@ -91,6 +91,7 @@ export default Vue.extend({
           }]
         },
         options: {
+          maintainAspectRatio: false,
           scales: {
             yAxes: [{
               ticks: {
@@ -104,3 +105,16 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 50vh;
+  width: 90vw;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  border-color: lightgray;
+}
+</style>
