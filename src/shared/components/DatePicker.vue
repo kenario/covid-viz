@@ -68,7 +68,7 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .date-picker-container {
-  width: 250px;
+  max-width: 260px;
 }
 .date-picker {
   width: 100%;

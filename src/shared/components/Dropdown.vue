@@ -66,7 +66,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .dropdown-container {
-  width: 250px;
+  max-width: 260px;
   height: 60px;
 }
 .dropdown-button {
