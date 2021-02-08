@@ -95,7 +95,7 @@ export default Vue.extend({
   cursor: pointer;
 }
 .dropdown-search-bar {
-  width: calc(99%); // this is iffy
+  width: calc(99% + 3px); // this is iffy
   height: 25px;
   background-color: white;
   border-radius: 2px 2px 2px 2px;
@@ -126,9 +126,5 @@ export default Vue.extend({
 }
 .dropdown-content::-webkit-scrollbar-thumb {
   background-color: rgb(218, 127, 70);
-}
-.dropdown-item:hover {
-  background-color: lightblue;
-  cursor: pointer;
 }
 </style>

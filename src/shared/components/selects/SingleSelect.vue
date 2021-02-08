@@ -47,6 +47,7 @@ export default Vue.extend({
     padding-left: 2px;
   }
   .single-select-item:hover {
+    background-color: #e3e9c8;
     cursor: pointer;
   }
 </style>
