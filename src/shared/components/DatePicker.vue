@@ -1,10 +1,16 @@
 <template>
   <div class='date-picker-container'>
-    <div class='date-picker-label'>
+    <div
+      class='date-picker-label mt-1 mb-1'
+      :style="{ color: $vuetify.theme.themes.light.accent }"
+    >
       {{ label }}:
     </div>
 
-    <input class='date-picker'>
+    <input
+      class='date-picker pl-1 pt-1 pb-1'
+      :style="{ borderColor: $vuetify.theme.themes.light.secondary }"
+    >
   </div>
 </template>
 
@@ -12,7 +18,7 @@
 import Vue from 'vue'
 import moment from 'moment'
 import flatpickr from 'flatpickr'
-import 'flatpickr/dist/flatpickr.css'
+import '../../styles/customFlatpickr.scss'
 
 export default Vue.extend({
   name: 'DatePicker',
@@ -62,9 +68,16 @@ export default Vue.extend({
 
 <style lang='scss' scoped>
 .date-picker-container {
-    width: 250px;
+  width: 250px;
 }
 .date-picker {
-  width: calc(100% - 4px);
+  width: 100%;
+  border-style: solid;
+  border-width: 1px;
+  min-height: 26px;
+  color: #CED5AE;
+}
+.date-picker:hover {
+  cursor: pointer;
 }
 </style>
