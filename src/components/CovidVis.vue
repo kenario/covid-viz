@@ -23,7 +23,11 @@
       </v-col>
     </v-row>
 
-    <covid-chart />
+    <v-row>
+      <v-col>
+        <covid-chart />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

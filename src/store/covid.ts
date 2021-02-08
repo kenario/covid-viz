@@ -76,7 +76,7 @@ export const getters = {
     if (state.covidHistoricalCountryData.timeline) {
       state.selectedCovidDataType.forEach((type: SelectItem): void => {
         covidChartData.push({
-          label: type.value,
+          label: type.name,
           data: determineCovidChartData(state.covidHistoricalCountryData.timeline[type.value], state.selectedResultType)
         })
       })
