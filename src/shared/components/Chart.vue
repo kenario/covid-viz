@@ -23,6 +23,15 @@ export default Vue.extend({
     chart: {} as Chart
   }),
 
+  created() {
+    /**
+     * Initialize font styling.
+     */
+    Chart.defaults.global.defaultFontFamily = 'Roboto'
+    Chart.defaults.global.defaultFontColor = this.$vuetify.theme.themes.light.primary as string
+    Chart.defaults.global.defaultFontSize = 14
+  },
+
   mounted() {
     this.chart = this.createNewChart()
   },
@@ -69,13 +78,6 @@ export default Vue.extend({
     },
 
     createNewChart: function(): Chart {
-      /**
-       * Initialize font styling.
-       */
-      Chart.defaults.global.defaultFontFamily = 'Roboto'
-      Chart.defaults.global.defaultFontColor = this.$vuetify.theme.themes.light.primary as string
-      Chart.defaults.global.defaultFontSize = 14
-
       const ctx = document.getElementById('chart') as HTMLCanvasElement
       return new Chart(ctx, this.generateChartConfig())
     },

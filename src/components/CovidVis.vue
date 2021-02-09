@@ -13,7 +13,7 @@
 
     <v-row>
       <v-col
-        class="ml-2 mt-2 mb-2 mr-0 pt-0 pb-0"
+        class="ml-4 mt-2 mb-2 mr-0 pt-0 pb-0"
       >
         <transition name="fade">
           <covid-general-info v-if="renderComponents" />
@@ -21,7 +21,7 @@
       </v-col>
 
       <v-col
-        class="ml-0 mt-2 mb-2 mr-2 pt-0 pb-0"
+        class="ml-0 mt-2 mb-2 mr-4 pt-0 pb-0"
       >
         <transition name="fade">
           <covid-vis-controls v-if="renderComponents" />
