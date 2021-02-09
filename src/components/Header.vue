@@ -1,7 +1,5 @@
 <template>
-  <v-toolbar
-    :color="$vuetify.theme.themes.light.primary"
-  >
+  <v-toolbar :color="$vuetify.theme.themes.light.primary">
     <v-row
       :justify="'center'"
     >
