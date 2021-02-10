@@ -141,11 +141,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss">
-.covid-vis-controls-container {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1rem;
-}
-</style>

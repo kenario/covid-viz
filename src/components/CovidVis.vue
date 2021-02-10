@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid
-    class="ma-0 pa-0"
+    class="covid-vis-container ma-0 pa-0"
   >
     <v-row
       class="ma-0"
@@ -36,6 +36,10 @@
         </transition>
       </v-col>
     </v-row>
+
+    <v-row>
+      <Footer />
+    </v-row>
   </v-container>
 </template>
 
@@ -44,6 +48,7 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Header from './Header.vue'
+import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
@@ -73,6 +78,7 @@ export default Vue.extend({
 
   components: {
     Header,
+    Footer,
     CovidGeneralInfo,
     CovidVisControls,
     CovidChart
@@ -156,5 +162,10 @@ export default Vue.extend({
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+.covid-vis-container {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1rem;
 }
 </style>
