@@ -1,8 +1,9 @@
 <template>
-  <v-toolbar :color="$vuetify.theme.themes.light.primary">
-    <v-col
-      :justify="'left'"
-    >
+  <v-toolbar
+    :color="$vuetify.theme.themes.light.primary"
+    :justify="'center'"
+  >
+    <v-col>
       <v-toolbar-title>
         <span
           class="name-part-one text-h4 font-weight-bold"

@@ -65,7 +65,6 @@ export default Vue.extend({
 
   data: () => ({
     location: 'USA',
-    renderHeader: false,
     renderComponents: false
   }),
   /**
@@ -77,12 +76,11 @@ export default Vue.extend({
     /**
      * Conditional rendering of components to allow for transitions.
      */
-    setTimeout(() => { this.renderHeader = true }, 100)
-    setTimeout(() => {
-      if (this.renderHeader) {
-        this.renderComponents = true
-      }
-    }, 500)
+    // setTimeout(() => {
+    //   if (this.renderHeader) {
+    //     this.renderComponents = true
+    //   }
+    // }, 500)
   },
 
   async mounted() {
@@ -123,13 +121,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.fade-slide-down-enter-active, .fade-slide-down-leave-active {
-  transition: all 1s ease;
-}
-.fade-slide-down-enter, .fade-slide-down-leave-to {
-  transform: translateY(-70px);
-  opacity: 0.5;
-}
 .fade-enter-active, .fade-leave-active {
   transition: all 1.5s ease;
 }
