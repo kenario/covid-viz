@@ -1,15 +1,21 @@
 <template>
   <v-toolbar :color="$vuetify.theme.themes.light.primary">
-    <v-row
-      :justify="'center'"
+    <v-col
+      :justify="'left'"
     >
-      <v-toolbar-title
-        class="header-title text-h4 font-weight-light"
-        :style="{ color: $vuetify.theme.themes.light.secondary }"
-      >
-        {{ headerName }}
+      <v-toolbar-title>
+        <span
+          class="name-part-one text-h4 font-weight-bold"
+          :style="{ color: $vuetify.theme.themes.light.accent }"
+        >
+          {{ namePartOne }}
+        </span>
+
+        <span class="name-part-two">
+          {{ namePartTwo }}
+        </span>
       </v-toolbar-title>
-    </v-row>
+    </v-col>
   </v-toolbar>
 </template>
 
@@ -20,7 +26,20 @@ export default Vue.extend({
   name: 'Header',
 
   data: () => ({
-    headerName: 'Covid Visualization'
+    namePartOne: 'CORONA',
+    namePartTwo: 'Trends'
   })
 })
 </script>
+
+<style lang="scss" scoped>
+.name-part-one {
+  display: inline-block;
+  width: 136px;
+}
+.name-part-two {
+  color: white;
+  font-family: 'Big Shoulders Display';
+  font-size: 1.5rem;
+}
+</style>

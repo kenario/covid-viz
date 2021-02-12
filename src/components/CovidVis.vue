@@ -3,43 +3,18 @@
     fluid
     class="covid-vis-container ma-0 pa-0"
   >
-    <v-row
-      class="ma-0"
-    >
-      <transition name="fade-slide-down">
-        <Header v-if="renderHeader" />
-      </transition>
-    </v-row>
+    <!-- <transition name="fade">
+      <covid-general-info v-if="renderComponents" />
+    </transition>
+    <transition name="fade">
+      <covid-vis-controls v-if="renderComponents" />
+    </transition>
 
-    <v-row>
-      <v-col
-        class="ml-4 mt-2 mb-2 mr-0 pt-0 pb-0"
-      >
-        <transition name="fade">
-          <covid-general-info v-if="renderComponents" />
-        </transition>
-      </v-col>
+    <transition name="fade">
+      <covid-chart v-show="renderComponents" />
+    </transition>
 
-      <v-col
-        class="ml-0 mt-2 mb-2 mr-4 pt-0 pb-0"
-      >
-        <transition name="fade">
-          <covid-vis-controls v-if="renderComponents" />
-        </transition>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col>
-        <transition name="fade">
-          <covid-chart v-show="renderComponents" />
-        </transition>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <Footer />
-    </v-row>
+    <Footer /> -->
   </v-container>
 </template>
 
@@ -47,7 +22,6 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import Header from './Header.vue'
 import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
@@ -77,11 +51,10 @@ export default Vue.extend({
   name: 'CovidVis',
 
   components: {
-    Header,
-    Footer,
-    CovidGeneralInfo,
-    CovidVisControls,
-    CovidChart
+    // Footer,
+    // CovidGeneralInfo,
+    // CovidVisControls,
+    // CovidChart
   },
 
   computed: {
