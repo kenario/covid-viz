@@ -1,5 +1,6 @@
 <template>
   <v-toolbar
+    flat
     :color="$vuetify.theme.themes.light.primary"
     :justify="'center'"
   >

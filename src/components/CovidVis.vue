@@ -3,6 +3,7 @@
     fluid
     class="covid-vis-container ma-0 pa-0"
   >
+    <covid-intro />
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
     </transition>
@@ -24,6 +25,7 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
+import CovidIntro from './CovidIntro.vue'
 import CovidGeneralInfo from './CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
 import { geolocationEP } from '../shared/constants/geolocationEP'
@@ -55,6 +57,7 @@ export default Vue.extend({
     // CovidGeneralInfo,
     // CovidVisControls,
     // CovidChart
+    CovidIntro
   },
 
   computed: {
@@ -128,8 +131,7 @@ export default Vue.extend({
   opacity: 0;
 }
 .covid-vis-container {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1rem;
+  display: grid;
+  grid-template-rows: 50px minmax(120px, 500px) repeat(3, 300px);
 }
 </style>
