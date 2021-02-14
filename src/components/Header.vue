@@ -1,13 +1,11 @@
 <template>
   <v-toolbar
     flat
-    :color="$vuetify.theme.themes.light.primary"
   >
     <v-col>
       <v-toolbar-title>
         <span
           class="name-part-one text-h4 font-weight-bold"
-          :style="{ color: $vuetify.theme.themes.light.accent }"
         >
           {{ namePartOne }}
         </span>
@@ -24,9 +22,8 @@
           large
           outlined
           depressed
-          class="pl-2 pr-3"
         >
-          <span class="covid-header-filter-icon pb-1 mr-1">
+          <span class="covid-header-filter-icon">
             <v-icon>
               mdi-filter-variant
             </v-icon>
@@ -64,16 +61,5 @@ export default Vue.extend({
   color: white;
   font-family: 'Big Shoulders Display';
   font-size: 1.5rem;
-}
-/* Modifies vuetify button related styling */
-.v-btn.v-size--large {
-  color: white;
-  font-family: 'Big Shoulders Display';
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-.v-btn {
-  text-transform: none;
-  letter-spacing: 0;
 }
 </style>

@@ -1,15 +1,13 @@
 <template>
   <div class='date-picker-container'>
     <div
-      class='date-picker-label mt-1 mb-1'
-      :style="{ color: $vuetify.theme.themes.light.accent }"
+      class='date-picker-label'
     >
       {{ label }}:
     </div>
 
     <input
-      class='date-picker pl-1 pt-1 pb-1'
-      :style="{ borderColor: $vuetify.theme.themes.light.secondary }"
+      class='date-picker'
     >
   </div>
 </template>

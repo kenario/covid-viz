@@ -2,7 +2,6 @@
   <v-list
     dense
     class="covid-general-info-container"
-    :color="$vuetify.theme.themes.light.primary"
   >
     <v-list-item
       two-line
@@ -11,13 +10,11 @@
     >
       <v-list-item-content>
         <v-list-item-title
-          :style="{ color: $vuetify.theme.themes.light.accent }"
         >
           {{ label | turnFirstLetterUppercase }}
         </v-list-item-title>
 
         <v-list-item-subtitle
-          :style="{ color: $vuetify.theme.themes.light.secondary }"
         >
           <template
             v-if="label === 'updated'"

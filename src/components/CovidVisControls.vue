@@ -1,11 +1,10 @@
 <template>
   <v-card
     class="covid-vis-controls-container"
-    :color="$vuetify.theme.themes.light.primary"
     min-height="436"
     width="100%"
   >
-    <div class="pl-5 pr-5 pt-2 pb-2">
+    <div>
 
       <!-- Country dropdown -->
       <dropdown

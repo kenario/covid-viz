@@ -3,8 +3,7 @@
     class="single-select-container"
   >
     <input
-      class="dropdown-search-bar pa-1 mb-1"
-      :style="{ color: $vuetify.theme.themes.light.primary }"
+      class="dropdown-search-bar"
       v-if="hasSearchBar"
       v-model="searchText"
       :text="searchText"

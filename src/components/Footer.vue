@@ -1,14 +1,11 @@
 <template>
   <v-footer
     absolute
-    :color="$vuetify.theme.themes.light.secondary"
-    :style="{ color: $vuetify.theme.themes.light.primary }"
   >
     <p>
       The Novel Coronavirus data is taken from the
     </p>
     <a
-      :style="{ color: $vuetify.theme.themes.light.accent }"
       href="https://disease.sh/"
       target="_blank"
     >

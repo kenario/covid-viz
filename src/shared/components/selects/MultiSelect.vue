@@ -7,10 +7,8 @@
     >
       <v-checkbox
         dense
-        class="ma-0"
         v-model="checkedItems"
         :value="item.value"
-        :color="$vuetify.theme.themes.light.primary"
         @click="itemCheck"
       >
         <template v-slot:label>

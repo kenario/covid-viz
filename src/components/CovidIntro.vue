@@ -5,7 +5,6 @@
   >
     <v-card-text
       class="covid-intro-text"
-      :style="{ color: $vuetify.theme.themes.light.primary }"
     >
       {{ intro }}
     </v-card-text>

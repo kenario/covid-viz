@@ -1,34 +1,29 @@
 <template>
   <div
-    class="dropdown-container pt-1 pb-1"
+    class="dropdown-container"
     v-click-outside="closeOpenedDropdown"
   >
     <div
-      class="dropdown-label mt-1 mb-1"
-      :style="{ color: $vuetify.theme.themes.light.accent }"
+      class="dropdown-label"
     >
       {{ label }}
     </div>
 
     <div
       class="dropdown-button"
-      :style="{ borderColor: $vuetify.theme.themes.light.secondary }"
       @click="toggleDropdown"
     >
       <div
-        class="dropdown-button-label pl-1 pt-1 pb-1"
-        :style="{ color: $vuetify.theme.themes.light.secondary }"
+        class="dropdown-button-label"
       >
         {{ selectedItem }}
       </div>
     </div>
 
     <div
-      class="dropdown-content pa-1"
+      class="dropdown-content"
       :style="{
         display: displayDropdown ? 'block' : 'none',
-        backgroundColor: $vuetify.theme.themes.light.secondary,
-        color: $vuetify.theme.themes.light.primary
       }"
     >
       <slot :toggleDropdown="toggleDropdown" />

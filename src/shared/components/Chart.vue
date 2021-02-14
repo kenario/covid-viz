@@ -28,7 +28,6 @@ export default Vue.extend({
      * Initialize font styling.
      */
     Chart.defaults.global.defaultFontFamily = 'Roboto'
-    Chart.defaults.global.defaultFontColor = this.$vuetify.theme.themes.light.primary as string
     Chart.defaults.global.defaultFontSize = 14
   },
 
