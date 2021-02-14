@@ -1,40 +1,39 @@
 <template>
-  <v-card>
-    <v-list
-      dense
-      :color="$vuetify.theme.themes.light.primary"
+  <v-list
+    dense
+    class="covid-general-info-container"
+    :color="$vuetify.theme.themes.light.primary"
+  >
+    <v-list-item
+      two-line
+      v-for="(label, l) in infoLabels"
+      :key="l"
     >
-      <v-list-item
-        two-line
-        v-for="(label, l) in infoLabels"
-        :key="l"
-      >
-        <v-list-item-content>
-          <v-list-item-title
-            :style="{ color: $vuetify.theme.themes.light.accent }"
-          >
-            {{ label | turnFirstLetterUppercase }}
-          </v-list-item-title>
+      <v-list-item-content>
+        <v-list-item-title
+          :style="{ color: $vuetify.theme.themes.light.accent }"
+        >
+          {{ label | turnFirstLetterUppercase }}
+        </v-list-item-title>
 
-          <v-list-item-subtitle
-            :style="{ color: $vuetify.theme.themes.light.secondary }"
+        <v-list-item-subtitle
+          :style="{ color: $vuetify.theme.themes.light.secondary }"
+        >
+          <template
+            v-if="label === 'updated'"
           >
-            <template
-              v-if="label === 'updated'"
-            >
-              {{ moment(getCovidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
-            </template>
+            {{ moment(getCovidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
+          </template>
 
-            <template
-              v-else
-            >
-              {{ getCovidGeneralInfo[label] }}
-            </template>
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </v-card>
+          <template
+            v-else
+          >
+            {{ getCovidGeneralInfo[label] }}
+          </template>
+        </v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script lang="ts">
@@ -69,3 +68,9 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.covid-general-info-container {
+  height: 100%;
+}
+</style>

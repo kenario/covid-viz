@@ -31,10 +31,3 @@ export default Vue.extend({
 
 })
 </script>
-
-<style lang="scss" scoped>
-.covid-vis-chart-container {
-  grid-column: 1 / 5;
-  grid-row: 5 / 6;
-}
-</style>

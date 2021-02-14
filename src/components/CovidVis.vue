@@ -3,15 +3,22 @@
     fluid
     class="covid-vis-container ma-0 pa-0"
   >
-    <covid-intro />
+    <div class="covid-intro-layout">
+      <covid-intro />
+    </div>
+
+    <div class="covid-main-content-layout">
+      <covid-general-info />
+      <covid-chart />
+    </div>
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
-    </transition>
-    <transition name="fade">
-      <covid-vis-controls v-if="renderComponents" />
-    </transition>
+    </transition> -->
+    <!-- <transition name="fade">
+      <covid-vis-controls />
+    </transition> -->
 
-    <transition name="fade">
+    <!-- <transition name="fade">
       <covid-chart v-show="renderComponents" />
     </transition>
 
@@ -31,7 +38,7 @@ import CovidVisControls from './CovidVisControls.vue'
 import { geolocationEP } from '../shared/constants/geolocationEP'
 import { CountryInfo } from '../types'
 
-/**
+/*
  * These two interfaces from Mozilla seem to not be exported, despite being available in the api.
  */
 interface GeolocationCoordinates {
@@ -54,9 +61,9 @@ export default Vue.extend({
 
   components: {
     // Footer,
-    // CovidGeneralInfo,
+    CovidGeneralInfo,
     // CovidVisControls,
-    // CovidChart
+    CovidChart,
     CovidIntro
   },
 
@@ -70,13 +77,13 @@ export default Vue.extend({
     location: 'USA',
     renderComponents: false
   }),
-  /**
+  /*
    * Created and Mount hook represent the Vuex store's entry point for initializing data.
    */
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
     this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
-    /**
+    /*
      * Conditional rendering of components to allow for transitions.
      */
     // setTimeout(() => {
@@ -95,7 +102,7 @@ export default Vue.extend({
   },
 
   methods: {
-    /**
+    /*
      * If geolocation is available and the user clicks allow then we compare the location to the
      * country codes of the countries affected by covid.
      */
@@ -104,12 +111,12 @@ export default Vue.extend({
         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
           const res = await fetch(geolocationEP(position.coords.latitude, position.coords.longitude))
           const data = await res.json()
-          /**
+          /*
            * Find the countries name by using the country code given.
            */
           this.location = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
             data.address.country_code.toUpperCase() === countryInfo.countryCode).name
-          /**
+          /*
            * Mutate the selectedCountry and selectedCovidData state with that country.  Afterwards we
            * ping that countries historical data.
            */
@@ -132,6 +139,21 @@ export default Vue.extend({
 }
 .covid-vis-container {
   display: grid;
-  grid-template-rows: 50px minmax(120px, 500px) repeat(3, 300px);
+  grid-gap: 1rem;
+  grid-auto-rows: auto;
+}
+.covid-intro-layout {
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+.covid-main-content-layout {
+  /* parent grid */
+  grid-row-start: 3;
+  grid-row-end: 4;
+  /* main content grid */
+  display: grid;
+  align-items: center;
+  row-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 }
 </style>

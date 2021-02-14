@@ -50,7 +50,7 @@ export default Vue.extend({
   data: () => ({
     namePartOne: 'CORONA',
     namePartTwo: 'Trends',
-    filterButtonName: 'Filter'
+    filterButtonName: 'Filters'
   })
 })
 </script>

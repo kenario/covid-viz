@@ -39,18 +39,14 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .covid-intro-container {
-  /** child grid template */
-  grid-row-start: 2;
-  grid-row-end: 3;
-  /** nested grid template */
   display: grid;
   justify-items: center;
-  grid-template-columns: 1fr minmax(240px, 80%) 1fr;
+  grid-template-columns: 1fr minmax(60px, 80%) 1fr;
 }
 .covid-intro-text {
   grid-column-start: 2;
-  grid-column-end: 3;
-  font-size: 1.50rem;
+  grid-column-end: 3;;
+  font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.375rem;
 }
