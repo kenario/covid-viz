@@ -7,10 +7,10 @@
       <covid-intro />
     </div>
 
-    <!-- <div class="covid-main-content-layout">
-      <covid-general-info />
-      <covid-chart />
-    </div> -->
+    <div class="covid-main-layout">
+      <covid-general-info title="Nationwide" />
+      <!-- <covid-chart /> -->
+    </div>
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
     </transition> -->
@@ -61,7 +61,7 @@ export default Vue.extend({
 
   components: {
     // Footer,
-    // CovidGeneralInfo,
+    CovidGeneralInfo,
     // CovidVisControls,
     // CovidChart,
     CovidIntro
@@ -146,7 +146,7 @@ export default Vue.extend({
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.covid-main-content-layout {
+.covid-main-layout {
   /* parent grid */
   grid-row-start: 3;
   grid-row-end: 4;

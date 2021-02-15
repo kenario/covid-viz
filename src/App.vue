@@ -37,8 +37,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-/* reset css */
+@import './styles/main';
+
 body {
+  background-color: $secondary-color;
+  /* reset css */
   margin: 0 !important;
   padding: 0 !important;
 }

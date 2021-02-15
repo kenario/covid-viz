@@ -1,21 +1,20 @@
 <template>
-  <v-list
-    dense
-    class="covid-general-info-container"
-  >
-    <v-list-item
-      two-line
+  <div class="covid-general-info-container">
+    <div class="covid-general-info-title">
+      {{ title }}
+    </div>
+
+    <div
+      class="covid-general-info"
       v-for="(label, l) in infoLabels"
       :key="l"
     >
-      <v-list-item-content>
-        <v-list-item-title
-        >
+      <div class="covid-general-info-section">
+        <div class="covid-general-info-label">
           {{ label | turnFirstLetterUppercase }}
-        </v-list-item-title>
+        </div>
 
-        <v-list-item-subtitle
-        >
+        <div class="covid-general-info-value">
           <template
             v-if="label === 'updated'"
           >
@@ -27,10 +26,10 @@
           >
             {{ getCovidGeneralInfo[label] }}
           </template>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -41,6 +40,10 @@ import { mapGetters } from 'vuex'
 export default Vue.extend({
 
   name: 'CovidGeneralInfo',
+
+  props: {
+    title: String
+  },
 
   computed: {
     ...mapGetters([
@@ -67,7 +70,31 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/main';
+
 .covid-general-info-container {
   height: 100%;
+  width: 300px;
+}
+.covid-general-info-title {
+  color: $primary-color;
+  font-size: 1.75rem;
+  font-weight: 500;
+  height: 30px;
+  display: grid;
+  align-content: center;
+  border-radius: 8px;
+}
+.covid-general-info-section {
+  margin: 10px 0 10px 20px;
+}
+.covid-general-info-label {
+  color: $accent-color;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.covid-general-info-value {
+  color: $primary-color;
+  font-weight: 600;
 }
 </style>
