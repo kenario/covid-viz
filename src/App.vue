@@ -36,15 +36,21 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+/* reset css */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* declare global font */
+html, body, html * {
+  font-family: 'Roboto', sans-serif;
+}
 .fade-slide-down-enter-active, .fade-slide-down-leave-active {
   transition: all 1s ease;
 }
 .fade-slide-down-enter, .fade-slide-down-leave-to {
   transform: translateY(-70px);
   opacity: 0.5;
-}
-html, body, html * {
-  font-family: 'Roboto', sans-serif;
 }
 </style>

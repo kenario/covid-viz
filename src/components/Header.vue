@@ -1,41 +1,19 @@
 <template>
-  <v-toolbar
-    flat
-  >
-    <v-col>
-      <v-toolbar-title>
-        <span
-          class="name-part-one text-h4 font-weight-bold"
-        >
-          {{ namePartOne }}
-        </span>
+  <div class="covid-header-container">
+    <div class="covid-header-title">
+      <span class="covid-header-title-part-one">
+        {{ titlePartOne }}
+      </span>
 
-        <span class="name-part-two header-secondary-font">
-          {{ namePartTwo }}
-        </span>
-      </v-toolbar-title>
-    </v-col>
+      <span class="covid-header-title-part-two secondary-header-font-style">
+        {{ titlePartTwo }}
+      </span>
+    </div>
 
-    <v-col>
-      <v-row justify="end">
-        <v-btn
-          large
-          outlined
-          depressed
-        >
-          <span class="covid-header-filter-icon">
-            <v-icon>
-              mdi-filter-variant
-            </v-icon>
-          </span>
-
-          <span>
-            {{ filterButtonName }}
-          </span>
-        </v-btn>
-      </v-row>
-    </v-col>
-  </v-toolbar>
+    <div class="covid-filters-button secondary-header-font-style">
+      {{ filterButtonName }}
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -45,21 +23,58 @@ export default Vue.extend({
   name: 'Header',
 
   data: () => ({
-    namePartOne: 'CORONA',
-    namePartTwo: 'Trends',
+    titlePartOne: 'CORONA',
+    titlePartTwo: 'TRENDS',
     filterButtonName: 'Filters'
   })
 })
 </script>
 
 <style lang="scss" scoped>
-.name-part-one {
-  display: inline-block;
-  width: 136px;
+@import '../styles/main';
+
+.covid-header-container {
+  background-color: $primary-color;
+  height: 70px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 260px auto 70px;
 }
-.header-secondary-font {
+.covid-header-title {
+  grid-column: 1 / 2;
+  margin-left: 15px;
+}
+.covid-filters-button {
+  grid-column: 3 / 4;
+}
+.covid-header-title-part-one {
+  color: $accent-color;
+  font-size: 2.25rem;
+  font-weight: 600;
+}
+.covid-header-title-part-two {
+  font-size: 1.75rem;
+  font-weight: 400;
+  position: relative;
+  left: -7px;
+  top: -3px;
+}
+.covid-filters-button {
+  font-size: 1.25rem;
+  border: 0.13rem solid white;
+  border-radius: 5px;
+  padding-left: 16px;
+  position: relative;
+  right: 20px;
+}
+.covid-filters-button:hover {
+  cursor: pointer;
+  color: $accent-color;
+  border-color: $accent-color;
+}
+/* styling used by both title part two and filter button */
+.secondary-header-font-style {
   color: white;
-  font-family: 'Big Shoulders Display';
-  font-size: 1.5rem;
+  font-family: 'Big Shoulders Display', cursive;
 }
 </style>
