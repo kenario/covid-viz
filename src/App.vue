@@ -1,15 +1,11 @@
 <template>
-  <v-app>
-    <div>
-      <transition name="fade-slide-down">
-        <Header v-if="renderHeader" />
-      </transition>
-    </div>
+  <div>
+    <transition name="fade-slide-down">
+      <Header v-if="renderHeader" />
+    </transition>
 
-    <v-main>
-      <CovidVis/>
-    </v-main>
-  </v-app>
+    <CovidVis/>
+  </div>
 </template>
 
 <script lang="ts">

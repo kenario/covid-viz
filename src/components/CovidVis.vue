@@ -7,7 +7,7 @@
       <covid-intro />
     </div>
 
-    <div class="covid-main-layout">
+    <div class="covid-general-info-layout">
       <covid-general-info title="Nationwide" />
       <!-- <covid-chart /> -->
     </div>
@@ -139,21 +139,22 @@ export default Vue.extend({
 }
 .covid-vis-container {
   display: grid;
-  grid-gap: 1rem;
+  grid-gap: 1.5rem;
   grid-auto-rows: auto;
 }
 .covid-intro-layout {
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.covid-main-layout {
+.covid-general-info-layout {
   /* parent grid */
   grid-row-start: 3;
   grid-row-end: 4;
   /* main content grid */
   display: grid;
-  align-items: center;
   row-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: auto repeat(auto-fit, minmax(300px, 1fr)) auto;
 }
 </style>
