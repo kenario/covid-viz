@@ -1,14 +1,9 @@
 <template>
-  <v-card
-    flat
-    class="covid-intro-container"
-  >
-    <v-card-text
-      class="covid-intro-text"
-    >
+  <div class="covid-intro-container">
+    <div class="covid-intro-text">
       {{ intro }}
-    </v-card-text>
-  </v-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,6 +32,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/main';
+
 .covid-intro-container {
   display: grid;
   justify-items: center;
@@ -44,7 +41,8 @@ export default Vue.extend({
 }
 .covid-intro-text {
   grid-column-start: 2;
-  grid-column-end: 3;;
+  grid-column-end: 3;
+  color: $primary-color;
   font-size: 1.5rem;
   font-weight: 500;
   line-height: 1.375rem;

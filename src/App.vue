@@ -6,9 +6,9 @@
       </transition>
     </div>
 
-    <!-- <v-main>
+    <v-main>
       <CovidVis/>
-    </v-main> -->
+    </v-main>
   </v-app>
 </template>
 
@@ -22,7 +22,7 @@ export default Vue.extend({
   name: 'App',
 
   components: {
-    // CovidVis,
+    CovidVis,
     Header
   },
 

@@ -7,10 +7,10 @@
       <covid-intro />
     </div>
 
-    <div class="covid-main-content-layout">
+    <!-- <div class="covid-main-content-layout">
       <covid-general-info />
       <covid-chart />
-    </div>
+    </div> -->
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
     </transition> -->
@@ -61,9 +61,9 @@ export default Vue.extend({
 
   components: {
     // Footer,
-    CovidGeneralInfo,
+    // CovidGeneralInfo,
     // CovidVisControls,
-    CovidChart,
+    // CovidChart,
     CovidIntro
   },
 
