@@ -8,7 +8,9 @@
     </transition>
 
     <div class="covid-filter-layout">
-      <covid-vis-controls v-if="showFilters" />
+      <transition name="slide-left">
+        <covid-vis-controls v-if="showFilters" />
+      </transition>
     </div>
     <covid-vis/>
   </div>
@@ -62,8 +64,16 @@ html, body, html * {
   transform: translateY(-70px);
   opacity: 0.5;
 }
+.slide-left-enter-active, .slide-left-leave-active {
+  transition: all 1s ease;
+}
+.slide-left-enter, .slide-left-leave-to {
+  transform: translateX(300px);
+}
 .covid-filter-layout {
-  position: absolute;
+  position: fixed;
+  height: 100vh;
+  width: 300px;
   right: 0px;
 }
 </style>

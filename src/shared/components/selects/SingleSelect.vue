@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="single-select-container"
-  >
+  <div class="single-select-container">
     <input
       class="dropdown-search-bar"
       v-if="hasSearchBar"
@@ -60,17 +58,27 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
+@import '../../../styles/main';
+
+.single-select-container {
+  background-color: $secondary-color;
+  color: $primary-color;
+  font-weight: 500;
+  overflow-x: hidden;
+}
 .single-select-item {
-  padding-left: 2px;
+  padding: 2px 0 1px 8px;
 }
 .single-select-item:hover {
-  background-color: #e3e9c8;
+  background-color: #cbd1a7;
   cursor: pointer;
 }
 .dropdown-search-bar {
-  width: calc(99% + 3px); // this is iffy
+  width: calc(95%);
   height: 25px;
   background-color: white;
   border-radius: 2px 2px 2px 2px;
+  margin: 2px 0 0 4px;
 }
 </style>

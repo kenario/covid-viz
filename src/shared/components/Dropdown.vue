@@ -1,10 +1,6 @@
 <template>
-  <div
-    class="dropdown-container"
-  >
-    <div
-      class="dropdown-label"
-    >
+  <div class="dropdown-container">
+    <div class="dropdown-label">
       {{ label }}
     </div>
 
@@ -59,23 +55,27 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
 @import '../../styles/main';
 
 .dropdown-container {
   max-width: 260px;
   height: 60px;
 }
+.dropdown-label {
+  color: $accent-color;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
 .dropdown-button {
-  border-style: solid;
-  border-width: 1px;
+  color: $secondary-color;
+  border-bottom: 1px solid $secondary-color;
   min-height: 26px;
+  margin-top: 5px;
 }
 .dropdown-button:hover {
   cursor: pointer;
 }
-/**
- * Mozilla firefox scrollbar, for all browsers, had to use rgb function since hex didn't seem to work.
- */
 .dropdown-content {
   width: 100%;
   max-height: 300px;
@@ -83,11 +83,14 @@ export default Vue.extend({
   border-width: 1px;
   overflow-y: auto;
   position: relative;
-  box-shadow: 3px 3px 3px;
+  box-shadow: 1px 1px 5px;
+  /*
+   * Mozilla firefox scrollbar.
+   */
   scrollbar-width: thin;
   scrollbar-color: $accent-color $secondary-color;
 }
-/**
+/*
  * All other browsers scrollbar.
  */
 .dropdown-content::-webkit-scrollbar {
