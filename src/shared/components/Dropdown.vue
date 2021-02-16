@@ -1,5 +1,8 @@
 <template>
-  <div class="dropdown-container">
+  <div
+    class="dropdown-container"
+    v-click-outside="closeOpenedDropdown"
+  >
     <div class="dropdown-label">
       {{ label }}
     </div>
