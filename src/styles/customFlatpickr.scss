@@ -1,3 +1,5 @@
+@import './main';
+
 /**
  * This is a customized version of the css that comes with flatpickr that is used to keep the theme
  * in line with the rest of the application.
@@ -21,7 +23,7 @@
           box-sizing: border-box;
   -ms-touch-action: manipulation;
       touch-action: manipulation;
-  background: #184F63;
+  background: $primary-color;
   -webkit-box-shadow: 1px 0 0 #20222c, -1px 0 0 #20222c, 0 1px 0 #20222c, 0 -1px 0 #20222c, 0 3px 13px rgba(0,0,0,0.08);
           box-shadow: 1px 0 0 #20222c, -1px 0 0 #20222c, 0 1px 0 #20222c, 0 -1px 0 #20222c, 0 3px 13px rgba(0,0,0,0.08);
 }
@@ -115,7 +117,7 @@
   border-bottom-color: #20222c;
 }
 .flatpickr-calendar.arrowTop:after {
-  border-bottom-color: #184F63;
+  border-bottom-color: $primary-color;
 }
 .flatpickr-calendar.arrowBottom:before,
 .flatpickr-calendar.arrowBottom:after {
@@ -125,7 +127,7 @@
   border-top-color: #20222c;
 }
 .flatpickr-calendar.arrowBottom:after {
-  border-top-color: #184F63;
+  border-top-color: $primary-color;
 }
 .flatpickr-calendar:focus {
   outline: 0;
@@ -141,9 +143,9 @@
   display: flex;
 }
 .flatpickr-months .flatpickr-month {
-  background: #184F63;
-  color: #DA7F46;
-  fill: #DA7F46;
+  background: $primary-color;
+  color: $accent-color;
+  fill: $accent-color;
   height: 34px;
   line-height: 1;
   text-align: center;
@@ -167,8 +169,8 @@
   height: 34px;
   padding: 10px;
   z-index: 3;
-  color: #DA7F46;
-  fill: #DA7F46;
+  color: $accent-color;
+  fill: $accent-color;
 }
 .flatpickr-months .flatpickr-prev-month.flatpickr-disabled,
 .flatpickr-months .flatpickr-next-month.flatpickr-disabled {
@@ -212,7 +214,7 @@
       /*rtl:end:ignore*/
 .flatpickr-months .flatpickr-prev-month:hover,
 .flatpickr-months .flatpickr-next-month:hover {
-  color: #DA7F46;
+  color: $accent-color;
 }
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
@@ -375,7 +377,7 @@
 }
 .flatpickr-current-month .flatpickr-monthDropdown-months {
   appearance: menulist;
-  background: #184F63;
+  background: $primary-color;
   border: none;
   border-radius: 0;
   box-sizing: border-box;
@@ -404,7 +406,7 @@
   background: rgba(192,187,167,0.05);
 }
 .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month {
-  background-color: #184F63;
+  background-color: $primary-color;
   outline: none;
   padding: 0;
 }
@@ -436,8 +438,8 @@
 span.flatpickr-weekday {
   cursor: default;
   font-size: 90%;
-  background: #184F63;
-  color: #DA7F46;
+  background: $primary-color;
+  color: $accent-color;
   line-height: 1;
   margin: 0;
   text-align: center;
@@ -502,7 +504,7 @@ span.flatpickr-weekday {
   border-radius: 150px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  color: #CED5AE;
+  color: $secondary-color;
   cursor: pointer;
   font-weight: 400;
   width: 14.2857143%;
@@ -545,7 +547,7 @@ span.flatpickr-weekday {
 .flatpickr-day.today:focus {
   border-color: #eee;
   background: #eee;
-  color: #184F63;
+  color: $primary-color;
 }
 .flatpickr-day.selected,
 .flatpickr-day.startRange,

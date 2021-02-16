@@ -1,8 +1,6 @@
 <template>
   <div class='date-picker-container'>
-    <div
-      class='date-picker-label'
-    >
+    <div class='date-picker-label'>
       {{ label }}:
     </div>
 
@@ -34,7 +32,7 @@ export default Vue.extend({
      * Initialize date picker variable on the input element.
      */
     this.datePicker = flatpickr(this.$el.childNodes[this.$el.childNodes.length - 1], {
-      dateFormat: 'F j, Y',
+      dateFormat: 'M d, Y',
       mode: 'range',
       disable: [
         (date): boolean => moment.utc(date).isAfter(moment.utc())
@@ -65,15 +63,30 @@ export default Vue.extend({
 </script>
 
 <style lang='scss' scoped>
+
+@import '../../styles/main';
+
 .date-picker-container {
   max-width: 260px;
+}
+.date-picker-label {
+  color: $accent-color;
+  font-weight: 600;
+  font-size: 1.25rem;
 }
 .date-picker {
   width: 100%;
   border-style: solid;
   border-width: 1px;
   min-height: 26px;
-  color: #CED5AE;
+  margin-top: 5px;
+  color: $secondary-color;
+  background-color: $primary-color;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid $secondary-color;
+  font-size: 1rem;
 }
 .date-picker:hover {
   cursor: pointer;

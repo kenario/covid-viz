@@ -1,10 +1,11 @@
 <template>
   <div class="single-select-container">
     <input
-      class="dropdown-search-bar"
+      class="single-select-search-bar"
       v-if="hasSearchBar"
       v-model="searchText"
       :text="searchText"
+      :placeholder="searchbarPlaceholder"
     >
 
     <div
@@ -32,7 +33,8 @@ export default Vue.extend({
   },
 
   data: () => ({
-    searchText: ''
+    searchText: '',
+    searchbarPlaceholder: 'Enter the name of a country...'
   }),
 
   computed: {
@@ -74,11 +76,24 @@ export default Vue.extend({
   background-color: #cbd1a7;
   cursor: pointer;
 }
-.dropdown-search-bar {
+.single-select-search-bar {
   width: calc(95%);
   height: 25px;
-  background-color: white;
-  border-radius: 2px 2px 2px 2px;
-  margin: 2px 0 0 4px;
+  background-color: $secondary-color;
+  margin: 2px 0 4px 4px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid $primary-color;
+}
+/* placeholder css for all browsers */
+::placeholder {
+  color: $primary-color;
+}
+:-ms-input-placeholder {
+  color: $primary-color;
+}
+::-ms-input-placeholder {
+  color: $primary-color;
 }
 </style>

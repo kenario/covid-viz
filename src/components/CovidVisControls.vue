@@ -120,7 +120,6 @@ export default Vue.extend({
 
     setSelectedDataType: function(dataType: SelectItem[]): void {
       this.dataTypesSelected = `(${dataType.length}) types selected`
-      // this.dataTypesSelected = dataType.map((data: SelectItem): string => data.name).join(', ')
       this.$store.commit('setSelectedCovidDataType', dataType)
     },
 
