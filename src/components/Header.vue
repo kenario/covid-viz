@@ -14,7 +14,13 @@
       class="covid-filters-button secondary-header-font-style"
       @click="emitFilterButtonClick"
     >
-      {{ filterButtonName }}
+      <span class="material-icons covid-filters-button-icon">
+        filter_list
+      </span>
+
+      <span class="covid-filters-button-label">
+        {{ filterButtonName }}
+      </span>
     </div>
   </div>
 </template>
@@ -49,7 +55,7 @@ export default Vue.extend({
   height: 70px;
   display: grid;
   align-items: center;
-  grid-template-columns: 260px auto 70px;
+  grid-template-columns: 260px auto 120px;
 }
 .covid-header-title {
   grid-column: 1 / 2;
@@ -74,7 +80,7 @@ export default Vue.extend({
   font-size: 1.25rem;
   border: 0.13rem solid white;
   border-radius: 5px;
-  padding: 4px 0 4px 13px;
+  padding: 2px 0 4px 13px;
   position: relative;
   right: 20px;
 }
@@ -82,6 +88,10 @@ export default Vue.extend({
   cursor: pointer;
   color: $accent-color;
   border-color: $accent-color;
+}
+.covid-filters-button-icon {
+  position: relative;
+  top: 5px;
 }
 /* styling used by both title part two and filter button */
 .secondary-header-font-style {

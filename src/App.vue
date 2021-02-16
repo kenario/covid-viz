@@ -12,7 +12,10 @@
       v-click-outside="closeOpenedFilters"
     >
       <transition name="slide-left">
-        <covid-vis-controls v-if="showFilters" />
+        <covid-vis-controls
+          v-if="showFilters"
+          @closeButtonClick="toggleFilters"
+        />
       </transition>
     </div>
     <covid-vis/>

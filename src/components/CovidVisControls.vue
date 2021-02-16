@@ -1,5 +1,13 @@
 <template>
   <div class="covid-vis-controls-container">
+    <div class="covid-vis-controls-close-button">
+      <div
+        class="material-icons covid-vis-controls-close-icon"
+        @click="closeButtonClick"
+      >
+        close
+      </div>
+    </div>
     <!-- Country dropdown -->
     <dropdown
       :label="'Country'"
@@ -129,6 +137,10 @@ export default Vue.extend({
 
     setSelectedGraphType: function(graphType: GraphType): void {
       this.$store.commit('setSelectedGraphType', graphType)
+    },
+
+    closeButtonClick: function() {
+      this.$emit('closeButtonClick')
     }
   }
 })
@@ -145,5 +157,16 @@ export default Vue.extend({
   display: grid;
   align-content: center;
 }
-
+.covid-vis-controls-close-button {
+  color: $secondary-color;
+}
+.covid-vis-controls-close-icon {
+  float: right;
+  position: relative;
+  right: 5px;
+}
+.covid-vis-controls-close-icon:hover {
+  cursor: pointer;
+  color: $accent-color;
+}
 </style>
