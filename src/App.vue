@@ -3,11 +3,14 @@
     <transition name="fade-slide-down">
       <Header
         v-if="renderHeader"
-        @filterButtonClick="showFilters = !showFilters"
+        @filterButtonClick="toggleFilters"
       />
     </transition>
 
-    <div class="covid-filter-layout">
+    <div
+      class="covid-filter-layout"
+      v-click-outside="closeOpenedFilters"
+    >
       <transition name="slide-left">
         <covid-vis-controls v-if="showFilters" />
       </transition>
@@ -39,6 +42,28 @@ export default Vue.extend({
 
   created() {
     setTimeout(() => { this.renderHeader = true }, 100)
+  },
+
+  methods: {
+    toggleFilters() {
+      this.showFilters = !this.showFilters
+    },
+
+    /*
+     * This function closes the filter if the click is outside the filter and is outside the filters
+     * container.
+     */
+    closeOpenedFilters() {
+      window.onclick = (e: MouseEvent): void => {
+        const filterLeftBoundary = this.$el
+          .getElementsByClassName('covid-filter-layout')[0]
+          .getBoundingClientRect().left
+
+        if (this.showFilters && e.pageX < filterLeftBoundary) {
+          this.toggleFilters()
+        }
+      }
+    }
   }
 })
 </script>
