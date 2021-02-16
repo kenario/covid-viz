@@ -1,11 +1,18 @@
 <template>
   <div class="covid-vis-container ma-0 pa-0">
     <div class="covid-intro-layout">
-      <covid-intro />
+      <transition name="fade">
+        <covid-intro v-if="renderComponents" />
+      </transition>
     </div>
 
     <div class="covid-general-info-layout">
-      <covid-general-info title="Nationwide" />
+      <transition name="fade-slide-left">
+        <covid-general-info
+          v-if="renderComponents"
+          :title="'Nationwide'"
+        />
+      </transition>
       <!-- <covid-chart /> -->
     </div>
     <!-- <transition name="fade">
@@ -83,11 +90,7 @@ export default Vue.extend({
     /*
      * Conditional rendering of components to allow for transitions.
      */
-    // setTimeout(() => {
-    //   if (this.renderHeader) {
-    //     this.renderComponents = true
-    //   }
-    // }, 500)
+    setTimeout(() => { this.renderComponents = true }, 500)
   },
 
   async mounted() {
@@ -132,6 +135,13 @@ export default Vue.extend({
   transition: all 1.5s ease;
 }
 .fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-slide-left-enter-active, .fade-slide-left-leave-active {
+  transition: all 1.5s ease;
+}
+.fade-slide-left-enter, .fade-slide-left-leave-to {
+  transform: translateX(200px);
   opacity: 0;
 }
 .covid-vis-container {

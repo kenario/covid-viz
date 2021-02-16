@@ -18,6 +18,7 @@
         />
       </transition>
     </div>
+
     <covid-vis/>
   </div>
 </template>
@@ -51,7 +52,6 @@ export default Vue.extend({
     toggleFilters() {
       this.showFilters = !this.showFilters
     },
-
     /*
      * This function closes the filter if the click is outside the filter and is outside the filters
      * container.
