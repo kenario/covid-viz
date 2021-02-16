@@ -5,18 +5,18 @@
       v-for="(item, index) in items"
       :key="index"
     >
-      <v-checkbox
-        dense
+      <input
+        type="checkbox"
+        :value="item"
+        :id="item.value"
         v-model="checkedItems"
-        :value="item.value"
-        @click="itemCheck"
       >
-        <template v-slot:label>
-          <label class="multi-select-label">
-            {{ item.name }}
-          </label>
-        </template>
-      </v-checkbox>
+      <label
+        class="multi-select-label"
+        :for="item.value"
+      >
+        {{ item.name }}
+      </label>
     </div>
   </div>
 </template>
@@ -35,32 +35,39 @@ export default Vue.extend({
   },
 
   data: () => ({
-    checkedItems: [] as string[]
+    checkedItems: [] as SelectItem[]
   }),
 
   mounted() {
-    if (this.allItemsCheckedOnMount) {
-      this.checkedItems = this.items.map((item: SelectItem): string => item.value)
-      this.itemCheck()
-    }
+    if (this.allItemsCheckedOnMount) this.checkedItems = this.items
   },
 
-  methods: {
-    itemCheck: function() {
-      this.$emit('itemCheck', this.items.filter((item: SelectItem): boolean => this.checkedItems.includes(item.value)))
+  watch: {
+    checkedItems: function(newItems: SelectItem[]) {
+      this.$emit('itemCheck', newItems)
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+
+@import '../../../styles/main';
+
+.multi-select-container {
+  background-color: $secondary-color;
+}
+.multi-select-item {
+  padding: 2px 0 2px 0;
+}
 .multi-select-label {
-  color: #184F63;
-  font-size: 0.8125rem;
+  color: $primary-color;
   font-weight: 500;
-  line-height: 1rem;
 }
 .multi-select-label:hover {
+  cursor: pointer;
+}
+input:hover {
   cursor: pointer;
 }
 </style>

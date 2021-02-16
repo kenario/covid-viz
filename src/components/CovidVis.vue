@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    fluid
-    class="covid-vis-container ma-0 pa-0"
-  >
+  <div class="covid-vis-container ma-0 pa-0">
     <div class="covid-intro-layout">
       <covid-intro />
     </div>
@@ -23,7 +20,7 @@
     </transition>
 
     <Footer /> -->
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
