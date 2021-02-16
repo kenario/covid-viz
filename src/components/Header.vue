@@ -10,13 +10,17 @@
       </span>
     </div>
 
-    <div class="covid-filters-button secondary-header-font-style">
+    <div
+      class="covid-filters-button secondary-header-font-style"
+      @click="emitFilterButtonClick"
+    >
       {{ filterButtonName }}
     </div>
   </div>
 </template>
 
 <script lang="ts">
+
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -25,8 +29,15 @@ export default Vue.extend({
   data: () => ({
     titlePartOne: 'CORONA',
     titlePartTwo: 'TRENDS',
-    filterButtonName: 'Filters'
-  })
+    filterButtonName: 'Filters',
+    showFilters: false
+  }),
+
+  methods: {
+    emitFilterButtonClick() {
+      this.$emit('filterButtonClick')
+    }
+  }
 })
 </script>
 
@@ -53,17 +64,17 @@ export default Vue.extend({
   font-weight: 600;
 }
 .covid-header-title-part-two {
-  font-size: 1.75rem;
+  font-size: 1.60rem;
   font-weight: 400;
   position: relative;
   left: -7px;
-  top: -3px;
+  top: -4px;
 }
 .covid-filters-button {
   font-size: 1.25rem;
   border: 0.13rem solid white;
   border-radius: 5px;
-  padding-left: 16px;
+  padding: 4px 0 4px 16px;
   position: relative;
   right: 20px;
 }

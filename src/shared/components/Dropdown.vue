@@ -1,7 +1,6 @@
 <template>
   <div
     class="dropdown-container"
-    v-click-outside="closeOpenedDropdown"
   >
     <div
       class="dropdown-label"
@@ -60,6 +59,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/main';
+
 .dropdown-container {
   max-width: 260px;
   height: 60px;
@@ -84,7 +85,7 @@ export default Vue.extend({
   position: relative;
   box-shadow: 3px 3px 3px;
   scrollbar-width: thin;
-  scrollbar-color: #DA7F46 #CED5AE;
+  scrollbar-color: $accent-color $secondary-color;
 }
 /**
  * All other browsers scrollbar.
@@ -93,10 +94,10 @@ export default Vue.extend({
   width: 4px;
 }
 .dropdown-content::-webkit-scrollbar-track {
-  background: #CED5AE;
+  background: $secondary-color;
   border-radius: 2px;
 }
 .dropdown-content::-webkit-scrollbar-thumb {
-  background-color: rgb(218, 127, 70);
+  background-color: $accent-color;
 }
 </style>
