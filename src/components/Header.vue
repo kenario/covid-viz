@@ -74,7 +74,7 @@ export default Vue.extend({
   font-size: 1.25rem;
   border: 0.13rem solid white;
   border-radius: 5px;
-  padding: 4px 0 4px 16px;
+  padding: 4px 0 4px 13px;
   position: relative;
   right: 20px;
 }
@@ -87,5 +87,6 @@ export default Vue.extend({
 .secondary-header-font-style {
   color: white;
   font-family: 'Big Shoulders Display', cursive;
+  letter-spacing: 1px;
 }
 </style>
