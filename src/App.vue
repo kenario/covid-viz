@@ -54,7 +54,8 @@ export default Vue.extend({
     },
     /*
      * This function closes the filter if the click is outside the filter and is outside the filters
-     * container.
+     * container.  The purpose for this is to make sure the Filter button is included as an element
+     * that is not outside the filters v-outside-click functionality.
      */
     closeOpenedFilters() {
       window.onclick = (e: MouseEvent): void => {

@@ -18,14 +18,14 @@
       </div>
     </div>
 
-    <div
-      class="dropdown-content"
-      :style="{
-        display: displayDropdown ? 'block' : 'none',
-      }"
-    >
-      <slot :toggleDropdown="toggleDropdown" />
-    </div>
+    <transition name="fade-slide-down">
+      <div
+        class="dropdown-content"
+        v-if="displayDropdown"
+      >
+        <slot :toggleDropdown="toggleDropdown" />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -105,5 +105,13 @@ export default Vue.extend({
 }
 .dropdown-content::-webkit-scrollbar-thumb {
   background-color: $accent-color;
+}
+/* Transitions */
+.fade-slide-down-enter-active, .fade-slide-down-leave-active {
+  transition: all 0.2s ease;
+}
+.fade-slide-down-enter, .fade-slide-down-leave-to {
+  transform: translateY(-10px);
+  opacity: 0;
 }
 </style>
