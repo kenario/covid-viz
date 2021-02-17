@@ -11,6 +11,7 @@
         <covid-general-info
           v-if="renderComponents"
           :title="'Nationwide'"
+          :covidGeneralInfo="getCovidGeneralInfo"
         />
       </transition>
       <!-- <covid-chart /> -->
@@ -37,7 +38,7 @@ import { mapGetters } from 'vuex'
 import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
-import CovidGeneralInfo from './CovidGeneralInfo.vue'
+import CovidGeneralInfo from '../shared/components/CovidGeneralInfo.vue'
 import CovidVisControls from './CovidVisControls.vue'
 import { geolocationEP } from '../shared/constants/geolocationEP'
 import { CountryInfo } from '../types'
@@ -73,7 +74,8 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
-      'getAllAffectedCountries'
+      'getAllAffectedCountries',
+      'getCovidGeneralInfo'
     ])
   },
 
