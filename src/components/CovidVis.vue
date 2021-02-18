@@ -1,5 +1,5 @@
 <template>
-  <div class="covid-vis-container ma-0 pa-0">
+  <div class="covid-vis-container">
     <div class="covid-intro-layout">
       <transition name="fade">
         <covid-intro v-if="renderComponents" />
@@ -169,7 +169,8 @@ export default Vue.extend({
   /* general info grid */
   display: grid;
   align-items: center;
-  justify-items: center;
-  grid-template-columns: 50% repeat(auto-fit, minmax(300px, 300px)) 50%;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+  padding: 0 10% 0 10%;
 }
 </style>
