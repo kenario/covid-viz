@@ -10,11 +10,18 @@
       <transition name="fade-slide-left">
         <covid-general-info
           v-if="renderComponents"
+          :title="'Worldwide'"
+          :covidGeneralInfo="getCovidGlobalTotals"
+        />
+      </transition>
+      <!-- We only render Nationwide information if a country has been selected. -->
+      <transition name="fade-slide-left">
+        <covid-general-info
+          v-if="renderComponents && getSelectedCountry.length > 0"
           :title="'Nationwide'"
           :covidGeneralInfo="getCovidCountryTotals"
         />
       </transition>
-      <!-- <covid-chart /> -->
     </div>
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
@@ -75,12 +82,14 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getAllAffectedCountries',
-      'getCovidCountryTotals'
+      'getCovidCountryTotals',
+      'getCovidGlobalTotals',
+      'getSelectedCountry'
     ])
   },
 
   data: () => ({
-    location: 'USA',
+    location: '',
     renderComponents: false
   }),
   /*
@@ -98,9 +107,6 @@ export default Vue.extend({
   async mounted() {
     await this.$store.dispatch('getCovidGlobalTotals')
     await this.$store.dispatch('getCovidDataAllCountries')
-    this.$store.commit('setSelectedCountry', { name: this.location, value: this.location })
-    this.$store.commit('setSelectedCovidData')
-    await this.$store.dispatch('getHistoricalCountryData')
     this.locateUser()
   },
 
@@ -160,11 +166,10 @@ export default Vue.extend({
   /* parent grid */
   grid-row-start: 3;
   grid-row-end: 4;
-  /* main content grid */
+  /* general info grid */
   display: grid;
-  row-gap: 1rem;
   align-items: center;
-  justify-content: center;
-  grid-template-columns: auto repeat(auto-fit, minmax(300px, 1fr)) auto;
+  justify-items: center;
+  grid-template-columns: 50% repeat(auto-fit, minmax(300px, 300px)) 50%;
 }
 </style>
