@@ -12,7 +12,7 @@
     <dropdown
       :label="'Country'"
       :hasSearch="true"
-      :selectedItem="getSelectedCountry"
+      :selectedItem="selectedCountry"
     >
       <template v-slot="{ toggleDropdown }">
         <single-select
@@ -43,7 +43,7 @@
     <!-- Result type dropdown -->
     <dropdown
       :label="'Results Type'"
-      :selectedItem="getSelectedResultType.name"
+      :selectedItem="selectedResultType.name"
     >
       <template v-slot="{ toggleDropdown }">
         <single-select
@@ -55,7 +55,7 @@
     <!-- Type of graph dropdown -->
     <dropdown
       :label="'Graph Type'"
-      :selectedItem="getSelectedGraphType.name"
+      :selectedItem="selectedGraphType.name"
     >
       <template v-slot="{ toggleDropdown }">
         <single-select
@@ -70,7 +70,7 @@
 <script lang="ts">
 
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { DateRange, ResultType, GraphType, SelectItem } from '../types/'
 import Dropdown from '../shared/components/Dropdown.vue'
 import DatePicker from '../shared/components/DatePicker.vue'
@@ -88,10 +88,12 @@ export default Vue.extend({
   },
 
   computed: {
+    ...mapState([
+      'selectedCountry',
+      'selectedGraphType',
+      'selectedResultType'
+    ]),
     ...mapGetters([
-      'getSelectedCountry',
-      'getSelectedGraphType',
-      'getSelectedResultType',
       'getAllAffectedCountries'
     ])
   },
