@@ -6,7 +6,7 @@ import { state, getters } from '@/store/covid'
 const {
   getAllAffectedCountries,
   getCovidChartLabels,
-  getCovidGeneralInfo,
+  getCovidCountryTotals,
   getCovidChartData
 } = getters
 
@@ -40,7 +40,7 @@ describe('Covid Store getters', (): void => {
     covidState.selectedCovidData.updated = covidConstants.generalInfo.updated
     covidState.selectedCovidData.todayCases = covidConstants.generalInfo.casesToday
 
-    expect(getCovidGeneralInfo(covidState)).to.eql(covidConstants.generalInfo)
+    expect(getCovidCountryTotals(covidState)).to.eql(covidConstants.generalInfo)
   })
 
   it('can get covid chart data that are overall totals', (): void => {

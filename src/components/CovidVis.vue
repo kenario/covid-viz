@@ -11,7 +11,7 @@
         <covid-general-info
           v-if="renderComponents"
           :title="'Nationwide'"
-          :covidGeneralInfo="getCovidGeneralInfo"
+          :covidGeneralInfo="getCovidCountryTotals"
         />
       </transition>
       <!-- <covid-chart /> -->
@@ -75,7 +75,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getAllAffectedCountries',
-      'getCovidGeneralInfo'
+      'getCovidCountryTotals'
     ])
   },
 

@@ -28,45 +28,37 @@ export const state = () => ({
   selectedDates: {} as DateRange,
   selectedCovidData: {} as CovidData,
   selectedCovidDataType: [] as SelectItem[],
+  covidGlobalTotals: {} as CovidData,
   covidDataAllCountries: [] as CovidData[],
   covidHistoricalCountryData: {} as CovidHistoricalData
 })
 
 export const getters = {
-  getSelectedCountry: (state: CovidState): string => state.selectedCountry,
-
-  getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
-
-  getSelectedResultType: (state: CovidState): ResultType => state.selectedResultType,
-  /**
+  /*
    * Map all affected countries names and country codes.
    */
   getAllAffectedCountries: (state: CovidState): CountryInfo[] =>
     state.covidDataAllCountries.map((data: CovidData): CountryInfo => {
       return { name: data.country!, countryCode: data.countryInfo?.iso2! }
     }),
-  /**
+  /*
    * Map the dates provided by the selected countries historical data.
    */
   getCovidChartLabels: (state: CovidState): string[] =>
     state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
-  /**
-   * Map covid data into CovidGeneralInfo type.
-   */
-  getCovidGeneralInfo: (state: CovidState): CovidGeneralInfo => {
-    const data: CovidData = state.selectedCovidData
 
-    return {
-      country: data.country,
-      cases: data.cases,
-      deaths: data.deaths,
-      recovered: data.recovered,
-      tests: data.tests,
-      updated: data.updated,
-      casesToday: data.todayCases
-    }
+  getCovidGlobalTotals: (state: CovidState): CovidGeneralInfo => {
+    const data: CovidData = state.covidGlobalTotals
+    return mapCovidGeneralInfo(data)
   },
-  /**
+
+  getCovidCountryTotals: (state: CovidState): CovidGeneralInfo => {
+    const data: CovidData = state.selectedCovidData
+    const result: CovidGeneralInfo = mapCovidGeneralInfo(data)
+    result.country = data.country // declare country here since it is optional
+    return result
+  },
+  /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to
    * CovidLineChart data structure.
    */
@@ -104,6 +96,10 @@ export const mutations = {
       .find((data: CovidData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
   },
 
+  setCovidGlobalTotals: (state: CovidState, data: CovidData): void => {
+    state.covidGlobalTotals = data
+  },
+
   setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {
     state.covidDataAllCountries = data
   },
@@ -126,6 +122,11 @@ export const mutations = {
 }
 
 export const actions = {
+  getCovidGlobalTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+    const res: AxiosResponse<CovidData> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS)
+    commit('setCovidGlobalTotals', res.data)
+  },
+
   getCovidDataAllCountries: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
     commit('setCovidDataAllCountries', res.data)
@@ -225,6 +226,17 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
   }
 
   return result
+}
+
+const mapCovidGeneralInfo = (data: CovidData): CovidGeneralInfo => {
+  return {
+    cases: data.cases,
+    deaths: data.deaths,
+    recovered: data.recovered,
+    tests: data.tests,
+    updated: data.updated,
+    casesToday: data.todayCases
+  }
 }
 
 export const covid = {
