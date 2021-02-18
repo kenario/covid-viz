@@ -96,6 +96,7 @@ export default Vue.extend({
   },
 
   async mounted() {
+    await this.$store.dispatch('getCovidGlobalTotals')
     await this.$store.dispatch('getCovidDataAllCountries')
     this.$store.commit('setSelectedCountry', { name: this.location, value: this.location })
     this.$store.commit('setSelectedCovidData')

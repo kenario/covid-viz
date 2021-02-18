@@ -4,7 +4,6 @@
 export interface CovidGeneralInfo {
   country?: string;
   cases: number;
-  casesToday: number;
   deaths: number;
   recovered: number;
   tests: number;

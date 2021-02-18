@@ -54,8 +54,9 @@ export const getters = {
 
   getCovidCountryTotals: (state: CovidState): CovidGeneralInfo => {
     const data: CovidData = state.selectedCovidData
-    const result: CovidGeneralInfo = mapCovidGeneralInfo(data)
-    result.country = data.country // declare country here since it is optional
+    let result: CovidGeneralInfo = mapCovidGeneralInfo(data)
+    /* assign country to top of object, country is optional in CovidGeneralInfo */
+    result = Object.assign({ country: data.country }, result)
     return result
   },
   /*
@@ -234,8 +235,7 @@ const mapCovidGeneralInfo = (data: CovidData): CovidGeneralInfo => {
     deaths: data.deaths,
     recovered: data.recovered,
     tests: data.tests,
-    updated: data.updated,
-    casesToday: data.todayCases
+    updated: data.updated
   }
 }
 
