@@ -11,10 +11,16 @@
       class="dropdown-button"
       @click="toggleDropdown"
     >
-      <div
-        class="dropdown-button-label"
-      >
-        {{ selectedItem }}
+      <div class="dropdown-button-label">
+        <template v-if="selectedItem.length > 0">
+          {{ selectedItem }}
+        </template>
+
+        <template v-else>
+          <div class="dropdown-button-label-placeholder">
+            Please select {{ label }}...
+          </div>
+        </template>
       </div>
     </div>
 
@@ -78,6 +84,11 @@ export default Vue.extend({
 }
 .dropdown-button:hover {
   cursor: pointer;
+}
+.dropdown-button-label-placeholder {
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 .dropdown-content {
   width: 100%;

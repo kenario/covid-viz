@@ -15,15 +15,11 @@
         </div>
 
         <div class="covid-general-info-value">
-          <template
-            v-if="label === 'updated'"
-          >
+          <template v-if="label === 'updated'">
             {{ moment(covidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
           </template>
 
-          <template
-            v-else
-          >
+          <template v-else>
             {{ covidGeneralInfo[label] }}
           </template>
         </div>
