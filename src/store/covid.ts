@@ -39,6 +39,9 @@ export const getters = {
   getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
 
   getSelectedResultType: (state: CovidState): ResultType => state.selectedResultType,
+
+  getNumberOfSelectedCovidDataTypes: (state: CovidState): string =>
+    `(${state.selectedCovidDataType.length}) data types selected`,
   /*
    * Map all affected countries names and country codes.
    */

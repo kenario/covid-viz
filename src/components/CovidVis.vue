@@ -98,6 +98,11 @@ export default Vue.extend({
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
     this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
+    this.$store.commit('setSelectedCovidDataType', [
+      { name: 'Cases', value: 'cases' },
+      { name: 'Recovered', value: 'recovered' },
+      { name: 'Deaths', value: 'deaths' }
+    ])
     /*
      * Conditional rendering of components to allow for transitions.
      */

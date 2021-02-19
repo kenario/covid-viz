@@ -30,7 +30,7 @@
     <!-- Data type dropdown -->
     <dropdown
       :label="'Data Types'"
-      :selectedItem="dataTypesSelected"
+      :selectedItem="getNumberOfSelectedCovidDataTypes"
     >
       <template>
         <multi-select
@@ -92,7 +92,8 @@ export default Vue.extend({
       'getSelectedCountry',
       'getSelectedGraphType',
       'getSelectedResultType',
-      'getAllAffectedCountries'
+      'getAllAffectedCountries',
+      'getNumberOfSelectedCovidDataTypes'
     ])
   },
 
@@ -109,8 +110,7 @@ export default Vue.extend({
     graphTypes: [
       { name: 'Line', value: 'line' },
       { name: 'Bar', value: 'bar' }
-    ],
-    dataTypesSelected: ''
+    ]
   }),
 
   methods: {
@@ -127,7 +127,6 @@ export default Vue.extend({
     },
 
     setSelectedDataType: function(dataType: SelectItem[]): void {
-      this.dataTypesSelected = `(${dataType.length}) types selected`
       this.$store.commit('setSelectedCovidDataType', dataType)
     },
 
