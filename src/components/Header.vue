@@ -11,14 +11,14 @@
     </div>
 
     <div
-      class="covid-filters-button secondary-header-font-style"
+      class="covid-filters-button"
       @click="emitFilterButtonClick"
     >
       <span class="material-icons covid-filters-button-icon">
         filter_list
       </span>
 
-      <span class="covid-filters-button-label">
+      <span class="covid-filters-button-label secondary-header-font-style">
         {{ filterButtonName }}
       </span>
     </div>
@@ -55,7 +55,7 @@ export default Vue.extend({
   height: 70px;
   display: grid;
   align-items: center;
-  grid-template-columns: 260px auto 120px;
+  grid-template-columns: 260px auto 107px;
 }
 .covid-header-title {
   grid-column: 1 / 2;
@@ -86,12 +86,12 @@ export default Vue.extend({
 }
 .covid-filters-button:hover {
   cursor: pointer;
-  color: $accent-color;
-  border-color: $accent-color;
+  background-color: #3d8aa7;
 }
 .covid-filters-button-icon {
+  color: white;
   position: relative;
-  top: 5px;
+  top: 3px;
 }
 /* styling used by both title part two and filter button */
 .secondary-header-font-style {

@@ -93,7 +93,7 @@ export default Vue.extend({
     renderComponents: false
   }),
   /*
-   * Created and Mount hook represent the Vuex store's entry point for initializing data.
+   * Created and Mount hook represent the Vuex store's entry point for initializing default state.
    */
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
