@@ -128,9 +128,10 @@ export default Vue.extend({
   }),
 
   methods: {
+    /* Also checks if selected country is USA and fetches state data if we do not have prior state data */
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
-      this.$store.commit('setSelectedCovidData')
+      this.$store.commit('setSelectedCovidCountryData')
       await this.$store.dispatch('getHistoricalCountryData')
 
       if (country.value.toLowerCase() === 'usa' && this.getAllAffectedStates.length < 1) {
@@ -138,8 +139,9 @@ export default Vue.extend({
       }
     },
 
-    setSelectedState: function(state: string): void {
+    setSelectedState: function(state: SelectItem): void {
       this.$store.commit('setSelectedState', state)
+      this.$store.commit('setSelectedCovidStateData')
     },
 
     setSelectedDateRange: async function(dates: Date[]): Promise<void> {

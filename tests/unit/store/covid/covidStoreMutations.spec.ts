@@ -3,7 +3,7 @@ import { CovidState } from '@/types'
 import { state, mutations } from '@/store/covid'
 import { covidStateMocks, covidConstants } from './covidMocks'
 
-const { setSelectedCovidData } = mutations
+const { setSelectedCovidCountryData } = mutations
 
 let covidState: CovidState = state()
 
@@ -12,11 +12,11 @@ describe('Covid Store mutations', (): void => {
     covidState = state()
   })
 
-  it('will set selectedCovidData to appropriate country covid data when selectedCountry is mutated', (): void => {
+  it('will set selected covid country data to appropriate country covid data when selectedCountry is mutated', (): void => {
     covidState.covidCountryTotals = covidStateMocks.generateCovidDataAllCountries()
     covidState.selectedCountry = covidConstants.affectedCountries[0].name
 
-    setSelectedCovidData(covidState)
+    setSelectedCovidCountryData(covidState)
     expect(covidState.selectedCovidCountryData).to.eql(covidState.covidCountryTotals[0])
   })
 })

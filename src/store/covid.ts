@@ -129,8 +129,8 @@ export const mutations = {
     state.selectedCountry = country.name
   },
 
-  setSelectedState: (state: CovidState, selectedState: string): void => {
-    state.selectedState = selectedState
+  setSelectedState: (state: CovidState, selectedState: SelectItem): void => {
+    state.selectedState = selectedState.name
   },
 
   setSelectedDates: (state: CovidState, dates: DateRange): void => {
@@ -139,11 +139,16 @@ export const mutations = {
   /**
    * Iterates through all countries, converts countries and country to lowercase, and assigns to
    * selectedCovidCountryData state.  Asserts that country is not null, since country comes from the Covid
-   * API and is sure to exist.
+   * API and is sure to exist.  This is the same for the selected state data as well.
    */
-  setSelectedCovidData: (state: CovidState): void => {
+  setSelectedCovidCountryData: (state: CovidState): void => {
     state.selectedCovidCountryData = state.covidCountryTotals
       .find((data: CovidCountryData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
+  },
+
+  setSelectedCovidStateData: (state: CovidState): void => {
+    state.selectedCovidStateData = state.covidStateTotals
+      .find((data: CovidStateData): boolean => data.state!.toLowerCase().includes(state.selectedState.toLowerCase()))!
   },
 
   setCovidGlobalTotals: (state: CovidState, data: CovidGlobalData): void => {

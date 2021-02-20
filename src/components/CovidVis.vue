@@ -22,6 +22,14 @@
           :covidGeneralInfo="getCovidCountryGeneralInfo"
         />
       </transition>
+      <!-- We only render Statewide information if the country selected is the United States -->
+      <transition name="fade-slide-left">
+        <covid-general-info
+          v-if="renderComponents && getSelectedState.length > 0"
+          :title="'Statewide'"
+          :covidGeneralInfo="getCovidStateGeneralInfo"
+        />
+      </transition>
     </div>
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
@@ -84,7 +92,9 @@ export default Vue.extend({
       'getAllAffectedCountries',
       'getCovidCountryGeneralInfo',
       'getCovidGlobalGeneralInfo',
-      'getSelectedCountry'
+      'getCovidStateGeneralInfo',
+      'getSelectedCountry',
+      'getSelectedState'
     ])
   },
 
