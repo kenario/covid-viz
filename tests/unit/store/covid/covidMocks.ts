@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { CovidData, CovidHistoricalData, DateValue } from '@/types'
+import { CovidCountryData, CovidHistoricalData, DateValue } from '@/types'
 import { randomInteger } from '@/shared/randomInteger'
 
 export const covidConstants = {
@@ -30,14 +30,13 @@ export const covidConstants = {
     deaths: 1,
     recovered: 2,
     tests: 3,
-    updated: 4,
-    casesToday: 5
+    updated: 4
   }
 }
 
 export const covidStateMocks = {
-  generateCovidDataAllCountries: (): CovidData[] => {
-    const result: CovidData[] = []
+  generateCovidDataAllCountries: (): CovidCountryData[] => {
+    const result: CovidCountryData[] = []
     const min = 0
     const max = 5000
 

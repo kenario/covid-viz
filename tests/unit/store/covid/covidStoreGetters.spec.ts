@@ -6,7 +6,7 @@ import { state, getters } from '@/store/covid'
 const {
   getAllAffectedCountries,
   getCovidChartLabels,
-  getCovidCountryTotals,
+  getCovidCountryGeneralInfo,
   getCovidChartData
 } = getters
 
@@ -18,7 +18,7 @@ describe('Covid Store getters', (): void => {
   })
 
   it('can get all affected countries', (): void => {
-    covidState.covidDataAllCountries = covidStateMocks.generateCovidDataAllCountries()
+    covidState.covidCountryTotals = covidStateMocks.generateCovidDataAllCountries()
 
     expect(getAllAffectedCountries(covidState)).to.eql(covidConstants.affectedCountries)
   })
@@ -30,17 +30,15 @@ describe('Covid Store getters', (): void => {
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })
 
-  it('can get covid general info', (): void => {
-    covidState.selectedCovidData = covidStateMocks.generateCovidDataAllCountries()[0]
-    covidState.selectedCovidData.country = covidConstants.generalInfo.country
-    covidState.selectedCovidData.cases = covidConstants.generalInfo.cases
-    covidState.selectedCovidData.deaths = covidConstants.generalInfo.deaths
-    covidState.selectedCovidData.recovered = covidConstants.generalInfo.recovered
-    covidState.selectedCovidData.tests = covidConstants.generalInfo.tests
-    covidState.selectedCovidData.updated = covidConstants.generalInfo.updated
-    covidState.selectedCovidData.todayCases = covidConstants.generalInfo.casesToday
-
-    expect(getCovidCountryTotals(covidState)).to.eql(covidConstants.generalInfo)
+  it('can get covid country general info', (): void => {
+    covidState.selectedCovidCountryData = covidStateMocks.generateCovidDataAllCountries()[0]
+    covidState.selectedCovidCountryData.country = covidConstants.generalInfo.country
+    covidState.selectedCovidCountryData.cases = covidConstants.generalInfo.cases
+    covidState.selectedCovidCountryData.deaths = covidConstants.generalInfo.deaths
+    covidState.selectedCovidCountryData.recovered = covidConstants.generalInfo.recovered
+    covidState.selectedCovidCountryData.tests = covidConstants.generalInfo.tests
+    covidState.selectedCovidCountryData.updated = covidConstants.generalInfo.updated
+    expect(getCovidCountryGeneralInfo(covidState)).to.eql(covidConstants.generalInfo)
   })
 
   it('can get covid chart data that are overall totals', (): void => {
@@ -49,7 +47,7 @@ describe('Covid Store getters', (): void => {
     covidState.selectedResultType = { name: 'Total', value: 'total' }
 
     const expected: CovidLineChart = {
-      label: 'cases',
+      label: 'Cases',
       data: covidConstants.datesAndValues().map((dv: DateValue): number => dv.value)
     }
 
@@ -62,7 +60,7 @@ describe('Covid Store getters', (): void => {
     covidState.selectedResultType = { name: 'Total Per Day', value: 'totalPerDay' }
 
     const expected: CovidLineChart = {
-      label: 'cases',
+      label: 'Cases',
       data: [1, 1, 1, 1]
     }
 
