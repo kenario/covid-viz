@@ -30,6 +30,7 @@ export const state = () => ({
   selectedResultType: {} as ResultType,
   selectedDates: {} as DateRange,
   selectedCovidCountryData: {} as CovidCountryData,
+  selectedCovidStateData: {} as CovidStateData,
   selectedCovidDataType: [] as SelectItem[],
   covidGlobalTotals: {} as CovidGlobalData,
   covidCountryTotals: [] as CovidCountryData[],
@@ -79,6 +80,18 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       recovered: data.recovered,
+      tests: data.tests,
+      updated: data.updated
+    }
+  },
+
+  getCovidStateTotals: (state: CovidState): CovidGeneralInfo => {
+    const data: CovidStateData = state.selectedCovidStateData
+
+    return {
+      state: data.state,
+      cases: data.cases,
+      deaths: data.deaths,
       tests: data.tests,
       updated: data.updated
     }

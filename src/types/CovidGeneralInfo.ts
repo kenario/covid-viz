@@ -3,6 +3,7 @@
  */
 export interface CovidGeneralInfo {
   country?: string;
+  state?: string;
   cases: number;
   deaths: number;
   recovered?: number;

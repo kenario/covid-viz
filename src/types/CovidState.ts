@@ -3,7 +3,7 @@ import {
   GraphType,
   ResultType,
   SelectItem,
-  CovidWorldData,
+  CovidGlobalData,
   CovidStateData,
   CovidCountryData,
   CovidHistoricalData
@@ -12,11 +12,12 @@ import {
 export interface CovidState {
   selectedCountry: string;
   selectedDates: DateRange;
-  selectedCovidCountryData: CovidCountryData;
   selectedGraphType: GraphType;
   selectedResultType: ResultType;
   selectedCovidDataType: SelectItem[];
-  covidGlobalTotals: CovidWorldData;
+  selectedCovidCountryData: CovidCountryData;
+  selectedCovidStateData: CovidStateData;
+  covidGlobalTotals: CovidGlobalData;
   covidCountryTotals: CovidCountryData[];
   covidStateTotals: CovidStateData[];
   covidHistoricalCountryData: CovidHistoricalData;
