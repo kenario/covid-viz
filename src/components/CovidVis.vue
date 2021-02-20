@@ -11,7 +11,7 @@
         <covid-general-info
           v-if="renderComponents"
           :title="'Worldwide'"
-          :covidGeneralInfo="getCovidGlobalTotals"
+          :covidGeneralInfo="getCovidGlobalGeneralInfo"
         />
       </transition>
       <!-- We only render Nationwide information if a country has been selected. -->
@@ -19,7 +19,7 @@
         <covid-general-info
           v-if="renderComponents && getSelectedCountry.length > 0"
           :title="'Nationwide'"
-          :covidGeneralInfo="getCovidCountryTotals"
+          :covidGeneralInfo="getCovidCountryGeneralInfo"
         />
       </transition>
     </div>
@@ -82,8 +82,8 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getAllAffectedCountries',
-      'getCovidCountryTotals',
-      'getCovidGlobalTotals',
+      'getCovidCountryGeneralInfo',
+      'getCovidGlobalGeneralInfo',
       'getSelectedCountry'
     ])
   },

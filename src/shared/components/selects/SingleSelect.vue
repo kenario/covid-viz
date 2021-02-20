@@ -28,7 +28,7 @@ export default Vue.extend({
   name: 'SingleSelect',
 
   props: {
-    items: Array as () => SelectItem[],
+    items: Array as () => SelectItem[] || Array as () => string[],
     hasSearchBar: { type: Boolean, default: false }
   },
 

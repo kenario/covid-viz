@@ -11,6 +11,7 @@ import {
 
 export interface CovidState {
   selectedCountry: string;
+  selectedState: string;
   selectedDates: DateRange;
   selectedGraphType: GraphType;
   selectedResultType: ResultType;

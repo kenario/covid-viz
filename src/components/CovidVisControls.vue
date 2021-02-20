@@ -11,7 +11,6 @@
     <!-- Country dropdown -->
     <dropdown
       :label="'Country'"
-      :hasSearch="true"
       :selectedItem="getSelectedCountry"
     >
       <template v-slot="{ toggleDropdown }">
@@ -19,6 +18,19 @@
           :hasSearchBar="true"
           :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
           @selectedItem="setSelectedCountry($event); toggleDropdown()"
+        />
+      </template>
+    </dropdown>
+    <!-- State dropdown -->
+    <dropdown
+      v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
+      :label="'State'"
+      :selectedItem="getSelectedState"
+    >
+      <template v-slot="{ toggleDropdown }">
+        <single-select
+          :items="getAllAffectedStates"
+          @selectedItem="setSelectedState($event); toggleDropdown()"
         />
       </template>
     </dropdown>
@@ -90,9 +102,11 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedCountry',
+      'getSelectedState',
       'getSelectedGraphType',
       'getSelectedResultType',
       'getAllAffectedCountries',
+      'getAllAffectedStates',
       'getNumberOfSelectedCovidDataTypes'
     ])
   },
@@ -118,6 +132,14 @@ export default Vue.extend({
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidData')
       await this.$store.dispatch('getHistoricalCountryData')
+
+      if (country.value.toLowerCase() === 'usa' && this.getAllAffectedStates.length < 1) {
+        await this.$store.dispatch('getCovidStateTotals')
+      }
+    },
+
+    setSelectedState: function(state: string): void {
+      this.$store.commit('setSelectedState', state)
     },
 
     setSelectedDateRange: async function(dates: Date[]): Promise<void> {

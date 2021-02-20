@@ -26,6 +26,7 @@ interface RS {
 
 export const state = () => ({
   selectedCountry: '',
+  selectedState: '',
   selectedGraphType: {} as GraphType,
   selectedResultType: {} as ResultType,
   selectedDates: {} as DateRange,
@@ -41,6 +42,8 @@ export const state = () => ({
 export const getters = {
   getSelectedCountry: (state: CovidState): string => state.selectedCountry,
 
+  getSelectedState: (state: CovidState): string => state.selectedState,
+
   getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
 
   getSelectedResultType: (state: CovidState): ResultType => state.selectedResultType,
@@ -54,13 +57,18 @@ export const getters = {
     state.covidCountryTotals.map((data: CovidCountryData): CountryInfo => {
       return { name: data.country!, countryCode: data.countryInfo?.iso2! }
     }),
+  /*  Map all affected state names. */
+  getAllAffectedStates: (state: CovidState): SelectItem[] =>
+    state.covidStateTotals.map((data: CovidStateData): SelectItem => {
+      return { name: data.state, value: data.state.toLowerCase() }
+    }),
   /*
    * Map the dates provided by the selected countries historical data.
    */
   getCovidChartLabels: (state: CovidState): string[] =>
     state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
-  getCovidGlobalTotals: (state: CovidState): CovidGeneralInfo => {
+  getCovidGlobalGeneralInfo: (state: CovidState): CovidGeneralInfo => {
     const data: CovidGlobalData = state.covidGlobalTotals
 
     return {
@@ -72,7 +80,7 @@ export const getters = {
     }
   },
 
-  getCovidCountryTotals: (state: CovidState): CovidGeneralInfo => {
+  getCovidCountryGeneralInfo: (state: CovidState): CovidGeneralInfo => {
     const data: CovidCountryData = state.selectedCovidCountryData
 
     return {
@@ -85,7 +93,7 @@ export const getters = {
     }
   },
 
-  getCovidStateTotals: (state: CovidState): CovidGeneralInfo => {
+  getCovidStateGeneralInfo: (state: CovidState): CovidGeneralInfo => {
     const data: CovidStateData = state.selectedCovidStateData
 
     return {
@@ -119,6 +127,10 @@ export const getters = {
 export const mutations = {
   setSelectedCountry: (state: CovidState, country: SelectItem): void => {
     state.selectedCountry = country.name
+  },
+
+  setSelectedState: (state: CovidState, selectedState: string): void => {
+    state.selectedState = selectedState
   },
 
   setSelectedDates: (state: CovidState, dates: DateRange): void => {
