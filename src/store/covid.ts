@@ -29,7 +29,7 @@ export const state = () => ({
   selectedCovidData: {} as CovidData,
   selectedCovidDataType: [] as SelectItem[],
   covidGlobalTotals: {} as CovidData,
-  covidDataAllCountries: [] as CovidData[],
+  covidCountryTotals: [] as CovidData[],
   covidHistoricalCountryData: {} as CovidHistoricalData
 })
 
@@ -46,7 +46,7 @@ export const getters = {
    * Map all affected countries names and country codes.
    */
   getAllAffectedCountries: (state: CovidState): CountryInfo[] =>
-    state.covidDataAllCountries.map((data: CovidData): CountryInfo => {
+    state.covidCountryTotals.map((data: CovidData): CountryInfo => {
       return { name: data.country!, countryCode: data.countryInfo?.iso2! }
     }),
   /*
@@ -101,7 +101,7 @@ export const mutations = {
    * API and is sure to exist.
    */
   setSelectedCovidData: (state: CovidState): void => {
-    state.selectedCovidData = state.covidDataAllCountries
+    state.selectedCovidData = state.covidCountryTotals
       .find((data: CovidData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
   },
 
@@ -109,8 +109,8 @@ export const mutations = {
     state.covidGlobalTotals = data
   },
 
-  setCovidDataAllCountries: (state: CovidState, data: CovidData[]): void => {
-    state.covidDataAllCountries = data
+  setCovidCountryTotals: (state: CovidState, data: CovidData[]): void => {
+    state.covidCountryTotals = data
   },
 
   setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
@@ -136,9 +136,9 @@ export const actions = {
     commit('setCovidGlobalTotals', res.data)
   },
 
-  getCovidDataAllCountries: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidCountryTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
-    commit('setCovidDataAllCountries', res.data)
+    commit('setCovidCountryTotals', res.data)
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise

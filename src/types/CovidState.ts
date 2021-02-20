@@ -15,6 +15,6 @@ export interface CovidState {
   selectedResultType: ResultType;
   selectedCovidDataType: SelectItem[];
   covidGlobalTotals: CovidData;
-  covidDataAllCountries: CovidData[];
+  covidCountryTotals: CovidData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }

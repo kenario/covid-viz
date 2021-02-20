@@ -111,7 +111,7 @@ export default Vue.extend({
 
   async mounted() {
     await this.$store.dispatch('getCovidGlobalTotals')
-    await this.$store.dispatch('getCovidDataAllCountries')
+    await this.$store.dispatch('getCovidCountryTotals')
     this.locateUser()
   },
 
