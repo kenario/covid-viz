@@ -88,7 +88,7 @@ export default Vue.extend({
 .dropdown-button-label-placeholder {
   font-style: italic;
   font-size: 0.9rem;
-  opacity: 0.8;
+  color: #cccfba;
 }
 .dropdown-content {
   width: 100%;
