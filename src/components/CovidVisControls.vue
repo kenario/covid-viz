@@ -36,7 +36,7 @@
     </dropdown>
     <!-- County dropdown -->
     <dropdown
-      v-if="getSelectedState.length > 0"
+      v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
       :label="'County'"
       :selectedItem="getSelectedCounty"
     >
@@ -143,7 +143,8 @@ export default Vue.extend({
   }),
 
   methods: {
-    /* Also checks if selected country is USA and fetches state data if we do not have prior state data */
+    /* Also checks if selected country is USA and fetches state data if we do not have prior state data.
+       If */
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidCountryData')
@@ -153,18 +154,17 @@ export default Vue.extend({
         await this.$store.dispatch('getCovidStateTotals')
       }
     },
-    /* Sets the state, if covidCountyTotals is empty, we fetch the data. If we have a selectedCounty
-       then we clear the selectedCounty in order to reset the Countywide CovidGeneralInfo component
-       and un-render it. */
+    /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
+       the state selected is not the currently selected state. */
     setSelectedState: async function(state: SelectItem): Promise<void> {
+      if (this.getSelectedState !== state.name) {
+        this.$store.commit('setSelectedCounty', { name: '', value: '' })
+      }
       this.$store.commit('setSelectedState', state)
       this.$store.commit('setSelectedCovidStateData')
 
       if (this.getStatesAffectedCounties.length < 1) {
         await this.$store.dispatch('getCovidCountyTotals')
-      }
-      if (this.getSelectedCounty.length > 0) {
-        this.$store.commit('setSelectedCounty', { name: '', value: '' })
       }
     },
 

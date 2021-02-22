@@ -146,7 +146,13 @@ export const getters = {
     }
 
     return covidChartData
-  }
+  },
+
+  renderStateGeneralInfo: (state: CovidState): boolean =>
+    state.selectedCountry === 'USA' && state.selectedState.length > 0,
+
+  renderCountyGeneralInfo: (state: CovidState): boolean =>
+    state.selectedState.length > 0 && state.selectedCovidCountyData.state === state.selectedState
 }
 
 export const mutations = {

@@ -25,7 +25,7 @@
       <!-- We only render Statewide information if the country selected is the United States -->
       <transition name="fade-slide-left">
         <covid-general-info
-          v-if="renderComponents && getSelectedState.length > 0"
+          v-if="renderComponents && renderStateGeneralInfo"
           :title="'Statewide'"
           :covidGeneralInfo="getCovidStateGeneralInfo"
         />
@@ -33,7 +33,7 @@
       <!-- We only render Countywide information if a state has been selected -->
       <transition name="fade-slide-left">
         <covid-general-info
-          v-if="renderComponents && getSelectedCounty.length > 0"
+          v-if="renderComponents && renderCountyGeneralInfo"
           :title="'Countywide'"
           :covidGeneralInfo="getCovidCountyGeneralInfo"
         />
@@ -97,6 +97,8 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'renderStateGeneralInfo',
+      'renderCountyGeneralInfo',
       'getAllAffectedCountries',
       'getCovidCountryGeneralInfo',
       'getCovidGlobalGeneralInfo',
