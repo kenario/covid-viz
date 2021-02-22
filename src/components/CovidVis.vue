@@ -62,7 +62,6 @@ import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
 import CovidGeneralInfo from '../shared/components/CovidGeneralInfo.vue'
-import CovidVisControls from './CovidVisControls.vue'
 import { geolocationEP } from '../shared/constants/geolocationEP'
 import { CountryInfo } from '../types'
 
@@ -167,18 +166,15 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: all 1.5s ease;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
 .fade-slide-left-enter-active, .fade-slide-left-leave-active {
   transition: all 1.5s ease;
 }
 .fade-slide-left-enter, .fade-slide-left-leave-to {
   transform: translateX(200px);
   opacity: 0;
+}
+.fade-slide-left-move {
+  transition: transform 1s;
 }
 .covid-vis-container {
   display: grid;
@@ -199,5 +195,6 @@ export default Vue.extend({
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
   padding: 0 10% 0 10%;
+  transition: 2s;
 }
 </style>

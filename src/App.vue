@@ -99,6 +99,12 @@ html, body, html * {
 .slide-left-enter, .slide-left-leave-to {
   transform: translateX(300px);
 }
+.fade-enter-active, .fade-leave-active {
+  transition: all 1.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 .covid-filter-layout {
   position: fixed;
   height: 100%;

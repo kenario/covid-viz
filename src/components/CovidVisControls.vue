@@ -22,33 +22,37 @@
       </template>
     </dropdown>
     <!-- State dropdown -->
-    <dropdown
-      v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
-      :label="'State'"
-      :selectedItem="getSelectedState"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :hasSearchBar="true"
-          :items="getAllAffectedStates"
-          @selectedItem="setSelectedState($event); toggleDropdown()"
-        />
-      </template>
-    </dropdown>
+    <transition name="fade">
+      <dropdown
+        v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
+        :label="'State'"
+        :selectedItem="getSelectedState"
+      >
+        <template v-slot="{ toggleDropdown }">
+          <single-select
+            :hasSearchBar="true"
+            :items="getAllAffectedStates"
+            @selectedItem="setSelectedState($event); toggleDropdown()"
+          />
+        </template>
+      </dropdown>
+    </transition>
     <!-- County dropdown -->
-    <dropdown
-      v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
-      :label="'County'"
-      :selectedItem="getSelectedCounty"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :hasSearchBar="true"
-          :items="getStatesAffectedCounties"
-          @selectedItem="setSelectedCounty($event); toggleDropdown()"
-        />
-      </template>
-    </dropdown>
+    <transition name="fade">
+      <dropdown
+        v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
+        :label="'County'"
+        :selectedItem="getSelectedCounty"
+      >
+        <template v-slot="{ toggleDropdown }">
+          <single-select
+            :hasSearchBar="true"
+            :items="getStatesAffectedCounties"
+            @selectedItem="setSelectedCounty($event); toggleDropdown()"
+          />
+        </template>
+      </dropdown>
+    </transition>
     <!-- Date picker dropdown -->
     <date-picker
       :label="'Dates'"
