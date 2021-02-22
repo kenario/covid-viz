@@ -5,6 +5,7 @@ import {
   SelectItem,
   CovidGlobalData,
   CovidStateData,
+  CovidCountyData,
   CovidCountryData,
   CovidHistoricalData
 } from './'
@@ -12,6 +13,7 @@ import {
 export interface CovidState {
   selectedCountry: string;
   selectedState: string;
+  selectedCounty: string;
   selectedDates: DateRange;
   selectedGraphType: GraphType;
   selectedResultType: ResultType;
@@ -21,5 +23,6 @@ export interface CovidState {
   covidGlobalTotals: CovidGlobalData;
   covidCountryTotals: CovidCountryData[];
   covidStateTotals: CovidStateData[];
+  covidCountyTotals: CovidCountyData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }

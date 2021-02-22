@@ -15,7 +15,9 @@ import {
   CovidCountryData,
   CovidGlobalData,
   CovidStateData,
+  CovidCountyData,
   CovidGeneralInfo,
+  CovidCountyDataRaw,
   CovidHistoricalData
 } from '../types/'
 
@@ -27,6 +29,7 @@ interface RS {
 export const state = () => ({
   selectedCountry: '',
   selectedState: '',
+  selectedCounty: '',
   selectedGraphType: {} as GraphType,
   selectedResultType: {} as ResultType,
   selectedDates: {} as DateRange,
@@ -36,6 +39,7 @@ export const state = () => ({
   covidGlobalTotals: {} as CovidGlobalData,
   covidCountryTotals: [] as CovidCountryData[],
   covidStateTotals: [] as CovidStateData[],
+  covidCountyTotals: [] as CovidCountyData[],
   covidHistoricalCountryData: {} as CovidHistoricalData
 })
 
@@ -43,6 +47,8 @@ export const getters = {
   getSelectedCountry: (state: CovidState): string => state.selectedCountry,
 
   getSelectedState: (state: CovidState): string => state.selectedState,
+
+  getSelectedCounty: (state: CovidState): string => state.selectedCounty,
 
   getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
 
@@ -133,6 +139,10 @@ export const mutations = {
     state.selectedState = selectedState.name
   },
 
+  setSelectedCounty: (state: CovidState, county: SelectItem): void => {
+    state.selectedCounty = county.name
+  },
+
   setSelectedDates: (state: CovidState, dates: DateRange): void => {
     state.selectedDates = dates
   },
@@ -161,6 +171,10 @@ export const mutations = {
 
   setCovidStateTotals: (state: CovidState, data: CovidStateData[]): void => {
     state.covidStateTotals = data
+  },
+
+  setCovidCountyTotals: (state: CovidState, data: CovidCountyData[]): void => {
+    state.covidCountyTotals = data
   },
 
   setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
@@ -194,6 +208,22 @@ export const actions = {
   getCovidStateTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS)
     commit('setCovidStateTotals', res.data)
+  },
+  /* County data needs to be cleaned since it is the most different from the rest of the data. */
+  getCovidCountyTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+    const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL)
+    const covidCountyTotals: CovidCountyData[] = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
+      return {
+        country: d.country,
+        state: d.province,
+        county: d.county,
+        updated: d.updatedAt,
+        cases: d.stats.confirmed,
+        recovered: d.stats.recovered,
+        deaths: d.stats.deaths
+      }
+    })
+    commit('setCovidCountyTotals', covidCountyTotals)
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise

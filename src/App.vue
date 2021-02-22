@@ -53,7 +53,7 @@ export default Vue.extend({
       this.showFilters = !this.showFilters
     },
     /*
-     * This function closes the filter if the click is outside the filter and is outside the filters
+     * This function closes the filter if the click is outside the filter and the filters
      * container.  The purpose for this is to make sure the Filter button is included as an element
      * that is not outside the filters v-outside-click functionality.
      */
@@ -101,8 +101,9 @@ html, body, html * {
 }
 .covid-filter-layout {
   position: fixed;
-  height: 100vh;
+  height: 100%;
   width: 300px;
   right: 0px;
+  overflow: hidden;
 }
 </style>
