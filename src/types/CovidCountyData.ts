@@ -5,5 +5,5 @@ export interface CovidCountyData {
   cases: number;
   deaths: number
   recovered: number;
-  updated: string
+  updated: number;
 }

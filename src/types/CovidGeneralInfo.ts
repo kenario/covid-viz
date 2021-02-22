@@ -4,9 +4,10 @@
 export interface CovidGeneralInfo {
   country?: string;
   state?: string;
+  county?: string;
   cases: number;
   deaths: number;
   recovered?: number;
-  tests: number;
+  tests?: number;
   updated: number;
 }

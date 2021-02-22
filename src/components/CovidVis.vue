@@ -30,6 +30,14 @@
           :covidGeneralInfo="getCovidStateGeneralInfo"
         />
       </transition>
+      <!-- We only render Countywide information if a state has been selected -->
+      <transition name="fade-slide-left">
+        <covid-general-info
+          v-if="renderComponents && getSelectedCounty.length > 0"
+          :title="'Countywide'"
+          :covidGeneralInfo="getCovidCountyGeneralInfo"
+        />
+      </transition>
     </div>
     <!-- <transition name="fade">
       <covid-general-info v-if="renderComponents" />
@@ -93,8 +101,10 @@ export default Vue.extend({
       'getCovidCountryGeneralInfo',
       'getCovidGlobalGeneralInfo',
       'getCovidStateGeneralInfo',
+      'getCovidCountyGeneralInfo',
       'getSelectedCountry',
-      'getSelectedState'
+      'getSelectedState',
+      'getSelectedCounty'
     ])
   },
 

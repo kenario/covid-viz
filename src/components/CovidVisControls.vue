@@ -34,6 +34,19 @@
         />
       </template>
     </dropdown>
+    <!-- County dropdown -->
+    <dropdown
+      v-if="getSelectedState.length > 0"
+      :label="'County'"
+      :selectedItem="getSelectedCounty"
+    >
+      <template v-slot="{ toggleDropdown }">
+        <single-select
+          :items="getStatesAffectedCounties"
+          @selectedItem="setSelectedCounty($event); toggleDropdown()"
+        />
+      </template>
+    </dropdown>
     <!-- Date picker dropdown -->
     <date-picker
       :label="'Dates'"
@@ -103,10 +116,12 @@ export default Vue.extend({
     ...mapGetters([
       'getSelectedCountry',
       'getSelectedState',
+      'getSelectedCounty',
       'getSelectedGraphType',
       'getSelectedResultType',
       'getAllAffectedCountries',
       'getAllAffectedStates',
+      'getStatesAffectedCounties',
       'getNumberOfSelectedCovidDataTypes'
     ])
   },
@@ -139,9 +154,15 @@ export default Vue.extend({
       }
     },
 
-    setSelectedState: function(state: SelectItem): void {
+    setSelectedState: async function(state: SelectItem): Promise<void> {
       this.$store.commit('setSelectedState', state)
       this.$store.commit('setSelectedCovidStateData')
+      await this.$store.dispatch('getCovidCountyTotals')
+    },
+
+    setSelectedCounty: function(county: SelectItem): void {
+      this.$store.commit('setSelectedCounty', county)
+      this.$store.commit('setSelectedCovidCountyData')
     },
 
     setSelectedDateRange: async function(dates: Date[]): Promise<void> {

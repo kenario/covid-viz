@@ -20,6 +20,7 @@ export interface CovidState {
   selectedCovidDataType: SelectItem[];
   selectedCovidCountryData: CovidCountryData;
   selectedCovidStateData: CovidStateData;
+  selectedCovidCountyData: CovidCountyData;
   covidGlobalTotals: CovidGlobalData;
   covidCountryTotals: CovidCountryData[];
   covidStateTotals: CovidStateData[];

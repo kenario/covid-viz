@@ -35,6 +35,7 @@ export const state = () => ({
   selectedDates: {} as DateRange,
   selectedCovidCountryData: {} as CovidCountryData,
   selectedCovidStateData: {} as CovidStateData,
+  selectedCovidCountyData: {} as CovidCountyData,
   selectedCovidDataType: [] as SelectItem[],
   covidGlobalTotals: {} as CovidGlobalData,
   covidCountryTotals: [] as CovidCountryData[],
@@ -68,6 +69,13 @@ export const getters = {
     state.covidStateTotals.map((data: CovidStateData): SelectItem => {
       return { name: data.state, value: data.state.toLowerCase() }
     }),
+  /* Map all affected counties of the selected state. */
+  getStatesAffectedCounties: (state: CovidState): SelectItem[] =>
+    state.covidCountyTotals
+      .filter((data: CovidCountyData): boolean => data.state === state.selectedState)
+      .map((data: CovidCountyData): SelectItem => {
+        return { name: data.county, value: data.county.toLowerCase() }
+      }),
   /*
    * Map the dates provided by the selected countries historical data.
    */
@@ -107,6 +115,18 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       tests: data.tests,
+      updated: data.updated
+    }
+  },
+
+  getCovidCountyGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+    const data: CovidCountyData = state.selectedCovidCountyData
+
+    return {
+      county: data.county,
+      cases: data.cases,
+      deaths: data.deaths,
+      recovered: data.recovered,
       updated: data.updated
     }
   },
@@ -161,6 +181,11 @@ export const mutations = {
       .find((data: CovidStateData): boolean => data.state!.toLowerCase().includes(state.selectedState.toLowerCase()))!
   },
 
+  setSelectedCovidCountyData: (state: CovidState): void => {
+    state.selectedCovidCountyData = state.covidCountyTotals
+      .find((data: CovidCountyData): boolean => data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase()))!
+  },
+
   setCovidGlobalTotals: (state: CovidState, data: CovidGlobalData): void => {
     state.covidGlobalTotals = data
   },
@@ -211,13 +236,13 @@ export const actions = {
   },
   /* County data needs to be cleaned since it is the most different from the rest of the data. */
   getCovidCountyTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
-    const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL)
+    const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS)
     const covidCountyTotals: CovidCountyData[] = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
       return {
         country: d.country,
         state: d.province,
         county: d.county,
-        updated: d.updatedAt,
+        updated: parseInt(d.updatedAt),
         cases: d.stats.confirmed,
         recovered: d.stats.recovered,
         deaths: d.stats.deaths
