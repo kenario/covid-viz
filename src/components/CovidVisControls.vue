@@ -29,6 +29,7 @@
     >
       <template v-slot="{ toggleDropdown }">
         <single-select
+          :hasSearchBar="true"
           :items="getAllAffectedStates"
           @selectedItem="setSelectedState($event); toggleDropdown()"
         />
@@ -42,6 +43,7 @@
     >
       <template v-slot="{ toggleDropdown }">
         <single-select
+          :hasSearchBar="true"
           :items="getStatesAffectedCounties"
           @selectedItem="setSelectedCounty($event); toggleDropdown()"
         />

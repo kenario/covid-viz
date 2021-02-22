@@ -125,7 +125,7 @@ export const getters = {
       county: data.county,
       cases: data.cases,
       deaths: data.deaths,
-      tests: 0,
+      tests: undefined,
       updated: data.updated
     }
   },

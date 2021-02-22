@@ -16,11 +16,14 @@
 
         <div class="covid-general-info-value">
           <template v-if="label === 'updated'">
-            {{ moment(covidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a') }}
+            {{ covidGeneralInfo[label].toString().length > 10
+                  ? moment(covidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a')
+                  : covidGeneralInfo[label].toString()
+            }}
           </template>
 
           <template v-else>
-            {{ covidGeneralInfo[label] === 0 ? 'Unavailable' : covidGeneralInfo[label] }}
+            {{ covidGeneralInfo[label] ? covidGeneralInfo[label] : 'Unavailable' }}
           </template>
         </div>
       </div>
