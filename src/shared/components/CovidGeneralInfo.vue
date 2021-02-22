@@ -20,7 +20,7 @@
           </template>
 
           <template v-else>
-            {{ covidGeneralInfo[label] }}
+            {{ covidGeneralInfo[label] === 0 ? 'Unavailable' : covidGeneralInfo[label] }}
           </template>
         </div>
       </div>
@@ -67,6 +67,7 @@ export default Vue.extend({
 .covid-general-info-container {
   height: 100%;
   width: 300px;
+  margin: 10px 0 10px 0;
 }
 .covid-general-info-title {
   color: $primary-color;

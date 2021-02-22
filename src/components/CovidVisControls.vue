@@ -153,11 +153,19 @@ export default Vue.extend({
         await this.$store.dispatch('getCovidStateTotals')
       }
     },
-
+    /* Sets the state, if covidCountyTotals is empty, we fetch the data. If we have a selectedCounty
+       then we clear the selectedCounty in order to reset the Countywide CovidGeneralInfo component
+       and un-render it. */
     setSelectedState: async function(state: SelectItem): Promise<void> {
       this.$store.commit('setSelectedState', state)
       this.$store.commit('setSelectedCovidStateData')
-      await this.$store.dispatch('getCovidCountyTotals')
+
+      if (this.getStatesAffectedCounties.length < 1) {
+        await this.$store.dispatch('getCovidCountyTotals')
+      }
+      if (this.getSelectedCounty.length > 0) {
+        this.$store.commit('setSelectedCounty', { name: '', value: '' })
+      }
     },
 
     setSelectedCounty: function(county: SelectItem): void {
