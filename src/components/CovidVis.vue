@@ -6,41 +6,41 @@
       </transition>
     </div>
 
-    <div class="covid-general-info-layout">
+    <div class="covid-totals-layout">
       <transition name="fade-slide-left">
-        <covid-general-info
+        <covid-totals
           v-if="renderComponents"
           :title="'Worldwide'"
-          :covidGeneralInfo="getCovidGlobalGeneralInfo"
+          :covidTotals="getCovidGlobalTotals"
         />
       </transition>
-      <!-- We only render Nationwide information if a country has been selected. -->
+      <!-- We only render Nationwide totals if a country has been selected. -->
       <transition name="fade-slide-left">
-        <covid-general-info
+        <covid-totals
           v-if="renderComponents && getSelectedCountry.length > 0"
           :title="'Nationwide'"
-          :covidGeneralInfo="getCovidCountryGeneralInfo"
+          :covidTotals="getCovidCountryTotals"
         />
       </transition>
-      <!-- We only render Statewide information if the country selected is the United States -->
+      <!-- We only render Statewide totals if the country selected is the United States -->
       <transition name="fade-slide-left">
-        <covid-general-info
-          v-if="renderComponents && renderStateGeneralInfo"
+        <covid-totals
+          v-if="renderComponents && renderStateTotals"
           :title="'Statewide'"
-          :covidGeneralInfo="getCovidStateGeneralInfo"
+          :covidTotals="getCovidStateTotals"
         />
       </transition>
-      <!-- We only render Countywide information if a state has been selected -->
+      <!-- We only render Countywide totals if a state has been selected -->
       <transition name="fade-slide-left">
-        <covid-general-info
-          v-if="renderComponents && renderCountyGeneralInfo"
+        <covid-totals
+          v-if="renderComponents && renderCountyTotals"
           :title="'Countywide'"
-          :covidGeneralInfo="getCovidCountyGeneralInfo"
+          :covidTotals="getCovidCountyTotals"
         />
       </transition>
     </div>
     <!-- <transition name="fade">
-      <covid-general-info v-if="renderComponents" />
+      <covid-totals v-if="renderComponents" />
     </transition> -->
     <!-- <transition name="fade">
       <covid-vis-controls />
@@ -63,7 +63,7 @@ import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
 import axios, { AxiosResponse } from 'axios'
 import { geolocationEP } from '../shared/constants/geolocationEP'
-import CovidGeneralInfo from '../shared/components/CovidGeneralInfo.vue'
+import CovidTotals from '../shared/components/CovidTotals.vue'
 import {
   CountryInfo,
   GeolocationResponse,
@@ -75,7 +75,7 @@ export default Vue.extend({
 
   components: {
     // Footer,
-    CovidGeneralInfo,
+    CovidTotals,
     // CovidVisControls,
     // CovidChart,
     CovidIntro
@@ -83,14 +83,14 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
-      'renderStateGeneralInfo',
-      'renderCountyGeneralInfo',
+      'renderStateTotals',
+      'renderCountyTotals',
       'getAllAffectedCountries',
       'getAllAffectedStates',
-      'getCovidCountryGeneralInfo',
-      'getCovidGlobalGeneralInfo',
-      'getCovidStateGeneralInfo',
-      'getCovidCountyGeneralInfo',
+      'getCovidCountryTotals',
+      'getCovidGlobalTotals',
+      'getCovidStateTotals',
+      'getCovidCountyTotals',
       'getSelectedCountry',
       'getSelectedState',
       'getSelectedCounty'
@@ -188,11 +188,11 @@ export default Vue.extend({
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.covid-general-info-layout {
+.covid-totals-layout {
   /* parent grid */
   grid-row-start: 3;
   grid-row-end: 4;
-  /* general info grid */
+  /* totals grid */
   display: grid;
   align-items: center;
   justify-content: center;

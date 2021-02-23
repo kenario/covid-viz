@@ -10,13 +10,13 @@ import {
   CovidState,
   SelectItem,
   ResultType,
+  CovidTotals,
   CountryInfo,
   CovidLineChart,
   CovidCountryData,
   CovidGlobalData,
   CovidStateData,
   CovidCountyData,
-  CovidGeneralInfo,
   CovidCountyDataRaw,
   CovidHistoricalData
 } from '../types/'
@@ -82,7 +82,7 @@ export const getters = {
   getCovidChartLabels: (state: CovidState): string[] =>
     state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
-  getCovidGlobalGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+  getCovidGlobalTotals: (state: CovidState): CovidTotals => {
     const data: CovidGlobalData = state.covidGlobalData
 
     return {
@@ -95,7 +95,7 @@ export const getters = {
     }
   },
 
-  getCovidCountryGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+  getCovidCountryTotals: (state: CovidState): CovidTotals => {
     const data: CovidCountryData = state.selectedCovidCountryData
 
     return {
@@ -108,7 +108,7 @@ export const getters = {
     }
   },
 
-  getCovidStateGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+  getCovidStateTotals: (state: CovidState): CovidTotals => {
     const data: CovidStateData = state.selectedCovidStateData
 
     return {
@@ -121,7 +121,7 @@ export const getters = {
     }
   },
 
-  getCovidCountyGeneralInfo: (state: CovidState): CovidGeneralInfo => {
+  getCovidCountyTotals: (state: CovidState): CovidTotals => {
     const data: CovidCountyData = state.selectedCovidCountyData
 
     return {
@@ -152,10 +152,11 @@ export const getters = {
     return covidChartData
   },
 
-  renderStateGeneralInfo: (state: CovidState): boolean =>
+  /* Conditionals to render state and county totals since we are only doing this for USA data. */
+  renderStateTotals: (state: CovidState): boolean =>
     state.selectedCountry === 'USA' && state.selectedState.length > 0,
 
-  renderCountyGeneralInfo: (state: CovidState): boolean => state.selectedCountry === 'USA'
+  renderCountyTotals: (state: CovidState): boolean => state.selectedCountry === 'USA'
     && state.selectedState.length > 0
     && state.selectedCovidCountyData.state === state.selectedState
 }

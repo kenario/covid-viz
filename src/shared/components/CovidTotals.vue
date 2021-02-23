@@ -1,29 +1,29 @@
 <template>
-  <div class="covid-general-info-container">
-    <div class="covid-general-info-title">
+  <div class="covid-totals-container">
+    <div class="covid-totals-title">
       {{ title }}
     </div>
 
     <div
-      class="covid-general-info"
+      class="covid-totals"
       v-for="(label, l) in infoLabels"
       :key="l"
     >
-      <div class="covid-general-info-section">
-        <div class="covid-general-info-label">
+      <div class="covid-totals-section">
+        <div class="covid-totals-label">
           {{ label | turnFirstLetterUppercase }}
         </div>
 
-        <div class="covid-general-info-value">
+        <div class="covid-totals-value">
           <template v-if="label === 'updated'">
-            {{ covidGeneralInfo[label].toString().length > 10
-                  ? moment(covidGeneralInfo[label]).format('MMMM Do YYYY, h:mm:ss a')
-                  : covidGeneralInfo[label].toString()
+            {{ covidTotals[label].toString().length > 10
+                  ? moment(covidTotals[label]).format('MMMM Do YYYY, h:mm:ss a')
+                  : covidTotals[label].toString()
             }}
           </template>
 
           <template v-else>
-            {{ covidGeneralInfo[label] ? covidGeneralInfo[label].toLocaleString('en-US') : 'Unavailable' }}
+            {{ covidTotals[label] ? covidTotals[label].toLocaleString('en-US') : 'Unavailable' }}
           </template>
         </div>
       </div>
@@ -34,15 +34,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
-import { CovidGeneralInfo } from '../../types'
+import { CovidTotals } from '../../types'
 
 export default Vue.extend({
 
-  name: 'CovidGeneralInfo',
+  name: 'CovidTotals',
 
   props: {
     title: String,
-    covidGeneralInfo: {} as () => CovidGeneralInfo
+    covidTotals: {} as () => CovidTotals
   },
 
   data: () => ({
@@ -50,7 +50,7 @@ export default Vue.extend({
   }),
 
   created() {
-    this.infoLabels = Object.keys(this.covidGeneralInfo)
+    this.infoLabels = Object.keys(this.covidTotals)
   },
 
   filters: {
@@ -67,12 +67,12 @@ export default Vue.extend({
 
 @import '../../styles/main';
 
-.covid-general-info-container {
+.covid-totals-container {
   height: 100%;
   width: 300px;
   margin: 10px 0 10px 0;
 }
-.covid-general-info-title {
+.covid-totals-title {
   color: $primary-color;
   font-size: 1.75rem;
   font-weight: 500;
@@ -81,15 +81,15 @@ export default Vue.extend({
   align-content: center;
   border-radius: 8px;
 }
-.covid-general-info-section {
+.covid-totals-section {
   margin: 10px 0 10px 10px;
 }
-.covid-general-info-label {
+.covid-totals-label {
   color: $accent-color;
   font-weight: 600;
   font-size: 1.25rem;
 }
-.covid-general-info-value {
+.covid-totals-value {
   color: $primary-color;
   font-weight: 600;
 }

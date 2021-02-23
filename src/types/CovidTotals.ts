@@ -1,7 +1,7 @@
 /**
- * Type for the general info section of covid visualization page.
+ * Type for the covid totals section of covid visualization page.
  */
-export interface CovidGeneralInfo {
+export interface CovidTotals {
   country?: string;
   state?: string;
   county?: string;
