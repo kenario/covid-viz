@@ -112,4 +112,24 @@ html, body, html * {
   right: 0px;
   overflow: hidden;
 }
+.section-title-font {
+  color: $primary-color;
+  font-weight: 600;
+  font-size: 3rem;
+}
+.section-subtitle-font {
+  color: $primary-color;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.standard-font {
+  color: $primary-color;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.info-font {
+  color: $primary-color;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
 </style>

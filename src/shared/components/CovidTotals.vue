@@ -1,6 +1,6 @@
 <template>
   <div class="covid-totals-container">
-    <div class="covid-totals-title">
+    <div class="covid-totals-title section-subtitle-font">
       {{ title }}
     </div>
 
@@ -14,7 +14,7 @@
           {{ label | turnFirstLetterUppercase }}
         </div>
 
-        <div class="covid-totals-value">
+        <div class="covid-totals-value standard-font">
           <template v-if="label === 'updated'">
             {{ covidTotals[label].toString().length > 10
                   ? moment(covidTotals[label]).format('MMMM Do YYYY, h:mm:ss a')
@@ -73,9 +73,6 @@ export default Vue.extend({
   margin: 10px 0 10px 0;
 }
 .covid-totals-title {
-  color: $primary-color;
-  font-size: 1.75rem;
-  font-weight: 500;
   height: 30px;
   display: grid;
   align-content: center;
@@ -88,9 +85,5 @@ export default Vue.extend({
   color: $accent-color;
   font-weight: 600;
   font-size: 1.25rem;
-}
-.covid-totals-value {
-  color: $primary-color;
-  font-weight: 600;
 }
 </style>

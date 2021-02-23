@@ -6,6 +6,10 @@
       </transition>
     </div>
 
+    <div class="covid-totals-title section-title-font">
+      TOTALS
+    </div>
+
     <div class="covid-totals-layout">
       <transition name="fade-slide-left">
         <covid-totals
@@ -169,6 +173,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import '../styles/main';
+
 .fade-slide-left-enter-active, .fade-slide-left-leave-active {
   transition: all 1.5s ease;
 }
@@ -188,10 +194,16 @@ export default Vue.extend({
   grid-row-start: 2;
   grid-row-end: 3;
 }
+.covid-totals-title {
+  /* parent grid */
+  grid-row: 3 / 4;
+  /* totals title grid */
+  display: grid;
+  justify-content: center;
+}
 .covid-totals-layout {
   /* parent grid */
-  grid-row-start: 3;
-  grid-row-end: 4;
+  grid-row: 4 / 5;
   /* totals grid */
   display: grid;
   align-items: center;

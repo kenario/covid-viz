@@ -1,6 +1,6 @@
 <template>
   <div class="covid-intro-container">
-    <div class="covid-intro-text">
+    <div class="covid-intro-text info-font">
       {{ intro }}
     </div>
   </div>
@@ -43,8 +43,6 @@ export default Vue.extend({
   grid-column-start: 2;
   grid-column-end: 3;
   color: $primary-color;
-  font-size: 1.5rem;
-  font-weight: 500;
   line-height: 1.375rem;
 }
 </style>
