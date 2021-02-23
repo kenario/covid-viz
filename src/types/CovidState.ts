@@ -21,9 +21,9 @@ export interface CovidState {
   selectedCovidCountryData: CovidCountryData;
   selectedCovidStateData: CovidStateData;
   selectedCovidCountyData: CovidCountyData;
-  covidGlobalTotals: CovidGlobalData;
-  covidCountryTotals: CovidCountryData[];
-  covidStateTotals: CovidStateData[];
-  covidCountyTotals: CovidCountyData[];
+  covidGlobalData: CovidGlobalData;
+  covidCountryData: CovidCountryData[];
+  covidStateData: CovidStateData[];
+  covidCountyData: CovidCountyData[];
   covidHistoricalCountryData: CovidHistoricalData;
 }

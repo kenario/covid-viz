@@ -119,9 +119,9 @@ export default Vue.extend({
   },
 
   async mounted() {
-    await this.$store.dispatch('getCovidGlobalTotals')
+    await this.$store.dispatch('getCovidGlobalData')
     await this.$store.dispatch('getCovidVaccineGlobalTotals')
-    await this.$store.dispatch('getCovidCountryTotals')
+    await this.$store.dispatch('getCovidCountryData')
     await this.$store.dispatch('getCovidVaccineCountryTotals')
     this.locateUser()
   },
@@ -153,11 +153,11 @@ export default Vue.extend({
             const state = res.data.address.state
             const county = res.data.address.county.replace(' County', '')
 
-            await this.$store.dispatch('getCovidStateTotals')
+            await this.$store.dispatch('getCovidStateData')
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
             this.$store.commit('setSelectedCovidStateData')
 
-            await this.$store.dispatch('getCovidCountyTotals')
+            await this.$store.dispatch('getCovidCountyData')
             this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
             this.$store.commit('setSelectedCovidCountyData')
           }

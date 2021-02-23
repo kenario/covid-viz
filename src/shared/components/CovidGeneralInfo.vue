@@ -82,7 +82,7 @@ export default Vue.extend({
   border-radius: 8px;
 }
 .covid-general-info-section {
-  margin: 10px 0 10px 20px;
+  margin: 10px 0 10px 10px;
 }
 .covid-general-info-label {
   color: $accent-color;
