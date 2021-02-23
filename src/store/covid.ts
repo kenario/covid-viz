@@ -90,6 +90,7 @@ export const getters = {
       deaths: data.deaths,
       recovered: data.recovered,
       tests: data.tests,
+      vaccinated: data.vaccinated,
       updated: data.updated
     }
   },
@@ -102,6 +103,7 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       tests: data.tests,
+      vaccinated: undefined,
       updated: data.updated
     }
   },
@@ -114,6 +116,7 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       tests: data.tests,
+      vaccinated: undefined,
       updated: data.updated
     }
   },
@@ -126,6 +129,7 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       tests: undefined,
+      vaccinated: undefined,
       updated: data.updated
     }
   },
@@ -208,6 +212,10 @@ export const mutations = {
     state.covidCountyTotals = data
   },
 
+  setCovidVaccineGlobalTotals: (state: CovidState, data: number): void => {
+    state.covidGlobalTotals.vaccinated = data
+  },
+
   setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
     state.covidHistoricalCountryData = data
   },
@@ -255,6 +263,13 @@ export const actions = {
       }
     })
     commit('setCovidCountyTotals', covidCountyTotals)
+  },
+
+  getCovidVaccineGlobalTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+    const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS)
+    Object.keys(res.data).forEach((key: string): void => {
+      commit('setCovidVaccineGlobalTotals', res.data[key])
+    })
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise

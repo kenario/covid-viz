@@ -160,7 +160,7 @@ export default Vue.extend({
         await this.$store.dispatch('getCovidStateTotals')
       }
     },
-    
+
     /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
        the state selected is not the currently selected state. */
     setSelectedState: async function(state: SelectItem): Promise<void> {

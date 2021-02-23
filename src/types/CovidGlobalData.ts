@@ -11,4 +11,5 @@ export interface CovidGlobalData extends CovidData {
   recoveredPerOneMillion: number;
   criticalPerOneMillion: number;
   affectedCountries: number;
+  vaccinated?: number;
 }

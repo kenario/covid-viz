@@ -9,5 +9,6 @@ export interface CovidGeneralInfo {
   deaths: number;
   recovered?: number;
   tests?: number;
+  vaccinated?: number;
   updated: number;
 }
