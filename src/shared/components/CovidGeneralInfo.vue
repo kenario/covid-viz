@@ -23,7 +23,7 @@
           </template>
 
           <template v-else>
-            {{ covidGeneralInfo[label] ? covidGeneralInfo[label] : 'Unavailable' }}
+            {{ covidGeneralInfo[label] ? covidGeneralInfo[label].toLocaleString('en-US') : 'Unavailable' }}
           </template>
         </div>
       </div>
