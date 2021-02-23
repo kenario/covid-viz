@@ -120,9 +120,9 @@ export default Vue.extend({
 
   async mounted() {
     await this.$store.dispatch('getCovidGlobalData')
-    await this.$store.dispatch('getCovidVaccineGlobalTotals')
+    await this.$store.dispatch('getCovidVaccineGlobalData')
     await this.$store.dispatch('getCovidCountryData')
-    await this.$store.dispatch('getCovidVaccineCountryTotals')
+    await this.$store.dispatch('getCovidVaccineCountryData')
     this.locateUser()
   },
 

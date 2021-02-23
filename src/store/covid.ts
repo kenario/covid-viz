@@ -213,12 +213,12 @@ export const mutations = {
     state.covidCountyData = data
   },
 
-  setCovidVaccineGlobalTotals: (state: CovidState, data: number): void => {
+  setCovidVaccineGlobalData: (state: CovidState, data: number): void => {
     state.covidGlobalData.vaccinated = data
   },
 
   /* We loop through each country and get the maps value using the country name as the key */
-  setCovidVaccineCountryTotals: (state: CovidState, data: Map<string, number>) => {
+  setCovidVaccineCountryData: (state: CovidState, data: Map<string, number>) => {
     state.covidCountryData.forEach((countryTotal: CovidCountryData): void => {
       countryTotal.vaccinated = data.get(countryTotal.country.toLowerCase())
     })
@@ -277,27 +277,27 @@ export const actions = {
   /* Vaccine data is queried just for the latest date but it is returned as a key value pair with the key
      being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity instead of
      delcaring an interface with an index signature or getting the current date. */
-  getCovidVaccineGlobalTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS)
     Object.keys(res.data).forEach((key: string): void => {
-      commit('setCovidVaccineGlobalTotals', res.data[key])
+      commit('setCovidVaccineGlobalData', res.data[key])
     })
   },
 
   /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
      the key and the value as the total vaccinations */
-  getCovidVaccineCountryTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES)
-    const countryVaccinatedTotals: Map<string, number> = new Map<string, number>()
+    const countryVaccinatedData: Map<string, number> = new Map<string, number>()
 
     // eslint-disable-next-line
     res.data.forEach((data: any) => {
-      let vaccinatedTotal = 0
-      Object.keys(data.timeline).forEach((key: string): void => { vaccinatedTotal = data.timeline[key] })
-      countryVaccinatedTotals.set(data.country.toLowerCase(), vaccinatedTotal)
+      let vaccinated = 0
+      Object.keys(data.timeline).forEach((key: string): void => { vaccinated = data.timeline[key] })
+      countryVaccinatedData.set(data.country.toLowerCase(), vaccinated)
     })
 
-    commit('setCovidVaccineCountryTotals', countryVaccinatedTotals)
+    commit('setCovidVaccineCountryData', countryVaccinatedData)
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
