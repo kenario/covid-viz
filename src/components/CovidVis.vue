@@ -61,27 +61,14 @@ import { mapGetters } from 'vuex'
 import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
-import CovidGeneralInfo from '../shared/components/CovidGeneralInfo.vue'
+import axios, { AxiosResponse } from 'axios'
 import { geolocationEP } from '../shared/constants/geolocationEP'
-import { CountryInfo } from '../types'
-
-/*
- * These two interfaces from Mozilla seem to not be exported, despite being available in the api.
- */
-interface GeolocationCoordinates {
-    readonly accuracy: number;
-    readonly altitude: number | null;
-    readonly altitudeAccuracy: number | null;
-    readonly heading: number | null;
-    readonly latitude: number;
-    readonly longitude: number;
-    readonly speed: number | null;
-}
-
-interface GeolocationPosition {
-    readonly coords: GeolocationCoordinates;
-    readonly timestamp: number;
-}
+import CovidGeneralInfo from '../shared/components/CovidGeneralInfo.vue'
+import {
+  CountryInfo,
+  GeolocationResponse,
+  GeolocationPosition
+} from '../types'
 
 export default Vue.extend({
   name: 'CovidVis',
@@ -99,6 +86,7 @@ export default Vue.extend({
       'renderStateGeneralInfo',
       'renderCountyGeneralInfo',
       'getAllAffectedCountries',
+      'getAllAffectedStates',
       'getCovidCountryGeneralInfo',
       'getCovidGlobalGeneralInfo',
       'getCovidStateGeneralInfo',
@@ -110,7 +98,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    location: '',
+    geolocationCountry: '',
     renderComponents: false
   }),
   /*
@@ -133,31 +121,44 @@ export default Vue.extend({
   async mounted() {
     await this.$store.dispatch('getCovidGlobalTotals')
     await this.$store.dispatch('getCovidCountryTotals')
-    this.locateUser()
+    // this.locateUser()
   },
 
   methods: {
-    /*
-     * If geolocation is available and the user clicks allow then we compare the location to the
-     * country codes of the countries affected by covid.
-     */
+    /* If geolocation is available and the user clicks allow then we compare the location to the
+       country codes of the countries affected by covid. */
     locateUser(): void {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
-          const res = await fetch(geolocationEP(position.coords.latitude, position.coords.longitude))
-          const data = await res.json()
-          /*
-           * Find the countries name by using the country code given.
-           */
-          this.location = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
-            data.address.country_code.toUpperCase() === countryInfo.countryCode).name
-          /*
-           * Mutate the selectedCountry and selectedCovidData state with that country.  Afterwards we
-           * ping that countries historical data.
-           */
-          this.$store.commit('setSelectedCountry', { name: this.location, value: this.location })
-          this.$store.commit('setSelectedCovidData')
+          const res: AxiosResponse<GeolocationResponse> = await axios
+            .get(geolocationEP(position.coords.latitude, position.coords.longitude))
+
+          /* Find the countries name by using the country code given. */
+          this.geolocationCountry = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
+            res.data.address.country_code.toUpperCase() === countryInfo.countryCode).name
+
+          /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
+             that countries historical data. */
+          this.$store.commit('setSelectedCountry', {
+            name: this.geolocationCountry,
+            value: this.geolocationCountry.toLowerCase()
+          })
+          this.$store.commit('setSelectedCovidCountryData')
           await this.$store.dispatch('getHistoricalCountryData')
+
+          /* If the users geolocation is the United States, we also fetch the users state and county data */
+          if (this.geolocationCountry.toLowerCase() === 'usa') {
+            const state = res.data.address.state
+            const county = res.data.address.county.replace(' County', '')
+
+            await this.$store.dispatch('getCovidStateTotals')
+            this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
+            this.$store.commit('setSelectedCovidStateData')
+
+            await this.$store.dispatch('getCovidCountyTotals')
+            this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+            this.$store.commit('setSelectedCovidCountyData')
+          }
         })
       }
     }
