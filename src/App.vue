@@ -124,7 +124,7 @@ html, body, html * {
 }
 .standard-font {
   color: $primary-color;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.25rem;
 }
 .info-font {

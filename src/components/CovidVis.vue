@@ -6,9 +6,14 @@
       </transition>
     </div>
 
-    <div class="covid-totals-title section-title-font">
-      TOTALS
-    </div>
+    <transition name="fade">
+      <div
+        v-if="renderComponents"
+        class="covid-totals-title section-title-font"
+      >
+          TOTALS
+      </div>
+    </transition>
 
     <div class="covid-totals-layout">
       <transition name="fade-slide-left">
@@ -208,6 +213,7 @@ export default Vue.extend({
   display: grid;
   align-items: center;
   justify-content: center;
+  grid-gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
   padding: 0 10% 0 10%;
   transition: 2s;
