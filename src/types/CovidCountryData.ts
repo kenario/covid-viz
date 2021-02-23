@@ -13,6 +13,7 @@ export interface CovidCountryData extends CovidData{
   recoveredPerOneMillion: number;
   criticalPerOneMillion: number;
   affectedCountries?: number;
+  vaccinated?: number;
 }
 
 interface CountryInfo {

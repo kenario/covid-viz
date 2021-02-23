@@ -122,6 +122,7 @@ export default Vue.extend({
     await this.$store.dispatch('getCovidGlobalTotals')
     await this.$store.dispatch('getCovidVaccineGlobalTotals')
     await this.$store.dispatch('getCovidCountryTotals')
+    await this.$store.dispatch('getCovidVaccineCountryTotals')
     this.locateUser()
   },
 

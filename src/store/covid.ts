@@ -103,7 +103,7 @@ export const getters = {
       cases: data.cases,
       deaths: data.deaths,
       tests: data.tests,
-      vaccinated: undefined,
+      vaccinated: data.vaccinated,
       updated: data.updated
     }
   },
@@ -216,6 +216,13 @@ export const mutations = {
     state.covidGlobalTotals.vaccinated = data
   },
 
+  /* We loop through each country and get the maps value using the country name as the key */
+  setCovidVaccineCountryTotals: (state: CovidState, data: Map<string, number>) => {
+    state.covidCountryTotals.forEach((countryTotal: CovidCountryData): void => {
+      countryTotal.vaccinated = data.get(countryTotal.country.toLowerCase())
+    })
+  },
+
   setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
     state.covidHistoricalCountryData = data
   },
@@ -248,6 +255,7 @@ export const actions = {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS)
     commit('setCovidStateTotals', res.data)
   },
+
   /* County data needs to be cleaned since it is the most different from the rest of the data. */
   getCovidCountyTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS)
@@ -265,11 +273,30 @@ export const actions = {
     commit('setCovidCountyTotals', covidCountyTotals)
   },
 
+  /* Vaccine data is queried just for the latest date but it is returned as a key value pair with the key
+     being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity instead of
+     delcaring an interface with an index signature or getting the current date. */
   getCovidVaccineGlobalTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
     const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS)
     Object.keys(res.data).forEach((key: string): void => {
       commit('setCovidVaccineGlobalTotals', res.data[key])
     })
+  },
+
+  /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
+     the key and the value as the total vaccinations */
+  getCovidVaccineCountryTotals: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+    const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES)
+    const countryVaccinatedTotals: Map<string, number> = new Map<string, number>()
+
+    // eslint-disable-next-line
+    res.data.forEach((data: any) => {
+      let vaccinatedTotal = 0
+      Object.keys(data.timeline).forEach((key: string): void => { vaccinatedTotal = data.timeline[key] })
+      countryVaccinatedTotals.set(data.country.toLowerCase(), vaccinatedTotal)
+    })
+
+    commit('setCovidVaccineCountryTotals', countryVaccinatedTotals)
   },
   /**
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
