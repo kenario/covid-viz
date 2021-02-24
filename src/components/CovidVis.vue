@@ -6,14 +6,13 @@
       </transition>
     </div>
 
-    <transition name="fade">
-      <div
-        v-if="renderComponents"
-        class="covid-totals-title section-title-font"
-      >
+    <div class="covid-totals-title section-title-font">
+      <transition name="fade">
+        <div v-if="renderComponents">
           TOTALS
-      </div>
-    </transition>
+        </div>
+      </transition>
+    </div>
 
     <div class="covid-totals-layout">
       <transition name="fade-slide-left">
@@ -48,6 +47,15 @@
         />
       </transition>
     </div>
+
+    <div class="covid-ranking-title section-title-font">
+      <transition name="fade">
+        <div v-if="renderComponents">
+          RANKING
+        </div>
+      </transition>
+    </div>
+
     <!-- <transition name="fade">
       <covid-totals v-if="renderComponents" />
     </transition> -->
@@ -178,6 +186,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+
 @import '../styles/main';
 
 .fade-slide-left-enter-active, .fade-slide-left-leave-active {
@@ -213,9 +222,16 @@ export default Vue.extend({
   display: grid;
   align-items: center;
   justify-content: center;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+  grid-column-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, 300px);
   padding: 0 10% 0 10%;
   transition: 2s;
+}
+.covid-ranking-title {
+  /* parent grid */
+  grid-row: 5 / 6;
+  /* totals title grid */
+  display: grid;
+  justify-content: center;
 }
 </style>

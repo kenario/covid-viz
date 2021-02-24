@@ -17,7 +17,7 @@
         <div class="covid-totals-value standard-font">
           <template v-if="label === 'updated'">
             {{ covidTotals[label].toString().length > 10
-                  ? moment(covidTotals[label]).format('MM/DD/YYYY, h:mm:ss a')
+                  ? moment(covidTotals[label]).format('MMM D ,YYYY, h:mm:ss a')
                   : covidTotals[label].toString()
             }}
           </template>
