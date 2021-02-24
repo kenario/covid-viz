@@ -11,7 +11,7 @@ interface RS {
   value: string;
 }
 
-const { getCovidCountryTotals, getHistoricalCountryData } = actions
+const { getCovidCountryData, getHistoricalCountryData } = actions
 
 describe('Covid Store actions', (): void => {
   const actionObject: ActionContext<CovidState, RS> = {
@@ -39,7 +39,7 @@ describe('Covid Store actions', (): void => {
     const covidDataAllCountries: CovidData[] = covidStateMocks.generateCovidDataAllCountries()
     axiosGetStub.resolves(covidDataAllCountries)
 
-    await getCovidCountryTotals(actionObject)
+    await getCovidCountryData(actionObject)
     expect(commitSpy.called).to.be.true
   })
 

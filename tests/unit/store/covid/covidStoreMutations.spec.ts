@@ -13,10 +13,10 @@ describe('Covid Store mutations', (): void => {
   })
 
   it('will set selected covid country data to appropriate country covid data when selectedCountry is mutated', (): void => {
-    covidState.covidCountryTotals = covidStateMocks.generateCovidDataAllCountries()
+    covidState.covidCountryData = covidStateMocks.generateCovidDataAllCountries()
     covidState.selectedCountry = covidConstants.affectedCountries[0].name
 
     setSelectedCovidCountryData(covidState)
-    expect(covidState.selectedCovidCountryData).to.eql(covidState.covidCountryTotals[0])
+    expect(covidState.selectedCovidCountryData).to.eql(covidState.covidCountryData[0])
   })
 })

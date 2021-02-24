@@ -24,12 +24,12 @@ export const covidConstants = {
     return datesAndValues
   },
 
-  generalInfo: {
+  covidGlobalTotals: {
     country: 'Skellige',
     cases: 0,
     deaths: 1,
-    recovered: 2,
-    tests: 3,
+    tests: 2,
+    vaccinated: 3,
     updated: 4
   }
 }
