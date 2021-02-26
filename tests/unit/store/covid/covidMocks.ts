@@ -36,7 +36,15 @@ export const covidConstants = {
     tests: 2,
     vaccinated: 3,
     updated: 4
-  }
+  },
+
+  vaccinatedData: [
+    ['redania', 1],
+    ['temeria', 2],
+    ['nilfgaard', 3],
+    ['toussaint', 4],
+    ['zerrikania', 5]
+  ]
 }
 
 export const covidStateMocks = {
@@ -118,5 +126,14 @@ export const covidStateMocks = {
         recovered: datesAndValues
       }
     }
-  }
+  },
+
+  generateVaccinatedCountryMap: (): Map<string, number> =>
+    new Map<string, number>([
+      ['redania', 1],
+      ['temeria', 2],
+      ['nilfgaard', 3],
+      ['toussaint', 4],
+      ['zerrikania', 5]
+    ])
 }

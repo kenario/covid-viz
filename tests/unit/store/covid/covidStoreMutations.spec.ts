@@ -1,9 +1,9 @@
 import { expect } from 'chai'
-import { CovidState } from '@/types'
+import { CovidState, CovidCountryData } from '@/types'
 import { state, mutations } from '@/store/covid'
 import { covidStateMocks, covidConstants } from './covidMocks'
 
-const { setSelectedCovidCountryData } = mutations
+const { setSelectedCovidCountryData, setCovidVaccineCountryData } = mutations
 
 let covidState: CovidState = state()
 
@@ -18,5 +18,15 @@ describe('Covid Store mutations', (): void => {
 
     setSelectedCovidCountryData(covidState)
     expect(covidState.selectedCovidCountryData).to.eql(covidState.covidCountryData[0])
+  })
+
+  it('will set covid vaccinated data for each country', (): void => {
+    const countryVaccinated = covidStateMocks.generateVaccinatedCountryMap()
+    covidState.covidCountryData = covidStateMocks.generateCovidDataAllCountries()
+    setCovidVaccineCountryData(covidState, countryVaccinated)
+
+    const expected = covidState.covidCountryData.map((data: CovidCountryData): number => data.vaccinated as number)
+    const actual = [...countryVaccinated.values()]
+    expect(expected).to.eql(actual)
   })
 })
