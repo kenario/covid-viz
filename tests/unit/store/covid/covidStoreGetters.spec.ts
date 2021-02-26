@@ -5,6 +5,7 @@ import { state, getters } from '@/store/covid'
 
 const {
   getAllAffectedCountries,
+  getStatesAffectedCounties,
   getCovidChartLabels,
   getCovidCountryTotals,
   getCovidChartData
@@ -19,13 +20,20 @@ describe('Covid Store getters', (): void => {
 
   it('can get all affected countries', (): void => {
     covidState.covidCountryData = covidStateMocks.generateCovidDataAllCountries()
-
     expect(getAllAffectedCountries(covidState)).to.eql(covidConstants.affectedCountries)
+  })
+
+  it('can get all affected counties', (): void => {
+    covidState.covidCountyData = covidStateMocks.generateCovidDataAllCounties()
+    covidState.selectedState = covidConstants.affectedCountries[0].name
+    expect(getStatesAffectedCounties(covidState)).to.eql([{
+      name: covidConstants.affectedCountries[0].name,
+      value: covidConstants.affectedCountries[0].name.toLowerCase()
+    }])
   })
 
   it('can get chart labels needed for covid chart', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
-
     expect(getCovidChartLabels(covidState)).to
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })

@@ -1,5 +1,10 @@
 import moment from 'moment'
-import { CovidCountryData, CovidHistoricalData, DateValue } from '@/types'
+import {
+  CovidCountryData,
+  CovidCountyData,
+  CovidHistoricalData,
+  DateValue
+} from '@/types'
 import { randomInteger } from '@/shared/randomInteger'
 
 export const covidConstants = {
@@ -72,6 +77,26 @@ export const covidStateMocks = {
         recoveredPerOneMillion: randomInteger(min, max),
         criticalPerOneMillion: randomInteger(min, max),
         affectedCountries: randomInteger(min, max)
+      })
+    }
+
+    return result
+  },
+
+  generateCovidDataAllCounties: (): CovidCountyData[] => {
+    const result: CovidCountyData[] = []
+    const min = 0
+    const max = 5000
+
+    for (let x = 0; x < 5; x++) {
+      result.push({
+        country: covidConstants.affectedCountries[x].name,
+        state: covidConstants.affectedCountries[x].name,
+        county: covidConstants.affectedCountries[x].name,
+        cases: randomInteger(min, max),
+        deaths: randomInteger(min, max),
+        recovered: randomInteger(min, max),
+        updated: randomInteger(min, max)
       })
     }
 
