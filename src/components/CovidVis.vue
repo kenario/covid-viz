@@ -56,6 +56,10 @@
       </transition>
     </div>
 
+    <div class="covid-ranking-layout">
+
+    </div>
+
     <!-- <transition name="fade">
       <covid-totals v-if="renderComponents" />
     </transition> -->
