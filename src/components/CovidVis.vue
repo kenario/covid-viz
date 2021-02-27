@@ -57,7 +57,10 @@
     </div>
 
     <div class="covid-ranking-layout">
-
+      <covid-ranking
+        :title="'Cases'"
+        :items="getCountriesWithHighestCases"
+      />
     </div>
 
     <!-- <transition name="fade">
@@ -78,13 +81,14 @@
 <script lang="ts">
 
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
+import CovidRanking from '../shared/components/CovidRanking.vue'
+import CovidTotals from '../shared/components/CovidTotals.vue'
+import { mapGetters } from 'vuex'
 import axios, { AxiosResponse } from 'axios'
 import { geolocationEP } from '../shared/constants/geolocationEP'
-import CovidTotals from '../shared/components/CovidTotals.vue'
 import {
   CountryInfo,
   GeolocationResponse,
@@ -97,6 +101,7 @@ export default Vue.extend({
   components: {
     // Footer,
     CovidTotals,
+    CovidRanking,
     // CovidVisControls,
     // CovidChart,
     CovidIntro
@@ -107,6 +112,7 @@ export default Vue.extend({
       'renderStateTotals',
       'renderCountyTotals',
       'getAllAffectedCountries',
+      'getCountriesWithHighestCases',
       'getAllAffectedStates',
       'getCovidCountryTotals',
       'getCovidGlobalTotals',
@@ -237,5 +243,15 @@ export default Vue.extend({
   /* totals title grid */
   display: grid;
   justify-content: center;
+}
+.covid-ranking-layout {
+  /* parent grid */
+  grid-row: 6 / 7;
+  /* ranking grid */
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-column-gap: 1rem;
+  grid-template-columns: repeat(3, 300px);
 }
 </style>

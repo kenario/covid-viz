@@ -138,7 +138,7 @@ export const getters = {
    * Sort the countries by the greater casesPerOneMillion, return first five countries, and
    * return the countries names and their casesPerOneMillion. */
   getCountriesWithHighestCases: (state: CovidState): CovidRankingData[] => {
-    return state.covidCountryData
+    return [...state.covidCountryData]
       .sort((currentData: CovidCountryData, nextData: CovidCountryData): number =>
         nextData.casesPerOneMillion - currentData.casesPerOneMillion)
       .slice(0, 5)

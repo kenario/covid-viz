@@ -132,4 +132,9 @@ html, body, html * {
   font-weight: 500;
   font-size: 1.5rem;
 }
+.label-font {
+  color: $accent-color;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
 </style>

@@ -10,7 +10,7 @@
       :key="l"
     >
       <div class="covid-totals-section">
-        <div class="covid-totals-label">
+        <div class="covid-totals-label label-font">
           {{ label | turnFirstLetterUppercase }}
         </div>
 
@@ -80,10 +80,5 @@ export default Vue.extend({
 }
 .covid-totals-section {
   margin: 10px 0 10px 10px;
-}
-.covid-totals-label {
-  color: $accent-color;
-  font-weight: 600;
-  font-size: 1.25rem;
 }
 </style>
