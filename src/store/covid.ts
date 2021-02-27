@@ -13,10 +13,11 @@ import {
   CovidTotals,
   CountryInfo,
   CovidLineChart,
-  CovidCountryData,
-  CovidGlobalData,
   CovidStateData,
+  CovidGlobalData,
   CovidCountyData,
+  CovidRankingData,
+  CovidCountryData,
   CovidCountyDataRaw,
   CovidHistoricalData
 } from '../types/'
@@ -132,6 +133,18 @@ export const getters = {
       vaccinated: undefined,
       updated: data.updated
     }
+  },
+  /*
+   * Sort the countries by the greater casesPerOneMillion, return first five countries, and
+   * return the countries names and their casesPerOneMillion. */
+  getCountriesWithHighestCases: (state: CovidState): CovidRankingData[] => {
+    return state.covidCountryData
+      .sort((currentData: CovidCountryData, nextData: CovidCountryData): number =>
+        nextData.casesPerOneMillion - currentData.casesPerOneMillion)
+      .slice(0, 5)
+      .map((data: CovidCountryData): CovidRankingData => {
+        return { name: data.country, total: data.casesPerOneMillion }
+      })
   },
   /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to

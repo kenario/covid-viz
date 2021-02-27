@@ -1,13 +1,18 @@
 import { expect } from 'chai'
 import { covidConstants, covidStateMocks } from './covidMocks'
-import { CovidState, DateValue, CovidLineChart } from '@/types'
+import {
+  DateValue,
+  CovidState,
+  CovidLineChart
+} from '@/types'
 import { state, getters } from '@/store/covid'
 
 const {
-  getAllAffectedCountries,
+  getCountriesWithHighestCases,
   getStatesAffectedCounties,
-  getCovidChartLabels,
+  getAllAffectedCountries,
   getCovidCountryTotals,
+  getCovidChartLabels,
   getCovidChartData
 } = getters
 
@@ -73,5 +78,31 @@ describe('Covid Store getters', (): void => {
     }
 
     expect(getCovidChartData(covidState)).to.eql([expected])
+  })
+
+  it('can get the top five countries with the most casesPerOneMillion in descending order', (): void => {
+    covidState.covidCountryData = [
+      ...covidStateMocks.generateCovidDataAllCountries(),
+      ...covidStateMocks.generateCovidDataAllCountries()
+    ]
+    const countriesWithHighestCases = getCountriesWithHighestCases(covidState)
+    let isDescendingOrder = true
+    /*
+     * Iterate through result and make sure that the totals are in descending order.  Loop stops
+     * when index is out of bounds or when a total is found to not be in descending order. */
+    for (let x = 0; x < countriesWithHighestCases.length; x++) {
+      if (!countriesWithHighestCases[x + 1]) {
+        break
+      } else {
+        isDescendingOrder = countriesWithHighestCases[x].total > countriesWithHighestCases[x + 1].total
+      }
+
+      if (!isDescendingOrder) {
+        break
+      }
+    }
+    
+    expect(isDescendingOrder).to.be.true
+    expect(countriesWithHighestCases.length).to.equal(5)
   })
 })
