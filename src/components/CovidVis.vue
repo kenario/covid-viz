@@ -48,17 +48,29 @@
       </transition>
     </div>
 
-    <div class="covid-ranking-title section-title-font">
+    <div class="covid-ranking-title-layout">
       <transition name="fade">
-        <div v-if="renderComponents">
-          RANKING
+        <div
+          v-if="renderComponents"
+          class="covid-ranking-title section-title-font"
+        >
+          {{ rankingTitle }}
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div
+          v-if="renderComponents"
+          class="covid-ranking-subtitle standard-font"
+        >
+          {{ rankingSubtitle }}
         </div>
       </transition>
     </div>
 
     <div class="covid-ranking-layout">
       <covid-ranking
-        :title="'Cases'"
+        :title="'Worldwide Cases'"
         :items="getCountriesWithHighestCases"
       />
     </div>
@@ -126,7 +138,9 @@ export default Vue.extend({
 
   data: () => ({
     geolocationCountry: '',
-    renderComponents: false
+    renderComponents: false,
+    rankingTitle: 'RANKING',
+    rankingSubtitle: 'All rankings are measured using "per one million" of a given population'
   }),
   /*
    * Created and Mount hook represent the Vuex store's entry point for initializing default state.
@@ -237,12 +251,19 @@ export default Vue.extend({
   padding: 0 10% 0 10%;
   transition: 2s;
 }
-.covid-ranking-title {
+.covid-ranking-title-layout {
   /* parent grid */
   grid-row: 5 / 6;
-  /* totals title grid */
+}
+.covid-ranking-title {
   display: grid;
   justify-content: center;
+  margin: 10px 0 10px 0;
+}
+.covid-ranking-subtitle {
+  display: grid;
+  justify-content: center;
+  margin: 10px 0 10px 0;
 }
 .covid-ranking-layout {
   /* parent grid */
