@@ -135,15 +135,15 @@ export const getters = {
     }
   },
   /*
-   * Sort the states by the greater casesPerOneMillion, return first five states, and
-   * return the states names and their casesPerOneMillion. */
-  getStatesWithHighestCases: (state: CovidState): CovidRankingData[] => {
-    return [...state.covidStateData]
-      .sort((currentData: CovidStateData, nextData: CovidStateData): number =>
+   * Sort the countries by the greater casesPerOneMillion, return first five countries, and
+   * return the countries names and their casesPerOneMillion. */
+  getCountriesWithHighestCases: (state: CovidState): CovidRankingData[] => {
+    return [...state.covidCountryData]
+      .sort((currentData: CovidCountryData, nextData: CovidCountryData): number =>
         nextData.casesPerOneMillion - currentData.casesPerOneMillion)
       .slice(0, 5)
-      .map((data: CovidStateData): CovidRankingData => {
-        return { name: data.state, total: data.casesPerOneMillion }
+      .map((data: CovidCountryData): CovidRankingData => {
+        return { name: data.country, total: data.casesPerOneMillion }
       })
   },
   /*
