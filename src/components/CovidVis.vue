@@ -58,7 +58,7 @@
         </div>
       </transition>
 
-      <transition name="fade">
+      <transition name="fade-slide-left">
         <div
           v-if="renderComponents"
           class="covid-ranking-subtitle standard-font"
@@ -68,11 +68,30 @@
       </transition>
     </div>
 
-    <div class="covid-ranking-layout">
-      <covid-ranking
-        :title="'Worldwide Cases'"
-        :items="getCountriesWithHighestCases"
-      />
+    <div class="covid-country-ranking-layout">
+      <transition name="fade-slide-left">
+        <covid-ranking
+          v-if="renderComponents"
+          :title="'Worldwide Cases'"
+          :items="getWorldwideCaseRankings"
+        />
+      </transition>
+
+      <transition name="fade-slide-left">
+        <covid-ranking
+          v-if="renderComponents"
+          :title="'Worldwide Deaths'"
+          :items="getWorldwideDeathRankings"
+        />
+      </transition>
+
+      <transition name="fade-slide-left">
+        <covid-ranking
+          v-if="renderComponents"
+          :title="'Worldwide Tests'"
+          :items="getWorldwideTestRankings"
+        />
+      </transition>
     </div>
 
     <!-- <transition name="fade">
@@ -124,7 +143,9 @@ export default Vue.extend({
       'renderStateTotals',
       'renderCountyTotals',
       'getAllAffectedCountries',
-      'getCountriesWithHighestCases',
+      'getWorldwideCaseRankings',
+      'getWorldwideDeathRankings',
+      'getWorldwideTestRankings',
       'getAllAffectedStates',
       'getCovidCountryTotals',
       'getCovidGlobalTotals',
@@ -265,7 +286,7 @@ export default Vue.extend({
   justify-content: center;
   margin: 10px 0 10px 0;
 }
-.covid-ranking-layout {
+.covid-country-ranking-layout {
   /* parent grid */
   grid-row: 6 / 7;
   /* ranking grid */

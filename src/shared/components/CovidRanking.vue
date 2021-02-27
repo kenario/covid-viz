@@ -9,13 +9,13 @@
       class="covid-ranking-item standard-font"
       :key="index"
     >
-      <span class="covid-ranking-label label-font">
-        {{ index + 1 }}. {{ item.name }}:
-      </span>
+      <div class="covid-ranking-label label-font">
+        {{ index + 1 }}. {{ item.name }}
+      </div>
 
-      <span class="covid-ranking-total">
+      <div class="covid-ranking-total">
         {{ item.total.toLocaleString('en-US') }}
-      </span>
+      </div>
     </div>
   </div>
 </template>
@@ -38,5 +38,8 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .covid-ranking-item {
   margin: 10px 0 10px 10px;
+}
+.covid-ranking-total {
+  margin-left: 23px;
 }
 </style>

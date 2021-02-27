@@ -101,7 +101,7 @@ describe('Covid Store getters', (): void => {
         break
       }
     }
-    
+
     expect(isDescendingOrder).to.be.true
     expect(countriesWithHighestCases.length).to.equal(5)
   })

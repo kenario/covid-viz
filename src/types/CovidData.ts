@@ -1,6 +1,7 @@
 /* Base fields for CovidData from the disease.sh API. */
 
 export interface CovidData {
+  [key: string]: number;
   updated: number;
   cases: number;
   todayCases: number;

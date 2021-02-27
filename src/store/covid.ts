@@ -134,18 +134,15 @@ export const getters = {
       updated: data.updated
     }
   },
-  /*
-   * Sort the countries by the greater casesPerOneMillion, return first five countries, and
-   * return the countries names and their casesPerOneMillion. */
-  getCountriesWithHighestCases: (state: CovidState): CovidRankingData[] => {
-    return [...state.covidCountryData]
-      .sort((currentData: CovidCountryData, nextData: CovidCountryData): number =>
-        nextData.casesPerOneMillion - currentData.casesPerOneMillion)
-      .slice(0, 5)
-      .map((data: CovidCountryData): CovidRankingData => {
-        return { name: data.country, total: data.casesPerOneMillion }
-      })
-  },
+
+  getWorldwideCaseRankings: (state: CovidState): CovidRankingData[] =>
+    findHighestRankedCovidData([...state.covidCountryData], 'country', 'casesPerOneMillion', 10),
+
+  getWorldwideDeathRankings: (state: CovidState): CovidRankingData[] =>
+    findHighestRankedCovidData([...state.covidCountryData], 'country', 'deathsPerOneMillion', 10),
+
+  getWorldwideTestRankings: (state: CovidState): CovidRankingData[] =>
+    findHighestRankedCovidData([...state.covidCountryData], 'country', 'testsPerOneMillion', 10),
   /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to
    * CovidLineChart data structure.
@@ -408,6 +405,19 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
 
   return result
 }
+/**
+ * Sorts the data in descending order, returns the top x amount, and returns the data name and data total
+ * @param covidData - Any data that has extended the CovidData interface
+ * @param covidDataScale - country, state
+ * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
+ * @param numberOfRanks - top x amount (example: Top 5 cases per one million)
+ */
+const findHighestRankedCovidData = (covidData: CovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] =>
+  covidData
+    .sort((currentData: CovidData, nextData: CovidData): number => nextData[covidDataType] - currentData[covidDataType])
+    .slice(0, numberOfRanks)
+    // eslint-disable-next-line
+    .map((data: CovidData): CovidRankingData => { return { name: (data as any)[covidDataScale], total: data[covidDataType] } })
 
 export const covid = {
   state: state,
