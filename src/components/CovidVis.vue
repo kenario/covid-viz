@@ -59,7 +59,7 @@
     <div class="covid-ranking-layout">
       <covid-ranking
         :title="'Cases'"
-        :items="getCountriesWithHighestCases"
+        :items="getStatesWithHighestCases"
       />
     </div>
 
@@ -112,7 +112,7 @@ export default Vue.extend({
       'renderStateTotals',
       'renderCountyTotals',
       'getAllAffectedCountries',
-      'getCountriesWithHighestCases',
+      'getStatesWithHighestCases',
       'getAllAffectedStates',
       'getCovidCountryTotals',
       'getCovidGlobalTotals',
