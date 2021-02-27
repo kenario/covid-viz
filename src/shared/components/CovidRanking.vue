@@ -14,7 +14,7 @@
       </span>
 
       <span class="covid-ranking-total">
-        {{ item.total }}
+        {{ item.total.toLocaleString('en-US') }}
       </span>
     </div>
   </div>
