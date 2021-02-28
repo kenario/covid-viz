@@ -87,12 +87,12 @@ export const getters = {
     const data: CovidGlobalData = state.covidGlobalData
 
     return {
-      cases: data.cases,
-      deaths: data.deaths,
+      cases: data.baseData.cases,
+      deaths: data.baseData.deaths,
       recovered: data.recovered,
-      tests: data.tests,
+      tests: data.baseData.tests,
       vaccinated: data.vaccinated,
-      updated: data.updated
+      updated: data.baseData.updated
     }
   },
 
@@ -101,11 +101,11 @@ export const getters = {
 
     return {
       country: data.country,
-      cases: data.cases,
-      deaths: data.deaths,
-      tests: data.tests,
+      cases: data.baseData.cases,
+      deaths: data.baseData.deaths,
+      tests: data.baseData.tests,
       vaccinated: data.vaccinated,
-      updated: data.updated
+      updated: data.baseData.updated
     }
   },
 
@@ -114,11 +114,11 @@ export const getters = {
 
     return {
       state: data.state,
-      cases: data.cases,
-      deaths: data.deaths,
-      tests: data.tests,
+      cases: data.baseData.cases,
+      deaths: data.baseData.deaths,
+      tests: data.baseData.tests,
       vaccinated: undefined,
-      updated: data.updated
+      updated: data.baseData.updated
     }
   },
 
@@ -407,17 +407,19 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
 }
 /**
  * Sorts the data in descending order, returns the top x amount, and returns the data name and data total
- * @param covidData - Any data that has extended the CovidData interface
+ * @param covidData - Any data that has contains baseData member
  * @param covidDataScale - country, state
  * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
  * @param numberOfRanks - top x amount (example: Top 5 cases per one million)
  */
-const findHighestRankedCovidData = (covidData: CovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] =>
+const findHighestRankedCovidData = (covidData: TypesOfCovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] => 
   covidData
-    .sort((currentData: CovidData, nextData: CovidData): number => nextData[covidDataType] - currentData[covidDataType])
+    .sort((currentData: TypesOfCovidData, nextData: TypesOfCovidData): number => nextData.baseData[covidDataType] - currentData.baseData[covidDataType])
     .slice(0, numberOfRanks)
     // eslint-disable-next-line
-    .map((data: CovidData): CovidRankingData => { return { name: (data as any)[covidDataScale], total: data[covidDataType] } })
+    .map((data: TypesOfCovidData): CovidRankingData => { return { name: (data as any)[covidDataScale], total: data.baseData[covidDataType] } })
+    
+type TypesOfCovidData = CovidCountryData | CovidStateData
 
 export const covid = {
   state: state,

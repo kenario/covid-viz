@@ -1,6 +1,6 @@
 import { CovidData } from './CovidData'
 
-export interface CovidCountryData extends CovidData{
+export interface CovidCountryData {
   country: string;
   countryInfo?: CountryInfo;
   recovered: number;
@@ -14,6 +14,7 @@ export interface CovidCountryData extends CovidData{
   criticalPerOneMillion: number;
   affectedCountries?: number;
   vaccinated?: number;
+  baseData: CovidData;
 }
 
 interface CountryInfo {
