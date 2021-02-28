@@ -1,7 +1,7 @@
 import sinon from 'sinon'
 import { expect } from 'chai'
 import { ActionContext } from 'vuex'
-import { CovidData, CovidHistoricalData, CovidState } from '@/types'
+import { CovidCountryData, CovidHistoricalData, CovidState } from '@/types'
 import { state, actions } from '@/store/covid'
 import { covidStateMocks } from './covidMocks'
 import moment from 'moment'
@@ -36,7 +36,7 @@ describe('Covid Store actions', (): void => {
   })
 
   it('can fetch covid data for all countries', async (): Promise<void> => {
-    const covidDataAllCountries: CovidData[] = covidStateMocks.generateCovidDataAllCountries()
+    const covidDataAllCountries: CovidCountryData[] = covidStateMocks.generateCovidDataAllCountries()
     axiosGetStub.resolves(covidDataAllCountries)
 
     await getCovidCountryData(actionObject)

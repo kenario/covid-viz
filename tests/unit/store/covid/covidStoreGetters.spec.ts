@@ -8,7 +8,7 @@ import {
 import { state, getters } from '@/store/covid'
 
 const {
-  getCountriesWithHighestCases,
+  getWorldwideCaseRankings,
   getStatesAffectedCounties,
   getAllAffectedCountries,
   getCovidCountryTotals,
@@ -46,11 +46,11 @@ describe('Covid Store getters', (): void => {
   it('can get covid country totals', (): void => {
     covidState.selectedCovidCountryData = covidStateMocks.generateCovidDataAllCountries()[0]
     covidState.selectedCovidCountryData.country = covidConstants.covidGlobalTotals.country
-    covidState.selectedCovidCountryData.cases = covidConstants.covidGlobalTotals.cases
-    covidState.selectedCovidCountryData.deaths = covidConstants.covidGlobalTotals.deaths
-    covidState.selectedCovidCountryData.tests = covidConstants.covidGlobalTotals.tests
+    covidState.selectedCovidCountryData.baseData.cases = covidConstants.covidGlobalTotals.cases
+    covidState.selectedCovidCountryData.baseData.deaths = covidConstants.covidGlobalTotals.deaths
+    covidState.selectedCovidCountryData.baseData.tests = covidConstants.covidGlobalTotals.tests
     covidState.selectedCovidCountryData.vaccinated = covidConstants.covidGlobalTotals.vaccinated
-    covidState.selectedCovidCountryData.updated = covidConstants.covidGlobalTotals.updated
+    covidState.selectedCovidCountryData.baseData.updated = covidConstants.covidGlobalTotals.updated
     expect(getCovidCountryTotals(covidState)).to.eql(covidConstants.covidGlobalTotals)
   })
 
@@ -85,7 +85,7 @@ describe('Covid Store getters', (): void => {
       ...covidStateMocks.generateCovidDataAllCountries(),
       ...covidStateMocks.generateCovidDataAllCountries()
     ]
-    const countriesWithHighestCases = getCountriesWithHighestCases(covidState)
+    const countriesWithHighestCases = getWorldwideCaseRankings(covidState)
     let isDescendingOrder = true
     /*
      * Iterate through result and make sure that the totals are in descending order.  Loop stops
@@ -103,6 +103,6 @@ describe('Covid Store getters', (): void => {
     }
 
     expect(isDescendingOrder).to.be.true
-    expect(countriesWithHighestCases.length).to.equal(5)
+    expect(countriesWithHighestCases.length).to.equal(10)
   })
 })

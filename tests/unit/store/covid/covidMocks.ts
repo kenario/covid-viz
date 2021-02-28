@@ -55,7 +55,6 @@ export const covidStateMocks = {
 
     for (let x = 0; x < 5; x++) {
       result.push({
-        updated: randomInteger(min, max),
         country: covidConstants.affectedCountries[x].name,
         countryInfo: {
           _id: randomInteger(min, max),
@@ -65,26 +64,29 @@ export const covidStateMocks = {
           long: randomInteger(min, max),
           flag: `${randomInteger(min, max)}`
         },
-        cases: randomInteger(min, max),
-        todayCases: randomInteger(min, max),
-        deaths: randomInteger(min, max),
-        todayDeaths: randomInteger(min, max),
         recovered: randomInteger(min, max),
         todayRecovered: randomInteger(min, max),
-        active: randomInteger(min, max),
         critical: randomInteger(min, max),
-        casesPerOneMillion: randomInteger(min, max),
-        deathsPerOneMillion: randomInteger(min, max),
-        tests: randomInteger(min, max),
-        testsPerOneMillion: randomInteger(min, max),
-        population: randomInteger(min, max),
         continent: `${randomInteger(min, max)}`,
         oneCasePerPeople: randomInteger(min, max),
         oneTestPerPeople: randomInteger(min, max),
         activePerOneMillion: randomInteger(min, max),
         recoveredPerOneMillion: randomInteger(min, max),
         criticalPerOneMillion: randomInteger(min, max),
-        affectedCountries: randomInteger(min, max)
+        affectedCountries: randomInteger(min, max),
+        baseData: {
+          updated: randomInteger(min, max),
+          cases: randomInteger(min, max),
+          todayCases: randomInteger(min, max),
+          deaths: randomInteger(min, max),
+          todayDeaths: randomInteger(min, max),
+          active: randomInteger(min, max),
+          casesPerOneMillion: randomInteger(min, max),
+          deathsPerOneMillion: randomInteger(min, max),
+          tests: randomInteger(min, max),
+          testsPerOneMillion: randomInteger(min, max),
+          population: randomInteger(min, max)
+        }
       })
     }
 
