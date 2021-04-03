@@ -160,7 +160,10 @@ export const getters = {
       state.selectedCovidDataType.forEach((type: SelectItem): void => {
         covidChartData.push({
           label: type.name,
-          data: determineCovidChartData(state.covidHistoricalCountryData.timeline[type.value], state.selectedResultType)
+          data: determineCovidChartData(
+            state.covidHistoricalCountryData.timeline[type.value],
+            state.selectedResultType
+          )
         })
       })
     }
@@ -199,18 +202,21 @@ export const mutations = {
    * API and is sure to exist.  This is the same for the selected state data as well.
    */
   setSelectedCovidCountryData: (state: CovidStoreState): void => {
-    state.selectedCovidCountryData = state.covidCountryData
-      .find((data: CovidCountryData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
+    state.selectedCovidCountryData = state.covidCountryData.find((data: CovidCountryData): boolean =>
+      data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase())
+    )!
   },
 
   setSelectedCovidStateData: (state: CovidStoreState): void => {
-    state.selectedCovidStateData = state.covidStateData
-      .find((data: CovidStateData): boolean => data.state!.toLowerCase().includes(state.selectedState.toLowerCase()))!
+    state.selectedCovidStateData = state.covidStateData.find((data: CovidStateData): boolean =>
+      data.state!.toLowerCase().includes(state.selectedState.toLowerCase())
+    )!
   },
 
   setSelectedCovidCountyData: (state: CovidStoreState): void => {
-    state.selectedCovidCountyData = state.covidCountyData
-      .find((data: CovidCountyData): boolean => data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase()))!
+    state.selectedCovidCountyData = state.covidCountyData.find((data: CovidCountyData): boolean =>
+      data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase())
+    )!
   },
 
   setCovidGlobalData: (state: CovidStoreState, data: CovidGlobalData): void => {
@@ -259,25 +265,33 @@ export const mutations = {
 
 export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res: AxiosResponse<CovidData> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS)
-    console.log('here: ', res)
-
-    commit('setCovidGlobalData', res.data)
+    const covidGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS
+    const res: AxiosResponse<CovidData> = await axios.get(covidGlobalDataEP)
+    commit('setCovidGlobalData', CovidDataMapper.map<CovidGlobalData>(res.data))
   },
 
   getCovidCountryData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
-    commit('setCovidCountryData', res.data)
+    const covidCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES
+    const res: AxiosResponse<CovidData[]> = await axios.get(covidCountryDataEP)
+    const data: CovidCountryData[] = res.data.map((data: CovidData): CovidCountryData =>
+      CovidDataMapper.map<CovidCountryData>(data)
+    )
+    commit('setCovidCountryData', data)
   },
 
   getCovidStateData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS)
-    commit('setCovidStateData', res.data)
+    const covidStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS
+    const res: AxiosResponse<CovidData[]> = await axios.get(covidStateDataEP)
+    const data: CovidStateData[] = res.data.map((data: CovidData): CovidStateData =>
+      CovidDataMapper.map<CovidStateData>(data)
+    )
+    commit('setCovidStateData', data)
   },
 
   /* County data needs to be cleaned since it is the most different from the rest of the data. */
   getCovidCountyData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS)
+    const covidCountyDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS
+    const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidCountyDataEP)
     const covidCountyData: CovidCountyData[] = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
       return {
         country: d.country,
@@ -296,7 +310,8 @@ export const actions = {
      being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity instead of
      delcaring an interface with an index signature or getting the current date. */
   getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS)
+    const vaccineGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS
+    const res = await axios.get(vaccineGlobalDataEP)
     Object.keys(res.data).forEach((key: string): void => {
       commit('setCovidVaccineGlobalData', res.data[key])
     })
@@ -305,7 +320,8 @@ export const actions = {
   /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
      the key and the value as the total vaccinations */
   getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
-    const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES)
+    const vaccineCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES
+    const res = await axios.get(vaccineCountryDataEP)
     const countryVaccinatedData: Map<string, number> = new Map<string, number>()
 
     // eslint-disable-next-line
@@ -415,19 +431,30 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
 }
 /**
  * Sorts the data in descending order, returns the top x amount, and returns the data name and data total
- * @param covidData - Any data that has contains baseData member
+ * @param covidData - Any data that has baseData member
  * @param covidDataScale - country, state
  * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
  * @param numberOfRanks - top x amount (example: Top 5 cases per one million)
  */
-const findHighestRankedCovidData = (covidData: TypesOfCovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] =>
-  covidData
-    .sort((currentData: TypesOfCovidData, nextData: TypesOfCovidData): number => nextData.baseData[covidDataType] - currentData.baseData[covidDataType])
-    .slice(0, numberOfRanks)
-    // eslint-disable-next-line
-    .map((data: TypesOfCovidData): CovidRankingData => { return { name: (data as any)[covidDataScale], total: data.baseData[covidDataType] } })
+function findHighestRankedCovidData(covidData: CovidDataType[], covidDataScale: string,
+  covidDataType: string, numberOfRanks: number): CovidRankingData[] {
+  const sortAscending = (current: CovidDataType, next: CovidDataType): number =>
+    next.baseData[covidDataType] - current.baseData[covidDataType]
+  const nameAndTotal = (data: CovidDataType): CovidRankingData => {
+    return {
+      // eslint-disable-next-line
+      name: (data as any)[covidDataScale], 
+      total: data.baseData[covidDataType]
+    }
+  }
 
-type TypesOfCovidData = CovidCountryData | CovidStateData
+  return covidData
+    .sort(sortAscending)
+    .slice(0, numberOfRanks)
+    .map(nameAndTotal)
+}
+
+type CovidDataType = CovidCountryData | CovidStateData
 
 export const covid = {
   state: state,
