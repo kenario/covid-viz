@@ -142,13 +142,13 @@ export const getters = {
   },
 
   getWorldwideCaseRankings: (state: CovidStoreState): CovidRankingData[] =>
-    findHighestRankedCovidData([...state.covidCountryData], 'country', 'casesPerOneMillion', 10),
+    rankCovidData([...state.covidCountryData], 'country', 'casesPerOneMillion'),
 
   getWorldwideDeathRankings: (state: CovidStoreState): CovidRankingData[] =>
-    findHighestRankedCovidData([...state.covidCountryData], 'country', 'deathsPerOneMillion', 10),
+    rankCovidData([...state.covidCountryData], 'country', 'deathsPerOneMillion'),
 
   getWorldwideTestRankings: (state: CovidStoreState): CovidRankingData[] =>
-    findHighestRankedCovidData([...state.covidCountryData], 'country', 'testsPerOneMillion', 10),
+    rankCovidData([...state.covidCountryData], 'country', 'testsPerOneMillion'),
   /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to
    * CovidLineChart data structure.
@@ -431,13 +431,11 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
 }
 /**
  * Sorts the data in descending order, returns the top x amount, and returns the data name and data total
- * @param covidData - Any data that has baseData member
+ * @param covidData - Any data that has baseData field
  * @param covidDataScale - country, state
  * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
- * @param numberOfRanks - top x amount (example: Top 5 cases per one million)
  */
-function findHighestRankedCovidData(covidData: CovidDataType[], covidDataScale: string,
-  covidDataType: string, numberOfRanks: number): CovidRankingData[] {
+function rankCovidData(covidData: CovidDataType[], covidDataScale: string, covidDataType: string): CovidRankingData[] {
   const sortAscending = (current: CovidDataType, next: CovidDataType): number =>
     next.baseData[covidDataType] - current.baseData[covidDataType]
   const nameAndTotal = (data: CovidDataType): CovidRankingData => {
@@ -450,7 +448,7 @@ function findHighestRankedCovidData(covidData: CovidDataType[], covidDataScale: 
 
   return covidData
     .sort(sortAscending)
-    .slice(0, numberOfRanks)
+    .slice(0, 10)
     .map(nameAndTotal)
 }
 
