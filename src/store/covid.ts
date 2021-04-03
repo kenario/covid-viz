@@ -1,16 +1,23 @@
-import axios, { AxiosResponse } from 'axios'
 import moment from 'moment'
+import axios, { AxiosResponse } from 'axios'
+
 import { ActionContext } from 'vuex'
 import { covidEP } from '@/shared/constants'
+import { CovidStoreState } from './CovidStoreState'
+import { CovidDataMapper } from '@/shared/CovidDataMapper'
+
 import {
   DateValue,
   DateRange,
-  CovidData,
   GraphType,
   SelectItem,
   ResultType,
+  CountryInfo
+} from '@/types'
+
+import {
+  CovidData,
   CovidTotals,
-  CountryInfo,
   CovidLineChart,
   CovidStateData,
   CovidGlobalData,
@@ -19,9 +26,7 @@ import {
   CovidCountryData,
   CovidCountyDataRaw,
   CovidHistoricalData
-} from '@/types'
-
-import { CovidStoreState } from './CovidStoreState'
+} from '@/types/covid'
 
 // RootState
 interface RS {
@@ -255,6 +260,8 @@ export const mutations = {
 export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS)
+    console.log('here: ', res)
+
     commit('setCovidGlobalData', res.data)
   },
 

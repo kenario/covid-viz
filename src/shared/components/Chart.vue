@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CovidLineChart } from '@/types/'
+import { CovidLineChart } from '@/types/covid'
 import { Chart, ChartConfiguration } from 'chart.js'
 import { randomInteger } from '@/shared/randomInteger'
 

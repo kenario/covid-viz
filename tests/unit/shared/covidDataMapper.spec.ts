@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { CovidDataMapper } from '@/shared/CovidDataMapper'
-import { CovidCountryData } from '@/types'
+import { CovidCountryData } from '@/types/covid'
 import { covidStateMocks } from '../covidMocks'
 
 describe('CovidDataMapper', (): void => {

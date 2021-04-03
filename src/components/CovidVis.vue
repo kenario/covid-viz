@@ -112,9 +112,9 @@
 <script lang="ts">
 
 import Vue from 'vue'
-import Footer from '@/Footer.vue'
-import CovidChart from '@/CovidChart.vue'
-import CovidIntro from '@/CovidIntro.vue'
+import Footer from './Footer.vue'
+import CovidChart from './CovidChart.vue'
+import CovidIntro from './CovidIntro.vue'
 import CovidRanking from '@/shared/components/CovidRanking.vue'
 import CovidTotals from '@/shared/components/CovidTotals.vue'
 import { mapGetters } from 'vuex'

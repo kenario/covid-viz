@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import { CovidCountryData } from '@/types'
-import { CovidStoreState } from '@/store/CovidStoreState'
+import { CovidCountryData } from '@/types/covid'
 import { state, mutations } from '@/store/covid'
+import { CovidStoreState } from '@/store/CovidStoreState'
 import { covidStateMocks, covidConstants } from '../../covidMocks'
 
 const { setSelectedCovidCountryData, setCovidVaccineCountryData } = mutations

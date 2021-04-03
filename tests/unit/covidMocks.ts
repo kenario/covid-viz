@@ -1,11 +1,11 @@
 import moment from 'moment'
-import {
-  CovidCountryData,
-  CovidCountyData,
-  CovidHistoricalData,
-  DateValue
-} from '@/types'
+import { DateValue } from '@/types'
 import { randomInteger } from '@/shared/randomInteger'
+import {
+  CovidCountyData,
+  CovidCountryData,
+  CovidHistoricalData
+} from '@/types/covid'
 
 export const covidConstants = {
   affectedCountries: [

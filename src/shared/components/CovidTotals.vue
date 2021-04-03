@@ -34,7 +34,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
-import { CovidTotals } from '@/types'
+import { CovidTotals } from '@/types/covid'
 
 export default Vue.extend({
 

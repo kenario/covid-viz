@@ -1,7 +1,7 @@
 import sinon from 'sinon'
 import { expect } from 'chai'
 import { ActionContext } from 'vuex'
-import { CovidCountryData, CovidHistoricalData } from '@/types'
+import { CovidCountryData, CovidHistoricalData } from '@/types/covid'
 import { state, actions } from '@/store/covid'
 import { CovidStoreState } from '@/store/CovidStoreState'
 import { covidStateMocks } from '../../covidMocks'
