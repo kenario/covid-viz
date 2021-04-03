@@ -13,7 +13,7 @@ import {
   CovidHistoricalData
 } from '@/types/covid'
 
-export interface CovidStoreState {
+export interface CovidStateType {
   selectedCountry: string;
   selectedState: string;
   selectedCounty: string;

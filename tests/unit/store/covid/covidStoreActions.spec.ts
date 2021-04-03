@@ -1,21 +1,20 @@
+import axios from 'axios'
 import sinon from 'sinon'
+import moment from 'moment'
 import { expect } from 'chai'
 import { ActionContext } from 'vuex'
-import { CovidCountryData, CovidHistoricalData } from '@/types/covid'
-import { state, actions } from '@/store/covid'
-import { CovidStoreState } from '@/store/CovidStoreState'
-import { covidStateMocks } from '../../covidMocks'
-import moment from 'moment'
-import axios from 'axios'
 
-interface RS {
-  value: string;
-}
+import { RS } from '@/store/RS'
+import { state } from '@/store/covid/state'
+import { actions } from '@/store/covid/actions'
+import { covidStateMocks } from '../../covidMocks'
+import { CovidStateType } from '@/store/covid/CovidStateType'
+import { CovidCountryData, CovidHistoricalData } from '@/types/covid'
 
 const { getCovidCountryData, getHistoricalCountryData } = actions
 
 describe('CovidStoreActions', (): void => {
-  const actionObject: ActionContext<CovidStoreState, RS> = {
+  const actionObject: ActionContext<CovidStateType, RS> = {
     commit: (type: string): string => type,
     state: state(),
     dispatch: () => Promise.resolve(),
@@ -38,7 +37,7 @@ describe('CovidStoreActions', (): void => {
 
   it('fetches covid data for all countries', async (): Promise<void> => {
     const covidDataAllCountries: CovidCountryData[] = covidStateMocks.generateCovidDataAllCountries()
-    axiosGetStub.resolves(covidDataAllCountries)
+    axiosGetStub.resolves({ data: covidDataAllCountries })
 
     await getCovidCountryData(actionObject)
     expect(commitSpy.called).to.be.true

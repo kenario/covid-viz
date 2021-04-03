@@ -1,8 +1,9 @@
 import { expect } from 'chai'
 import { DateValue } from '@/types'
+import { state } from '@/store/covid/state'
 import { CovidLineChart } from '@/types/covid'
-import { state, getters } from '@/store/covid'
-import { CovidStoreState } from '@/store/CovidStoreState'
+import { getters } from '@/store/covid/getters'
+import { CovidStateType } from '@/store/covid/CovidStateType'
 import { covidConstants, covidStateMocks } from '../../covidMocks'
 
 const {
@@ -14,7 +15,7 @@ const {
   getCovidChartData
 } = getters
 
-let covidState: CovidStoreState = state()
+let covidState: CovidStateType = state()
 
 describe('CovidStoreGetters', (): void => {
   afterEach((): void => {
