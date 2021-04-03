@@ -1,16 +1,19 @@
 import {
-  DateRange,
-  GraphType,
-  ResultType,
-  SelectItem,
   CovidGlobalData,
   CovidStateData,
   CovidCountyData,
   CovidCountryData,
   CovidHistoricalData
-} from './'
+} from '../types/covid'
 
-export interface CovidState {
+import {
+  DateRange,
+  GraphType,
+  ResultType,
+  SelectItem
+} from '../types'
+
+export interface CovidStoreState {
   selectedCountry: string;
   selectedState: string;
   selectedCounty: string;

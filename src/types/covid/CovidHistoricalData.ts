@@ -1,4 +1,4 @@
-import { DateValue } from './DateValue'
+import { DateValue } from '../'
 
 /**
  * Historical Country Data for specific country and default or specified number of days from the
