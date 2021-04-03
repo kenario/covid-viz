@@ -412,13 +412,13 @@ const determineCovidChartData = (data: any, resultType: ResultType): number[] =>
  * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
  * @param numberOfRanks - top x amount (example: Top 5 cases per one million)
  */
-const findHighestRankedCovidData = (covidData: TypesOfCovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] => 
+const findHighestRankedCovidData = (covidData: TypesOfCovidData[], covidDataScale: string, covidDataType: string, numberOfRanks: number): CovidRankingData[] =>
   covidData
     .sort((currentData: TypesOfCovidData, nextData: TypesOfCovidData): number => nextData.baseData[covidDataType] - currentData.baseData[covidDataType])
     .slice(0, numberOfRanks)
     // eslint-disable-next-line
     .map((data: TypesOfCovidData): CovidRankingData => { return { name: (data as any)[covidDataScale], total: data.baseData[covidDataType] } })
-    
+
 type TypesOfCovidData = CovidCountryData | CovidStateData
 
 export const covid = {

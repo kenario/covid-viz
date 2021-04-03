@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { ActionContext } from 'vuex'
 import { CovidCountryData, CovidHistoricalData, CovidState } from '@/types'
 import { state, actions } from '@/store/covid'
-import { covidStateMocks } from './covidMocks'
+import { covidStateMocks } from '../../covidMocks'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -13,7 +13,7 @@ interface RS {
 
 const { getCovidCountryData, getHistoricalCountryData } = actions
 
-describe('Covid Store actions', (): void => {
+describe('CovidStoreActions', (): void => {
   const actionObject: ActionContext<CovidState, RS> = {
     commit: (type: string): string => type,
     state: state(),
@@ -35,7 +35,7 @@ describe('Covid Store actions', (): void => {
     axiosGetStub.restore()
   })
 
-  it('can fetch covid data for all countries', async (): Promise<void> => {
+  it('fetches covid data for all countries', async (): Promise<void> => {
     const covidDataAllCountries: CovidCountryData[] = covidStateMocks.generateCovidDataAllCountries()
     axiosGetStub.resolves(covidDataAllCountries)
 
@@ -43,7 +43,7 @@ describe('Covid Store actions', (): void => {
     expect(commitSpy.called).to.be.true
   })
 
-  it('can fetch historical covid data within a date range ', async (): Promise<void> => {
+  it('fetches historical covid data within a date range ', async (): Promise<void> => {
     const covidHistoricalCountryData: CovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
     const mockDates: Date[] = [moment.utc().subtract(1, 'days').toDate(), moment.utc().toDate()]
     const expected = '1'
