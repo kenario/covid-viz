@@ -1,13 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 import moment from 'moment'
 import { ActionContext } from 'vuex'
-import { covidEP } from '../shared/constants/'
+import { covidEP } from '@/shared/constants'
 import {
   DateValue,
   DateRange,
   CovidData,
   GraphType,
-  CovidState,
   SelectItem,
   ResultType,
   CovidTotals,
@@ -20,7 +19,9 @@ import {
   CovidCountryData,
   CovidCountyDataRaw,
   CovidHistoricalData
-} from '../types/'
+} from '@/types'
+
+import { CovidStoreState } from './CovidStoreState'
 
 // RootState
 interface RS {
@@ -46,32 +47,32 @@ export const state = () => ({
 })
 
 export const getters = {
-  getSelectedCountry: (state: CovidState): string => state.selectedCountry,
+  getSelectedCountry: (state: CovidStoreState): string => state.selectedCountry,
 
-  getSelectedState: (state: CovidState): string => state.selectedState,
+  getSelectedState: (state: CovidStoreState): string => state.selectedState,
 
-  getSelectedCounty: (state: CovidState): string => state.selectedCounty,
+  getSelectedCounty: (state: CovidStoreState): string => state.selectedCounty,
 
-  getSelectedGraphType: (state: CovidState): GraphType => state.selectedGraphType,
+  getSelectedGraphType: (state: CovidStoreState): GraphType => state.selectedGraphType,
 
-  getSelectedResultType: (state: CovidState): ResultType => state.selectedResultType,
+  getSelectedResultType: (state: CovidStoreState): ResultType => state.selectedResultType,
 
-  getNumberOfSelectedCovidDataTypes: (state: CovidState): string =>
+  getNumberOfSelectedCovidDataTypes: (state: CovidStoreState): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
   /*
    * Map all affected countries names and country codes.
    */
-  getAllAffectedCountries: (state: CovidState): CountryInfo[] =>
+  getAllAffectedCountries: (state: CovidStoreState): CountryInfo[] =>
     state.covidCountryData.map((data: CovidCountryData): CountryInfo => {
       return { name: data.country!, countryCode: data.countryInfo?.iso2! }
     }),
   /*  Map all affected state names. */
-  getAllAffectedStates: (state: CovidState): SelectItem[] =>
+  getAllAffectedStates: (state: CovidStoreState): SelectItem[] =>
     state.covidStateData.map((data: CovidStateData): SelectItem => {
       return { name: data.state, value: data.state.toLowerCase() }
     }),
   /* Map all affected counties of the selected state. */
-  getStatesAffectedCounties: (state: CovidState): SelectItem[] =>
+  getStatesAffectedCounties: (state: CovidStoreState): SelectItem[] =>
     state.covidCountyData
       .filter((data: CovidCountyData): boolean => data.state === state.selectedState)
       .map((data: CovidCountyData): SelectItem => {
@@ -80,10 +81,10 @@ export const getters = {
   /*
    * Map the dates provided by the selected countries historical data.
    */
-  getCovidChartLabels: (state: CovidState): string[] =>
+  getCovidChartLabels: (state: CovidStoreState): string[] =>
     state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
-  getCovidGlobalTotals: (state: CovidState): CovidTotals => {
+  getCovidGlobalTotals: (state: CovidStoreState): CovidTotals => {
     const data: CovidGlobalData = state.covidGlobalData
 
     return {
@@ -96,7 +97,7 @@ export const getters = {
     }
   },
 
-  getCovidCountryTotals: (state: CovidState): CovidTotals => {
+  getCovidCountryTotals: (state: CovidStoreState): CovidTotals => {
     const data: CovidCountryData = state.selectedCovidCountryData
 
     return {
@@ -109,7 +110,7 @@ export const getters = {
     }
   },
 
-  getCovidStateTotals: (state: CovidState): CovidTotals => {
+  getCovidStateTotals: (state: CovidStoreState): CovidTotals => {
     const data: CovidStateData = state.selectedCovidStateData
 
     return {
@@ -122,7 +123,7 @@ export const getters = {
     }
   },
 
-  getCovidCountyTotals: (state: CovidState): CovidTotals => {
+  getCovidCountyTotals: (state: CovidStoreState): CovidTotals => {
     const data: CovidCountyData = state.selectedCovidCountyData
 
     return {
@@ -135,19 +136,19 @@ export const getters = {
     }
   },
 
-  getWorldwideCaseRankings: (state: CovidState): CovidRankingData[] =>
+  getWorldwideCaseRankings: (state: CovidStoreState): CovidRankingData[] =>
     findHighestRankedCovidData([...state.covidCountryData], 'country', 'casesPerOneMillion', 10),
 
-  getWorldwideDeathRankings: (state: CovidState): CovidRankingData[] =>
+  getWorldwideDeathRankings: (state: CovidStoreState): CovidRankingData[] =>
     findHighestRankedCovidData([...state.covidCountryData], 'country', 'deathsPerOneMillion', 10),
 
-  getWorldwideTestRankings: (state: CovidState): CovidRankingData[] =>
+  getWorldwideTestRankings: (state: CovidStoreState): CovidRankingData[] =>
     findHighestRankedCovidData([...state.covidCountryData], 'country', 'testsPerOneMillion', 10),
   /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to
    * CovidLineChart data structure.
    */
-  getCovidChartData: (state: CovidState): CovidLineChart[] => {
+  getCovidChartData: (state: CovidStoreState): CovidLineChart[] => {
     const covidChartData: CovidLineChart[] = []
 
     if (state.covidHistoricalCountryData.timeline) {
@@ -163,28 +164,28 @@ export const getters = {
   },
 
   /* Conditionals to render state and county totals since we are only doing this for USA data. */
-  renderStateTotals: (state: CovidState): boolean =>
+  renderStateTotals: (state: CovidStoreState): boolean =>
     state.selectedCountry === 'USA' && state.selectedState.length > 0,
 
-  renderCountyTotals: (state: CovidState): boolean => state.selectedCountry === 'USA'
+  renderCountyTotals: (state: CovidStoreState): boolean => state.selectedCountry === 'USA'
     && state.selectedState.length > 0
     && state.selectedCovidCountyData.state === state.selectedState
 }
 
 export const mutations = {
-  setSelectedCountry: (state: CovidState, country: SelectItem): void => {
+  setSelectedCountry: (state: CovidStoreState, country: SelectItem): void => {
     state.selectedCountry = country.name
   },
 
-  setSelectedState: (state: CovidState, selectedState: SelectItem): void => {
+  setSelectedState: (state: CovidStoreState, selectedState: SelectItem): void => {
     state.selectedState = selectedState.name
   },
 
-  setSelectedCounty: (state: CovidState, county: SelectItem): void => {
+  setSelectedCounty: (state: CovidStoreState, county: SelectItem): void => {
     state.selectedCounty = county.name
   },
 
-  setSelectedDates: (state: CovidState, dates: DateRange): void => {
+  setSelectedDates: (state: CovidStoreState, dates: DateRange): void => {
     state.selectedDates = dates
   },
   /**
@@ -192,83 +193,83 @@ export const mutations = {
    * selectedCovidCountryData state.  Asserts that country is not null, since country comes from the Covid
    * API and is sure to exist.  This is the same for the selected state data as well.
    */
-  setSelectedCovidCountryData: (state: CovidState): void => {
+  setSelectedCovidCountryData: (state: CovidStoreState): void => {
     state.selectedCovidCountryData = state.covidCountryData
       .find((data: CovidCountryData): boolean => data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase()))!
   },
 
-  setSelectedCovidStateData: (state: CovidState): void => {
+  setSelectedCovidStateData: (state: CovidStoreState): void => {
     state.selectedCovidStateData = state.covidStateData
       .find((data: CovidStateData): boolean => data.state!.toLowerCase().includes(state.selectedState.toLowerCase()))!
   },
 
-  setSelectedCovidCountyData: (state: CovidState): void => {
+  setSelectedCovidCountyData: (state: CovidStoreState): void => {
     state.selectedCovidCountyData = state.covidCountyData
       .find((data: CovidCountyData): boolean => data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase()))!
   },
 
-  setCovidGlobalData: (state: CovidState, data: CovidGlobalData): void => {
+  setCovidGlobalData: (state: CovidStoreState, data: CovidGlobalData): void => {
     state.covidGlobalData = data
   },
 
-  setCovidCountryData: (state: CovidState, data: CovidCountryData[]): void => {
+  setCovidCountryData: (state: CovidStoreState, data: CovidCountryData[]): void => {
     state.covidCountryData = data
   },
 
-  setCovidStateData: (state: CovidState, data: CovidStateData[]): void => {
+  setCovidStateData: (state: CovidStoreState, data: CovidStateData[]): void => {
     state.covidStateData = data
   },
 
-  setCovidCountyData: (state: CovidState, data: CovidCountyData[]): void => {
+  setCovidCountyData: (state: CovidStoreState, data: CovidCountyData[]): void => {
     state.covidCountyData = data
   },
 
-  setCovidVaccineGlobalData: (state: CovidState, data: number): void => {
+  setCovidVaccineGlobalData: (state: CovidStoreState, data: number): void => {
     state.covidGlobalData.vaccinated = data
   },
 
   /* We loop through each country and get the maps value using the country name as the key */
-  setCovidVaccineCountryData: (state: CovidState, data: Map<string, number>) => {
+  setCovidVaccineCountryData: (state: CovidStoreState, data: Map<string, number>) => {
     state.covidCountryData.forEach((countryTotal: CovidCountryData): void => {
       countryTotal.vaccinated = data.get(countryTotal.country.toLowerCase())
     })
   },
 
-  setHistoricalCountryData: (state: CovidState, data: CovidHistoricalData): void => {
+  setHistoricalCountryData: (state: CovidStoreState, data: CovidHistoricalData): void => {
     state.covidHistoricalCountryData = data
   },
 
-  setSelectedCovidDataType: (state: CovidState, dataType: SelectItem[]): void => {
+  setSelectedCovidDataType: (state: CovidStoreState, dataType: SelectItem[]): void => {
     state.selectedCovidDataType = dataType
   },
 
-  setSelectedResultType: (state: CovidState, resultType: ResultType): void => {
+  setSelectedResultType: (state: CovidStoreState, resultType: ResultType): void => {
     state.selectedResultType = resultType
   },
 
-  setSelectedGraphType: (state: CovidState, graphType: GraphType): void => {
+  setSelectedGraphType: (state: CovidStoreState, graphType: GraphType): void => {
     state.selectedGraphType = graphType
   }
 }
 
 export const actions = {
-  getCovidGlobalData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidGlobalData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS)
     commit('setCovidGlobalData', res.data)
   },
 
-  getCovidCountryData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidCountryData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES)
     commit('setCovidCountryData', res.data)
   },
 
-  getCovidStateData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidStateData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidData[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS)
     commit('setCovidStateData', res.data)
   },
 
   /* County data needs to be cleaned since it is the most different from the rest of the data. */
-  getCovidCountyData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidCountyData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS)
     const covidCountyData: CovidCountyData[] = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
       return {
@@ -287,7 +288,7 @@ export const actions = {
   /* Vaccine data is queried just for the latest date but it is returned as a key value pair with the key
      being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity instead of
      delcaring an interface with an index signature or getting the current date. */
-  getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS)
     Object.keys(res.data).forEach((key: string): void => {
       commit('setCovidVaccineGlobalData', res.data[key])
@@ -296,7 +297,7 @@ export const actions = {
 
   /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
      the key and the value as the total vaccinations */
-  getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidState, RS>): Promise<void> => {
+  getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     const res = await axios.get(covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES)
     const countryVaccinatedData: Map<string, number> = new Map<string, number>()
 
@@ -313,7 +314,7 @@ export const actions = {
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
    * specified.
    */
-  getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidState, RS>): Promise<void> => {
+  getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidStoreState, RS>): Promise<void> => {
     let numOfDays = ''
 
     const today = moment.utc()

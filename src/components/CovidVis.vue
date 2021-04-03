@@ -112,19 +112,19 @@
 <script lang="ts">
 
 import Vue from 'vue'
-import Footer from './Footer.vue'
-import CovidChart from './CovidChart.vue'
-import CovidIntro from './CovidIntro.vue'
-import CovidRanking from '../shared/components/CovidRanking.vue'
-import CovidTotals from '../shared/components/CovidTotals.vue'
+import Footer from '@/Footer.vue'
+import CovidChart from '@/CovidChart.vue'
+import CovidIntro from '@/CovidIntro.vue'
+import CovidRanking from '@/shared/components/CovidRanking.vue'
+import CovidTotals from '@/shared/components/CovidTotals.vue'
 import { mapGetters } from 'vuex'
 import axios, { AxiosResponse } from 'axios'
-import { geolocationEP } from '../shared/constants/geolocationEP'
+import { geolocationEP } from '@/shared/constants/geolocationEP'
 import {
   CountryInfo,
   GeolocationResponse,
   GeolocationPosition
-} from '../types'
+} from '@/types'
 
 export default Vue.extend({
   name: 'CovidVis',

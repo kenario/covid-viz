@@ -14,7 +14,7 @@
 import Vue from 'vue'
 import moment from 'moment'
 import flatpickr from 'flatpickr'
-import '../../styles/customFlatpickr.scss'
+import '@/styles/customFlatpickr.scss'
 
 export default Vue.extend({
   name: 'DatePicker',

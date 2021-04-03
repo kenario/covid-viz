@@ -1,6 +1,5 @@
 /*
  * Maps the raw covid data to covid data for specific scales: worldwide, countrywide, statewide, countywide */
-import { CovidData } from '../types/'
 
 export class CovidDataMapper {
   private static readonly covidDataFields = [

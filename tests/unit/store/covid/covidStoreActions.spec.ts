@@ -1,8 +1,9 @@
 import sinon from 'sinon'
 import { expect } from 'chai'
 import { ActionContext } from 'vuex'
-import { CovidCountryData, CovidHistoricalData, CovidState } from '@/types'
+import { CovidCountryData, CovidHistoricalData } from '@/types'
 import { state, actions } from '@/store/covid'
+import { CovidStoreState } from '@/store/CovidStoreState'
 import { covidStateMocks } from '../../covidMocks'
 import moment from 'moment'
 import axios from 'axios'
@@ -14,7 +15,7 @@ interface RS {
 const { getCovidCountryData, getHistoricalCountryData } = actions
 
 describe('CovidStoreActions', (): void => {
-  const actionObject: ActionContext<CovidState, RS> = {
+  const actionObject: ActionContext<CovidStoreState, RS> = {
     commit: (type: string): string => type,
     state: state(),
     dispatch: () => Promise.resolve(),

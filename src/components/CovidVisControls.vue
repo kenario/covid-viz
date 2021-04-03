@@ -102,11 +102,11 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem } from '../types/'
-import Dropdown from '../shared/components/Dropdown.vue'
-import DatePicker from '../shared/components/DatePicker.vue'
-import MultiSelect from '../shared/components/selects/MultiSelect.vue'
-import SingleSelect from '../shared/components/selects/SingleSelect.vue'
+import { DateRange, ResultType, GraphType, SelectItem } from '@/types'
+import Dropdown from '@/shared/components/Dropdown.vue'
+import DatePicker from '@/shared/components/DatePicker.vue'
+import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
+import SingleSelect from '@/shared/components/selects/SingleSelect.vue'
 
 export default Vue.extend({
   name: 'CovidVisControls',
