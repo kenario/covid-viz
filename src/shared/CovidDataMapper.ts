@@ -8,9 +8,12 @@ export class CovidDataMapper {
     'deaths',
     'active',
     'updated',
+    'recovered',
+    'vaccinated',
     'population',
     'todayCases',
     'todayDeaths',
+    'todayRecovered',
     'casesPerOneMillion',
     'testsPerOneMillion',
     'deathsPerOneMillion'

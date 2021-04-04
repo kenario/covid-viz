@@ -5,26 +5,22 @@
     </div>
 
     <div
-      class="covid-totals"
-      v-for="(label, l) in infoLabels"
-      :key="l"
+      v-if="isTotalsPopulated"
+      class="covid-totals-list"
     >
-      <div class="covid-totals-section">
-        <div class="covid-totals-label label-font">
-          {{ label | turnFirstLetterUppercase }}
-        </div>
+      <div
+        class="covid-total"
+        v-for="(label, l) in infoLabels"
+        :key="l"
+      >
+        <div class="covid-total-item">
+          <div class="covid-totals-label label-font">
+            {{ label | turnFirstLetterUppercase }}
+          </div>
 
-        <div class="covid-totals-value standard-font">
-          <template v-if="label === 'updated'">
-            {{ covidTotals[label].toString().length > 10
-                  ? moment(covidTotals[label]).format('MMM D ,YYYY, h:mm:ss a')
-                  : covidTotals[label].toString()
-            }}
-          </template>
-
-          <template v-else>
-            {{ covidTotals[label] ? covidTotals[label].toLocaleString('en-US') : 'Unavailable' }}
-          </template>
+          <div class="covid-totals-value standard-font">
+            {{ totals[label] ? totals[label].toLocaleString('en-US') : 'Unavailable' }}
+          </div>
         </div>
       </div>
     </div>
@@ -42,7 +38,7 @@ export default Vue.extend({
 
   props: {
     title: String,
-    covidTotals: {} as () => CovidTotals
+    totals: {} as () => CovidTotals
   },
 
   data: () => ({
@@ -50,7 +46,13 @@ export default Vue.extend({
   }),
 
   created() {
-    this.infoLabels = Object.keys(this.covidTotals)
+    this.infoLabels = Object.keys(this.totals)
+  },
+
+  computed: {
+    isTotalsPopulated: function(): boolean {
+      return Object.keys(this.totals).length > 0
+    }
   },
 
   filters: {
@@ -78,7 +80,7 @@ export default Vue.extend({
   align-content: center;
   border-radius: 8px;
 }
-.covid-totals-section {
+.covid-total-item {
   margin: 10px 0 10px 10px;
 }
 </style>

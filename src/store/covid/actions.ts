@@ -22,24 +22,27 @@ export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const covidGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS
     const res: AxiosResponse<CovidData> = await axios.get(covidGlobalDataEP)
+    res.data.updated = moment(res.data.updated).format('MMM D, YYYY, h:mm:ss a')
     commit('setCovidGlobalData', CovidDataMapper.map<CovidGlobalData>(res.data))
   },
 
   getCovidCountryData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const covidCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES
     const res: AxiosResponse<CovidData[]> = await axios.get(covidCountryDataEP)
-    const data: CovidCountryData[] = res.data.map((data: CovidData): CovidCountryData =>
-      CovidDataMapper.map<CovidCountryData>(data)
-    )
+    const data: CovidCountryData[] = res.data.map((data: CovidData): CovidCountryData => {
+      data.updated = moment(data.updated).format('MMM D, YYYY, h:mm:ss a')
+      return CovidDataMapper.map<CovidCountryData>(data)
+    })
     commit('setCovidCountryData', data)
   },
 
   getCovidStateData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const covidStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS
     const res: AxiosResponse<CovidData[]> = await axios.get(covidStateDataEP)
-    const data: CovidStateData[] = res.data.map((data: CovidData): CovidStateData =>
-      CovidDataMapper.map<CovidStateData>(data)
-    )
+    const data: CovidStateData[] = res.data.map((data: CovidData): CovidStateData => {
+      data.updated = moment(data.updated).format('MMM D, YYYY, h:mm:ss a')
+      return CovidDataMapper.map<CovidStateData>(data)
+    })
     commit('setCovidStateData', data)
   },
 
@@ -47,23 +50,23 @@ export const actions = {
   getCovidCountyData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const covidCountyDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS
     const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidCountyDataEP)
-    const covidCountyData: CovidCountyData[] = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
-      return {
-        country: d.country,
-        state: d.province,
-        county: d.county,
-        updated: parseInt(d.updatedAt),
-        cases: d.stats.confirmed,
-        recovered: d.stats.recovered,
-        deaths: d.stats.deaths
-      }
+    const covidCountyData: CovidCountyData[] = res.data.map((data: CovidCountyDataRaw): CovidCountyData => {
+      return CovidDataMapper.map<CovidCountyData>({
+        country: data.country,
+        state: data.province,
+        county: data.county,
+        updated: moment(data.updatedAt).format('MMM D, YYYY, h:mm:ss a'),
+        cases: data.stats.confirmed,
+        recovered: data.stats.recovered,
+        deaths: data.stats.deaths
+      })
     })
     commit('setCovidCountyData', covidCountyData)
   },
 
-  /* Vaccine data is queried just for the latest date but it is returned as a key value pair with the key
-     being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity instead of
-     delcaring an interface with an index signature or getting the current date. */
+  /* Vaccine data is queried just for the latest date but it is returned as a single key value pair with
+   * the key being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity
+   * instead of delcaring an interface with an index signature or getting the current date. */
   getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS
     const res = await axios.get(vaccineGlobalDataEP)
@@ -73,7 +76,7 @@ export const actions = {
   },
 
   /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
-     the key and the value as the total vaccinations */
+   * the key and the value as the total vaccinations */
   getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES
     const res = await axios.get(vaccineCountryDataEP)
