@@ -3,8 +3,6 @@ import { CovidData } from './CovidData'
 export interface CovidCountryData {
   country: string;
   countryInfo?: CountryInfo;
-  recovered: number;
-  todayRecovered: number;
   critical: number;
   continent: string;
   oneCasePerPeople: number;
@@ -13,7 +11,6 @@ export interface CovidCountryData {
   recoveredPerOneMillion: number;
   criticalPerOneMillion: number;
   affectedCountries?: number;
-  vaccinated?: number;
   baseData: CovidData;
 }
 

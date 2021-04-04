@@ -1,16 +1,19 @@
 /* Base fields for CovidData from the disease.sh API. */
 
 export interface CovidData {
-  [key: string]: number;
-  updated: number;
-  cases: number;
-  todayCases: number;
-  deaths: number;
-  todayDeaths: number;
-  active: number;
-  casesPerOneMillion: number;
-  deathsPerOneMillion: number;
-  tests: number;
-  testsPerOneMillion: number;
-  population: number;
+  [key: string]: number | string | undefined;
+  updated?: string;
+  cases?: number;
+  todayCases?: number;
+  recovered?: number;
+  todayRecovered?: number;
+  deaths?: number;
+  todayDeaths?: number;
+  vaccinated?: number;
+  active?: number;
+  casesPerOneMillion?: number;
+  deathsPerOneMillion?: number;
+  tests?: number;
+  testsPerOneMillion?: number;
+  population?: number;
 }

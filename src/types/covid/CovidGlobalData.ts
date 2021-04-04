@@ -1,8 +1,6 @@
 import { CovidData } from './CovidData'
 
 export interface CovidGlobalData {
-  recovered: number;
-  todayRecovered: number;
   critical: number;
   oneCasePerPeople: number;
   oneDeathPerPeople: number;
@@ -11,6 +9,5 @@ export interface CovidGlobalData {
   recoveredPerOneMillion: number;
   criticalPerOneMillion: number;
   affectedCountries: number;
-  vaccinated?: number;
   baseData: CovidData;
 }

@@ -5,10 +5,10 @@ export interface CovidTotals {
   country?: string;
   state?: string;
   county?: string;
-  cases: number;
-  deaths: number;
+  cases?: number;
+  deaths?: number;
   recovered?: number;
   tests?: number;
   vaccinated?: number;
-  updated: number;
+  updated?: number;
 }
