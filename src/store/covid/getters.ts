@@ -71,11 +71,7 @@ export const getters = {
 
   getCovidCountyTotals: (state: CovidStateType): CovidTotals => {
     const data: CovidCountyData = state.selectedCovidCountyData
-    return mapCovidTotals(data, {
-      country: data.country,
-      state: data.state,
-      county: data.county
-    })
+    return mapCovidTotals(data, { county: data.county })
   },
 
   getWorldwideCaseRankings: (state: CovidStateType): CovidRankingData[] =>

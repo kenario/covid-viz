@@ -97,7 +97,10 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
       vaccinated: data.baseData.vaccinated,
       updated: data.baseData.updated
     }
-    Object.assign(result, scopeTotals)
+
+    if (scopeTotals) {
+      result = { ...scopeTotals, ...result }
+    }
   } else {
     result = {}
   }
