@@ -71,13 +71,13 @@ export const mutations = {
   },
 
   setCovidVaccineGlobalData: (state: CovidStateType, data: number): void => {
-    state.covidGlobalData.vaccinated = data
+    state.covidGlobalData.baseData.vaccinated = data
   },
 
   /* We loop through each country and get the maps value using the country name as the key */
   setCovidVaccineCountryData: (state: CovidStateType, data: Map<string, number>) => {
     state.covidCountryData.forEach((countryTotal: CovidCountryData): void => {
-      countryTotal.vaccinated = data.get(countryTotal.country.toLowerCase())
+      countryTotal.baseData.vaccinated = data.get(countryTotal.country.toLowerCase())
     })
   },
 

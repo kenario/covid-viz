@@ -137,4 +137,9 @@ html, body, html * {
   font-weight: 600;
   font-size: 1.25rem;
 }
+.notification-font {
+  color: $accent-color;
+  font-weight: 500;
+  font-size: 1.25rem;
+}
 </style>

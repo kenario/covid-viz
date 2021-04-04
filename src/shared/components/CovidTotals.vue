@@ -24,6 +24,15 @@
         </div>
       </div>
     </div>
+
+    <div
+      v-else
+      class="covid-totals-notification notification-font"
+    >
+      <slot>
+        {{ defaultNotification }}
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -42,16 +51,15 @@ export default Vue.extend({
   },
 
   data: () => ({
-    infoLabels: [] as string[]
+    defaultNotification: 'Data unavailable'
   }),
-
-  created() {
-    this.infoLabels = Object.keys(this.totals)
-  },
 
   computed: {
     isTotalsPopulated: function(): boolean {
       return Object.keys(this.totals).length > 0
+    },
+    infoLabels: function(): string[] {
+      return Object.keys(this.totals)
     }
   },
 
@@ -81,6 +89,9 @@ export default Vue.extend({
   border-radius: 8px;
 }
 .covid-total-item {
+  margin: 10px 0 10px 10px;
+}
+.covid-totals-notification {
   margin: 10px 0 10px 10px;
 }
 </style>

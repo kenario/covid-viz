@@ -157,7 +157,7 @@ export default Vue.extend({
       await this.$store.dispatch('getHistoricalCountryData')
 
       if (country.value.toLowerCase() === 'usa' && this.getAllAffectedStates.length < 1) {
-        await this.$store.dispatch('getCovidStateTotals')
+        await this.$store.dispatch('getCovidStateData')
       }
     },
 
@@ -171,7 +171,7 @@ export default Vue.extend({
       this.$store.commit('setSelectedCovidStateData')
 
       if (this.getStatesAffectedCounties.length < 1) {
-        await this.$store.dispatch('getCovidCountyTotals')
+        await this.$store.dispatch('getCovidCountyData')
       }
     },
 

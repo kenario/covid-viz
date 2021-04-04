@@ -5,7 +5,7 @@
         <covid-intro v-if="renderComponents" />
       </transition>
     </div>
-
+    <!-- Covid Totals header -->
     <div class="covid-totals-title section-title-font">
       <transition name="fade">
         <div v-if="renderComponents">
@@ -13,7 +13,7 @@
         </div>
       </transition>
     </div>
-
+    <!-- Covid Totals -->
     <div class="covid-totals-layout">
       <transition name="fade-slide-left">
         <covid-totals
@@ -22,32 +22,38 @@
           :totals="getCovidGlobalTotals"
         />
       </transition>
-      <!-- We only render Nationwide totals if a country has been selected. -->
+
       <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Nationwide'"
           :totals="getCovidCountryTotals"
-        />
+        >
+          {{ totalsCountryNotification }}
+        </covid-totals>
       </transition>
-      <!-- We only render Statewide totals if the country selected is the United States -->
+
       <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Statewide'"
           :totals="getCovidStateTotals"
-        />
+        >
+          {{ totalsStateNotification }}
+        </covid-totals>
       </transition>
-      <!-- We only render Countywide totals if a state has been selected -->
+
       <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Countywide'"
           :totals="getCovidCountyTotals"
-        />
+        >
+          {{ totalsCountyNotification }}
+        </covid-totals>
       </transition>
     </div>
-
+    <!-- Covid Rankings header -->
     <div class="covid-ranking-title-layout">
       <transition name="fade">
         <div
@@ -67,7 +73,7 @@
         </div>
       </transition>
     </div>
-
+    <!-- Covid Rankings -->
     <div class="covid-country-ranking-layout">
       <transition name="fade-slide-left">
         <covid-ranking
@@ -154,13 +160,25 @@ export default Vue.extend({
       'getSelectedCountry',
       'getSelectedState',
       'getSelectedCounty'
-    ])
+    ]),
+    totalsStateNotification: function(): string {
+      return this.getSelectedCountry
+        ? `State ${this.usaOnlyNotification} Select a state or allow location access.`
+        : `State ${this.usaOnlyNotification}`
+    },
+    totalsCountyNotification: function(): string {
+      return this.getSelectedCountry && this.getSelectedState
+        ? `County ${this.usaOnlyNotification} Select a county or allow location access.`
+        : (`County ${this.usaOnlyNotification} and a State has been selected.`).replace('.', '')
+    }
   },
 
   data: () => ({
     geolocationCountry: '',
     renderComponents: false,
+    usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
+    totalsCountryNotification: 'Select a country or allow location access.',
     rankingTitle: 'RANKING',
     rankingSubtitle: 'All rankings are measured using "per one million" of a given population to have an accurate scaled comparison.'
   }),
