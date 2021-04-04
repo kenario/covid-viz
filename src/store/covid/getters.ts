@@ -1,5 +1,5 @@
 import { CovidStateType } from './CovidStateType'
-import { rankCovidData, determineCovidChartData } from './helpers'
+import { rankCovidData, determineCovidChartData, mapCovidTotals } from './helpers'
 
 import {
   DateValue,
@@ -57,56 +57,25 @@ export const getters = {
   getCovidChartLabels: (state: CovidStateType): string[] =>
     state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
-  getCovidGlobalTotals: (state: CovidStateType): CovidTotals => {
-    const data: CovidGlobalData = state.covidGlobalData
-
-    return {
-      cases: data.baseData.cases,
-      deaths: data.baseData.deaths,
-      recovered: data.recovered,
-      tests: data.baseData.tests,
-      vaccinated: data.vaccinated,
-      updated: data.baseData.updated
-    }
-  },
+  getCovidGlobalTotals: (state: CovidStateType): CovidTotals => mapCovidTotals(state.covidGlobalData),
 
   getCovidCountryTotals: (state: CovidStateType): CovidTotals => {
     const data: CovidCountryData = state.selectedCovidCountryData
-
-    return {
-      country: data.country,
-      cases: data.baseData.cases,
-      deaths: data.baseData.deaths,
-      tests: data.baseData.tests,
-      vaccinated: data.vaccinated,
-      updated: data.baseData.updated
-    }
+    return mapCovidTotals(data, { country: data.country })
   },
 
   getCovidStateTotals: (state: CovidStateType): CovidTotals => {
     const data: CovidStateData = state.selectedCovidStateData
-
-    return {
-      state: data.state,
-      cases: data.baseData.cases,
-      deaths: data.baseData.deaths,
-      tests: data.baseData.tests,
-      vaccinated: undefined,
-      updated: data.baseData.updated
-    }
+    return mapCovidTotals(data, { state: data.state })
   },
 
   getCovidCountyTotals: (state: CovidStateType): CovidTotals => {
     const data: CovidCountyData = state.selectedCovidCountyData
-
-    return {
-      county: data.county,
-      cases: data.cases,
-      deaths: data.deaths,
-      tests: undefined,
-      vaccinated: undefined,
-      updated: data.updated
-    }
+    return mapCovidTotals(data, {
+      country: data.country,
+      state: data.state,
+      county: data.county
+    })
   },
 
   getWorldwideCaseRankings: (state: CovidStateType): CovidRankingData[] =>
@@ -137,14 +106,5 @@ export const getters = {
     }
 
     return covidChartData
-  },
-
-  /* Conditionals to render state and county totals since we are only doing this for USA data. */
-  renderStateTotals: (state: CovidStateType): boolean =>
-    state.selectedCountry === 'USA' && state.selectedState.length > 0,
-
-  renderCountyTotals: (state: CovidStateType): boolean =>
-    state.selectedCountry === 'USA'
-      && state.selectedState.length > 0
-      && state.selectedCovidCountyData.state === state.selectedState
+  }
 }

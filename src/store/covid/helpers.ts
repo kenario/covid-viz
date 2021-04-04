@@ -1,4 +1,11 @@
-import { CovidCountryData, CovidStateData, CovidRankingData } from '@/types/covid'
+import {
+  CovidGlobalData,
+  CovidCountryData,
+  CovidStateData,
+  CovidRankingData,
+  CovidCountyData,
+  CovidTotals
+} from '@/types/covid'
 import { ResultType, DateValue } from '@/types'
 import moment from 'moment'
 
@@ -53,17 +60,17 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
 /**
  * Sorts the data in descending order, takes the first 10, and maps the data name and data total
  * @param covidData - Any data that has baseData field
- * @param covidDataScale - country, state
+ * @param scope - country, state
  * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
  */
-export function rankCovidData(covidData: CovidDataType[], covidDataScale: string, covidDataType: string): CovidRankingData[] {
+export function rankCovidData(covidData: CovidDataType[], scope: string, covidDataType: string): CovidRankingData[] {
   const sortDescending = (current: CovidDataType, next: CovidDataType): number =>
-    next.baseData[covidDataType] - current.baseData[covidDataType]
+    (next.baseData[covidDataType] as number) - (current.baseData[covidDataType] as number)
   const nameAndTotal = (data: CovidDataType): CovidRankingData => {
     return {
       // eslint-disable-next-line
-      name: (data as any)[covidDataScale], 
-      total: data.baseData[covidDataType]
+      name: (data as any)[scope], 
+      total: data.baseData[covidDataType] as number
     }
   }
 
@@ -72,5 +79,30 @@ export function rankCovidData(covidData: CovidDataType[], covidDataScale: string
     .slice(0, 10)
     .map(nameAndTotal)
 }
+/**
+ * Maps the given covid data into an object of type CovidTotals.
+ * @param data - Any data that has the baseData field
+ * @param scopeTotals - Any additional object of type CovidTotals that should be added to the mapped object.
+ */
+export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): CovidTotals => {
+  const isPopulated = Object.keys(data).length > 0
+  let result: CovidTotals
 
-type CovidDataType = CovidCountryData | CovidStateData
+  if (isPopulated) {
+    result = {
+      cases: data.baseData.cases,
+      recovered: data.baseData.recovered,
+      deaths: data.baseData.deaths,
+      tests: data.baseData.tests,
+      vaccinated: data.baseData.vaccinated,
+      updated: data.baseData.updated
+    }
+    Object.assign(result, scopeTotals)
+  } else {
+    result = {}
+  }
+
+  return result
+}
+
+type CovidDataType = CovidGlobalData | CovidCountryData | CovidStateData | CovidCountyData

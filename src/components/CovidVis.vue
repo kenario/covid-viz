@@ -19,31 +19,31 @@
         <covid-totals
           v-if="renderComponents"
           :title="'Worldwide'"
-          :covidTotals="getCovidGlobalTotals"
+          :totals="getCovidGlobalTotals"
         />
       </transition>
       <!-- We only render Nationwide totals if a country has been selected. -->
       <transition name="fade-slide-left">
         <covid-totals
-          v-if="renderComponents && getSelectedCountry.length > 0"
+          v-if="renderComponents"
           :title="'Nationwide'"
-          :covidTotals="getCovidCountryTotals"
+          :totals="getCovidCountryTotals"
         />
       </transition>
       <!-- We only render Statewide totals if the country selected is the United States -->
       <transition name="fade-slide-left">
         <covid-totals
-          v-if="renderComponents && renderStateTotals"
+          v-if="renderComponents"
           :title="'Statewide'"
-          :covidTotals="getCovidStateTotals"
+          :totals="getCovidStateTotals"
         />
       </transition>
       <!-- We only render Countywide totals if a state has been selected -->
       <transition name="fade-slide-left">
         <covid-totals
-          v-if="renderComponents && renderCountyTotals"
+          v-if="renderComponents"
           :title="'Countywide'"
-          :covidTotals="getCovidCountyTotals"
+          :totals="getCovidCountyTotals"
         />
       </transition>
     </div>
@@ -58,7 +58,7 @@
         </div>
       </transition>
 
-      <transition name="fade-slide-left">
+      <transition name="fade">
         <div
           v-if="renderComponents"
           class="covid-ranking-subtitle standard-font"

@@ -10,5 +10,5 @@ export interface CovidTotals {
   recovered?: number;
   tests?: number;
   vaccinated?: number;
-  updated?: number;
+  updated?: string;
 }

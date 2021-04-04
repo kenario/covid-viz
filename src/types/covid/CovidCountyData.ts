@@ -1,4 +1,4 @@
-import { CovidData } from "./CovidData";
+import { CovidData } from './CovidData'
 
 export interface CovidCountyData {
   country: string;
