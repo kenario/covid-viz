@@ -143,7 +143,8 @@ export const getters = {
   renderStateTotals: (state: CovidStateType): boolean =>
     state.selectedCountry === 'USA' && state.selectedState.length > 0,
 
-  renderCountyTotals: (state: CovidStateType): boolean => state.selectedCountry === 'USA'
-    && state.selectedState.length > 0
-    && state.selectedCovidCountyData.state === state.selectedState
+  renderCountyTotals: (state: CovidStateType): boolean =>
+    state.selectedCountry === 'USA'
+      && state.selectedState.length > 0
+      && state.selectedCovidCountyData.state === state.selectedState
 }

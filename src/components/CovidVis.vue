@@ -9,7 +9,7 @@
     <div class="covid-totals-title section-title-font">
       <transition name="fade">
         <div v-if="renderComponents">
-          TOTALS
+          {{ totalsTitle }}
         </div>
       </transition>
     </div>
@@ -160,8 +160,9 @@ export default Vue.extend({
   data: () => ({
     geolocationCountry: '',
     renderComponents: false,
+    totalsTitle: 'TOTALS',
     rankingTitle: 'RANKING',
-    rankingSubtitle: 'All rankings are measured using "per one million" of a given population'
+    rankingSubtitle: 'All rankings are measured using "per one million" of a given population to have an accurate scaled comparison.'
   }),
   /*
    * Created and Mount hook represent the Vuex store's entry point for initializing default state.

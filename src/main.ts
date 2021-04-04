@@ -3,7 +3,7 @@ import App from './App.vue'
 import store from './store/index'
 
 /*
- * Module does not have an @types on npm, by passing so I won't have to create a .d.ts file.
+ * Module does not have an @types on npm, bypassing so I won't have to create a .d.ts file.
  */
 // eslint-disable-next-line
 const vClickOutside = require('v-click-outside')
