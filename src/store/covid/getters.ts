@@ -14,7 +14,6 @@ import {
   CovidLineChart,
   CovidStateData,
   CovidCountyData,
-  CovidGlobalData,
   CovidCountryData,
   CovidRankingData
 } from '@/types/covid'

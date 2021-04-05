@@ -6,10 +6,22 @@
       </transition>
     </div>
     <!-- Covid Totals header -->
-    <div class="covid-totals-title section-title-font">
+    <div class="covid-totals-title-layout section-title-font">
       <transition name="fade">
-        <div v-if="renderComponents">
+        <div
+          v-if="renderComponents"
+          class="covid-totals-title"
+        >
           {{ totalsTitle }}
+        </div>
+      </transition>
+
+      <transition name="fade">
+        <div
+          v-if="renderComponents"
+          class="covid-totals-subtitle standard-font"
+        >
+          {{ totalsSubtitle }}
         </div>
       </transition>
     </div>
@@ -155,13 +167,13 @@ export default Vue.extend({
       'getSelectedCounty'
     ]),
     totalsStateNotification: function(): string {
-      return this.getSelectedCountry
-        ? `State ${this.usaOnlyNotification} Select a state or allow location access.`
+      return this.getSelectedCountry === 'USA'
+        ? 'Select a state or allow location access.'
         : `State ${this.usaOnlyNotification}`
     },
     totalsCountyNotification: function(): string {
       return this.getSelectedCountry && this.getSelectedState
-        ? `County ${this.usaOnlyNotification} Select a county or allow location access.`
+        ? 'Select a county or allow location access.'
         : (`County ${this.usaOnlyNotification} and a State has been selected.`).replace('.', '')
     }
   },
@@ -171,8 +183,9 @@ export default Vue.extend({
     renderComponents: false,
     usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
+    totalsSubtitle: 'Please note that not all data points are available for every scope of covid data.',
     totalsCountryNotification: 'Select a country or allow location access.',
-    rankingTitle: 'RANKING',
+    rankingTitle: 'RANKINGS',
     rankingSubtitle: 'All rankings are measured using "per one million" of a given population to have an accurate scaled comparison.'
   }),
   /*
@@ -265,12 +278,20 @@ export default Vue.extend({
   grid-row-start: 2;
   grid-row-end: 3;
 }
-.covid-totals-title {
+.covid-totals-title-layout {
   /* parent grid */
   grid-row: 3 / 4;
+}
+.covid-totals-title {
   /* totals title grid */
   display: grid;
   justify-content: center;
+  margin: 10px 0 10px 0;
+}
+.covid-totals-subtitle {
+  display: grid;
+  justify-content: center;
+  margin: 10px 0 10px 0;
 }
 .covid-totals-layout {
   /* parent grid */

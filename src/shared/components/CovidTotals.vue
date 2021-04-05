@@ -13,13 +13,16 @@
         v-for="(label, l) in infoLabels"
         :key="l"
       >
-        <div class="covid-total-item">
+        <div
+          v-if="totals[label]"
+          class="covid-total-item"
+        >
           <div class="covid-totals-label label-font">
             {{ label | turnFirstLetterUppercase }}
           </div>
 
           <div class="covid-totals-value standard-font">
-            {{ totals[label] ? totals[label].toLocaleString('en-US') : 'Unavailable' }}
+            {{ totals[label].toLocaleString('en-US') }}
           </div>
         </div>
       </div>
