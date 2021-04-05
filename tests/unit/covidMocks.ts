@@ -32,10 +32,11 @@ export const covidConstants = {
   covidGlobalTotals: {
     country: 'Skellige',
     cases: 0,
+    recovered: 5,
     deaths: 1,
     tests: 2,
     vaccinated: 3,
-    updated: 4
+    updated: '4'
   },
 
   vaccinatedData: [
@@ -64,8 +65,6 @@ export const covidStateMocks = {
           long: randomInteger(min, max),
           flag: `${randomInteger(min, max)}`
         },
-        recovered: randomInteger(min, max),
-        todayRecovered: randomInteger(min, max),
         critical: randomInteger(min, max),
         continent: `${randomInteger(min, max)}`,
         oneCasePerPeople: randomInteger(min, max),
@@ -75,9 +74,11 @@ export const covidStateMocks = {
         criticalPerOneMillion: randomInteger(min, max),
         affectedCountries: randomInteger(min, max),
         baseData: {
-          updated: randomInteger(min, max),
+          updated: randomInteger(min, max).toString(),
           cases: randomInteger(min, max),
           todayCases: randomInteger(min, max),
+          recovered: randomInteger(min, max),
+          todayRecovered: randomInteger(min, max),
           deaths: randomInteger(min, max),
           todayDeaths: randomInteger(min, max),
           active: randomInteger(min, max),
@@ -103,10 +104,12 @@ export const covidStateMocks = {
         country: covidConstants.affectedCountries[x].name,
         state: covidConstants.affectedCountries[x].name,
         county: covidConstants.affectedCountries[x].name,
-        cases: randomInteger(min, max),
-        deaths: randomInteger(min, max),
-        recovered: randomInteger(min, max),
-        updated: randomInteger(min, max)
+        baseData: {
+          cases: randomInteger(min, max),
+          deaths: randomInteger(min, max),
+          recovered: randomInteger(min, max),
+          updated: randomInteger(min, max).toString()
+        }
       })
     }
 

@@ -101,13 +101,6 @@
     </div>
 
     <!-- <transition name="fade">
-      <covid-totals v-if="renderComponents" />
-    </transition> -->
-    <!-- <transition name="fade">
-      <covid-vis-controls />
-    </transition> -->
-
-    <!-- <transition name="fade">
       <covid-chart v-show="renderComponents" />
     </transition>
 

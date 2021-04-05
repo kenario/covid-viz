@@ -27,7 +27,7 @@ describe('CovidStoreMutations', (): void => {
     covidState.covidCountryData = covidStateMocks.generateCovidDataAllCountries()
     setCovidVaccineCountryData(covidState, countryVaccinated)
 
-    const expected = covidState.covidCountryData.map((data: CovidCountryData): number => data.vaccinated as number)
+    const expected = covidState.covidCountryData.map((data: CovidCountryData): number => data.baseData.vaccinated as number)
     const actual = [...countryVaccinated.values()]
     expect(expected).to.eql(actual)
   })

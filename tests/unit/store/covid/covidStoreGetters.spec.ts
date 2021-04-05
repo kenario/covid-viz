@@ -46,9 +46,10 @@ describe('CovidStoreGetters', (): void => {
     covidState.selectedCovidCountryData = covidStateMocks.generateCovidDataAllCountries()[0]
     covidState.selectedCovidCountryData.country = covidConstants.covidGlobalTotals.country
     covidState.selectedCovidCountryData.baseData.cases = covidConstants.covidGlobalTotals.cases
+    covidState.selectedCovidCountryData.baseData.recovered = covidConstants.covidGlobalTotals.recovered
     covidState.selectedCovidCountryData.baseData.deaths = covidConstants.covidGlobalTotals.deaths
     covidState.selectedCovidCountryData.baseData.tests = covidConstants.covidGlobalTotals.tests
-    covidState.selectedCovidCountryData.vaccinated = covidConstants.covidGlobalTotals.vaccinated
+    covidState.selectedCovidCountryData.baseData.vaccinated = covidConstants.covidGlobalTotals.vaccinated
     covidState.selectedCovidCountryData.baseData.updated = covidConstants.covidGlobalTotals.updated
     expect(getCovidCountryTotals(covidState)).to.eql(covidConstants.covidGlobalTotals)
   })
