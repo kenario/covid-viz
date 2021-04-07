@@ -42,7 +42,7 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
 
   if (resultType.value === 'total') {
     // eslint-disable-next-line
-    result = data.map((d: any) => d.value)
+    result = data.map((d: any) => parseInt(d.value))
   } else if (resultType.value === 'totalPerDay') {
     /**
      * next element - current element, gives us the data for the current day.  This excludes
@@ -50,7 +50,7 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
      */
     for (let x = 0; x < data.length; x++) {
       if (x + 1 < data.length) {
-        result.push((data[x + 1].value - data[x].value))
+        result.push((parseInt(data[x + 1].value) - parseInt(data[x].value)))
       }
     }
   }

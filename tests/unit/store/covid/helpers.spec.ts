@@ -6,8 +6,9 @@ import {
   mapHistoricalDataToDateValue
 } from '@/store/covid/helpers'
 
+import moment from 'moment'
 import { expect } from 'chai'
-import moment, { deprecationHandler } from 'moment'
+import { SelectItem } from '@/types'
 
 describe('CovidStoreHelpers', (): void => {
   const data = {
@@ -37,6 +38,26 @@ describe('CovidStoreHelpers', (): void => {
         { date: '2020-01-28', value: 4 }
       ]
       expect(mapHistoricalDataToDateValue(data)).to.deep.equal(expected)
+    })
+  })
+
+  describe('determineCovidChartData', (): void => {
+    const values: SelectItem[] = [
+      { name: 'Midoriya', value: '300' },
+      { name: 'Ashido', value: '260' },
+      { name: 'Bakugo', value: '119' },
+      { name: 'Mineta', value: '3894' },
+      { name: 'Ochaco', value: '99' }
+    ]
+
+    it('returns total values when ResultType is total', (): void => {
+      const expected: number[] = values.map((v: SelectItem): number => parseInt(v.value))
+      expect(determineCovidChartData(values, { name: 'Total', value: 'total' })).to.deep.equal(expected)
+    })
+
+    it('returns total values per day when ResultType is total per day', (): void => {
+      const expected = [-40, -141, 3775, -3795]
+      expect(determineCovidChartData(values, { name: 'Total Per Day', value: 'totalPerDay' })).to.deep.equal(expected)
     })
   })
 })
