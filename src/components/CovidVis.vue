@@ -15,15 +15,6 @@
           {{ totalsTitle }}
         </div>
       </transition>
-
-      <transition name="fade">
-        <div
-          v-if="renderComponents"
-          class="covid-totals-subtitle standard-font"
-        >
-          {{ totalsSubtitle }}
-        </div>
-      </transition>
     </div>
     <!-- Covid Totals -->
     <div class="covid-totals-layout">
@@ -183,7 +174,6 @@ export default Vue.extend({
     renderComponents: false,
     usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
-    totalsSubtitle: 'Please note that not all data points are available for every scope of covid data.',
     totalsCountryNotification: 'Select a country or allow location access.',
     rankingTitle: 'RANKINGS',
     rankingSubtitle: 'All rankings are measured using "per one million" of a given population to have an accurate scaled comparison.'
@@ -284,11 +274,6 @@ export default Vue.extend({
 }
 .covid-totals-title {
   /* totals title grid */
-  display: grid;
-  justify-content: center;
-  margin: 10px 0 10px 0;
-}
-.covid-totals-subtitle {
   display: grid;
   justify-content: center;
   margin: 10px 0 10px 0;
