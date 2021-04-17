@@ -56,6 +56,8 @@ export default Vue.extend({
   display: grid;
   align-items: center;
   grid-template-columns: 260px auto 107px;
+  position: fixed;
+  width: 100%;
 }
 .covid-header-title {
   grid-column: 1 / 2;

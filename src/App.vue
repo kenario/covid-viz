@@ -111,6 +111,7 @@ html, body, html * {
   width: 300px;
   right: 0px;
   overflow: hidden;
+  top: 70px;
 }
 .section-title-font {
   color: $primary-color;

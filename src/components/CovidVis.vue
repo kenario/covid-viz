@@ -263,6 +263,7 @@ export default Vue.extend({
   display: grid;
   grid-gap: 1.5rem;
   grid-auto-rows: auto;
+  padding-top: 70px;
 }
 .covid-intro-layout {
   grid-row-start: 2;
