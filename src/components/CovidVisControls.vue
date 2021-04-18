@@ -8,93 +8,131 @@
         close
       </div>
     </div>
-    <!-- Country dropdown -->
-    <dropdown
-      :label="'Country'"
-      :selectedItem="getSelectedCountry"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :hasSearchBar="true"
-          :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
-          @selectedItem="setSelectedCountry($event); toggleDropdown()"
+
+    <div class="covid-vis-controls-general">
+      <div class="covid-vis-controls-general-label covid-vis-controls-label-styling">
+        {{ generalLabel }}
+      </div>
+
+      <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
+        <!-- Country dropdown -->
+        <dropdown
+          :label="'Country'"
+          :selectedItem="getSelectedCountry"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :hasSearchBar="true"
+              :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
+              @selectedItem="setSelectedCountry($event); toggleDropdown()"
+            />
+          </template>
+        </dropdown>
+        <!-- State dropdown -->
+        <transition name="fade">
+          <dropdown
+            v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
+            :label="'State'"
+            :selectedItem="getSelectedState"
+          >
+            <template v-slot="{ toggleDropdown }">
+              <single-select
+                :hasSearchBar="true"
+                :items="getAllAffectedStates"
+                @selectedItem="setSelectedState($event); toggleDropdown()"
+              />
+            </template>
+          </dropdown>
+        </transition>
+        <!-- County dropdown -->
+        <transition name="fade">
+          <dropdown
+            v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
+            :label="'County'"
+            :selectedItem="getSelectedCounty"
+          >
+            <template v-slot="{ toggleDropdown }">
+              <single-select
+                :hasSearchBar="true"
+                :items="getStatesAffectedCounties"
+                @selectedItem="setSelectedCounty($event); toggleDropdown()"
+              />
+            </template>
+          </dropdown>
+        </transition>
+      </div>
+    </div>
+
+    <div class="covid-vis-controls-graph">
+      <div class="covid-vis-controls-graph-label covid-vis-controls-label-styling">
+        {{ graphLabel }}
+      </div>
+
+      <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
+        <!-- Date picker dropdown -->
+        <date-picker
+          :label="'Dates'"
+          @selectDate="setSelectedDateRange"
         />
-      </template>
-    </dropdown>
-    <!-- State dropdown -->
-    <transition name="fade">
-      <dropdown
-        v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
-        :label="'State'"
-        :selectedItem="getSelectedState"
-      >
-        <template v-slot="{ toggleDropdown }">
-          <single-select
-            :hasSearchBar="true"
-            :items="getAllAffectedStates"
-            @selectedItem="setSelectedState($event); toggleDropdown()"
-          />
-        </template>
-      </dropdown>
-    </transition>
-    <!-- County dropdown -->
-    <transition name="fade">
-      <dropdown
-        v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
-        :label="'County'"
-        :selectedItem="getSelectedCounty"
-      >
-        <template v-slot="{ toggleDropdown }">
-          <single-select
-            :hasSearchBar="true"
-            :items="getStatesAffectedCounties"
-            @selectedItem="setSelectedCounty($event); toggleDropdown()"
-          />
-        </template>
-      </dropdown>
-    </transition>
-    <!-- Date picker dropdown -->
-    <date-picker
-      :label="'Dates'"
-      @selectDate="setSelectedDateRange"
-    />
-    <!-- Data type dropdown -->
-    <dropdown
-      :label="'Data Types'"
-      :selectedItem="getNumberOfSelectedCovidDataTypes"
-    >
-      <template>
-        <multi-select
-          :items="dataTypes"
-          :allItemsCheckedOnMount="true"
-          @itemCheck="setSelectedDataType"
-        />
-      </template>
-    </dropdown>
-    <!-- Result type dropdown -->
-    <dropdown
-      :label="'Results Type'"
-      :selectedItem="getSelectedResultType.name"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :items="resultTypes"
-          @selectedItem="setSelectedResultType($event); toggleDropdown()"
-        />
-      </template>
-    </dropdown>
-    <!-- Type of graph dropdown -->
-    <dropdown
-      :label="'Graph Type'"
-      :selectedItem="getSelectedGraphType.name"
-    >
-      <template v-slot="{ toggleDropdown }">
-        <single-select
-          :items="graphTypes"
-          @selectedItem="setSelectedGraphType($event); toggleDropdown()"
-        ></single-select>
-      </template>
-    </dropdown>
+        <!-- Data type dropdown -->
+        <dropdown
+          :label="'Data Types'"
+          :selectedItem="getNumberOfSelectedCovidDataTypes"
+        >
+          <template>
+            <multi-select
+              :items="dataTypes"
+              :allItemsCheckedOnMount="true"
+              @itemCheck="setSelectedDataType"
+            />
+          </template>
+        </dropdown>
+        <!-- Result type dropdown -->
+        <dropdown
+          :label="'Results Type'"
+          :selectedItem="getSelectedResultType.name"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :items="resultTypes"
+              @selectedItem="setSelectedResultType($event); toggleDropdown()"
+            />
+          </template>
+        </dropdown>
+        <!-- Type of graph dropdown -->
+        <dropdown
+          :label="'Graph Type'"
+          :selectedItem="getSelectedGraphType.name"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :items="graphTypes"
+              @selectedItem="setSelectedGraphType($event); toggleDropdown()"
+            ></single-select>
+          </template>
+        </dropdown>
+      </div>
+    </div>
+
+    <div class="covid-vis-controls-rankings">
+      <div class="covid-vis-controls-rankings-label covid-vis-controls-label-styling">
+        {{ rankingsLabel }}
+      </div>
+
+      <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
+        <dropdown
+          :label="'Ranking Type'"
+          :selectedItem="getSelectedRankingType.name"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :items="rankingTypes"
+              @selectedItem="toggleDropdown()"
+            />
+          </template>
+        </dropdown>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -102,7 +140,7 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem } from '@/types'
+import { DateRange, ResultType, GraphType, SelectItem, RankingType } from '@/types'
 import Dropdown from '@/shared/components/Dropdown.vue'
 import DatePicker from '@/shared/components/DatePicker.vue'
 import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
@@ -125,6 +163,7 @@ export default Vue.extend({
       'getSelectedCounty',
       'getSelectedGraphType',
       'getSelectedResultType',
+      'getSelectedRankingType',
       'getAllAffectedCountries',
       'getAllAffectedStates',
       'getStatesAffectedCounties',
@@ -145,7 +184,15 @@ export default Vue.extend({
     graphTypes: [
       { name: 'Line', value: 'line' },
       { name: 'Bar', value: 'bar' }
-    ]
+    ],
+    rankingTypes: [
+      { name: 'Worldwide', value: 'worldwide' },
+      { name: 'Nationwide', value: 'nationwide' },
+      { name: 'Statewide', value: 'statewide' }
+    ],
+    generalLabel: 'GENERAL',
+    graphLabel: 'GRAPH',
+    rankingsLabel: 'RANKINGS'
   }),
 
   methods: {
@@ -198,6 +245,10 @@ export default Vue.extend({
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
+    setSelectedRankingType: function(rankingType: RankingType): void {
+      this.$store.commit('setSelectedRankingType', rankingType)
+    },
+
     closeButtonClick: function() {
       this.$emit('closeButtonClick')
     }
@@ -217,7 +268,7 @@ export default Vue.extend({
   align-content: center;
 }
 .covid-vis-controls-close-button {
-  color: $secondary-color;
+  color: white;
 }
 .covid-vis-controls-close-icon {
   float: right;
@@ -227,5 +278,13 @@ export default Vue.extend({
 .covid-vis-controls-close-icon:hover {
   cursor: pointer;
   color: $accent-color;
+}
+.covid-vis-controls-filters-styling {
+  padding-left: 10px;
+}
+.covid-vis-controls-label-styling {
+  margin: 25px 0 10px 0;
+  color: white;
+  font-size: 0.8rem;
 }
 </style>

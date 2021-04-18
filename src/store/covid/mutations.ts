@@ -4,7 +4,8 @@ import {
   DateRange,
   GraphType,
   SelectItem,
-  ResultType
+  ResultType,
+  RankingType
 } from '@/types'
 
 import {
@@ -95,5 +96,9 @@ export const mutations = {
 
   setSelectedGraphType: (state: CovidStateType, graphType: GraphType): void => {
     state.selectedGraphType = graphType
+  },
+
+  setSelectedRankingType: (state: CovidStateType, rankingType: RankingType): void => {
+    state.selectedRankingType = rankingType
   }
 }

@@ -77,30 +77,19 @@
       </transition>
     </div>
     <!-- Covid Rankings -->
-    <div class="covid-country-ranking-layout">
-      <transition name="fade-slide-left">
-        <covid-ranking
-          v-if="renderComponents"
-          :title="'Worldwide Cases'"
-          :items="getWorldwideCaseRankings"
-        />
-      </transition>
-
-      <transition name="fade-slide-left">
-        <covid-ranking
-          v-if="renderComponents"
-          :title="'Worldwide Deaths'"
-          :items="getWorldwideDeathRankings"
-        />
-      </transition>
-
-      <transition name="fade-slide-left">
-        <covid-ranking
-          v-if="renderComponents"
-          :title="'Worldwide Tests'"
-          :items="getWorldwideTestRankings"
-        />
-      </transition>
+    <div class="covid-ranking-layout">
+      <template v-for="(rankings, index) in getCovidRankings">
+        <transition
+          name="fade-slide-left"
+          :key="index"
+        >
+          <covid-ranking
+            v-if="renderComponents"
+            :title="rankings.label"
+            :items="rankings.data"
+          />
+        </transition>
+      </template>
     </div>
 
     <!-- <transition name="fade">
@@ -145,9 +134,7 @@ export default Vue.extend({
       'renderStateTotals',
       'renderCountyTotals',
       'getAllAffectedCountries',
-      'getWorldwideCaseRankings',
-      'getWorldwideDeathRankings',
-      'getWorldwideTestRankings',
+      'getCovidRankings',
       'getAllAffectedStates',
       'getCovidCountryTotals',
       'getCovidGlobalTotals',
@@ -184,6 +171,7 @@ export default Vue.extend({
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
     this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
+    this.$store.commit('setSelectedRankingType', { name: 'Worldwide', value: 'worldwide' })
     this.$store.commit('setSelectedCovidDataType', [
       { name: 'Cases', value: 'cases' },
       { name: 'Recovered', value: 'recovered' },
@@ -263,7 +251,7 @@ export default Vue.extend({
   display: grid;
   grid-gap: 1.5rem;
   grid-auto-rows: auto;
-  padding-top: 70px;
+  padding: 70px 0 70px 0;
 }
 .covid-intro-layout {
   grid-row-start: 2;
@@ -305,7 +293,7 @@ export default Vue.extend({
   justify-content: center;
   margin: 10px 0 10px 0;
 }
-.covid-country-ranking-layout {
+.covid-ranking-layout {
   /* parent grid */
   grid-row: 6 / 7;
   /* ranking grid */
@@ -316,3 +304,4 @@ export default Vue.extend({
   grid-template-columns: repeat(3, 300px);
 }
 </style>
+``

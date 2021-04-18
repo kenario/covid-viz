@@ -6,7 +6,8 @@ import {
   GraphType,
   ResultType,
   SelectItem,
-  CountryInfo
+  CountryInfo,
+  RankingType
 } from '@/types'
 
 import {
@@ -17,6 +18,7 @@ import {
   CovidCountryData,
   CovidRankingData
 } from '@/types/covid'
+import { CovidRankings } from '@/types/covid/CovidRankings'
 
 export const getters = {
   getSelectedCountry: (state: CovidStateType): string => state.selectedCountry,
@@ -28,6 +30,8 @@ export const getters = {
   getSelectedGraphType: (state: CovidStateType): GraphType => state.selectedGraphType,
 
   getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
+
+  getSelectedRankingType: (state: CovidStateType): RankingType => state.selectedRankingType,
 
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
@@ -73,14 +77,33 @@ export const getters = {
     return mapCovidTotals(data, { county: data.county })
   },
 
-  getWorldwideCaseRankings: (state: CovidStateType): CovidRankingData[] =>
-    rankCovidData([...state.covidCountryData], 'country', 'casesPerOneMillion'),
+  getCovidRankings: (state: CovidStateType): CovidRankings[] => {
+    const result: CovidRankings[] = []
+    const rankingSubtypes = [
+      'casesPerOneMillion',
+      'deathsPerOneMillion',
+      'testsPerOneMillion'
+    ]
 
-  getWorldwideDeathRankings: (state: CovidStateType): CovidRankingData[] =>
-    rankCovidData([...state.covidCountryData], 'country', 'deathsPerOneMillion'),
+    if (state.selectedRankingType.value === 'worldwide') {
 
-  getWorldwideTestRankings: (state: CovidStateType): CovidRankingData[] =>
-    rankCovidData([...state.covidCountryData], 'country', 'testsPerOneMillion'),
+      rankingSubtypes.forEach((subtypes: string): void => {
+        let label = subtypes.replace('PerOneMillion', '')
+        label = label.slice(0, 1).toUpperCase() + label.slice(1)
+
+        result.push({
+          label: `Worldwide ${label}`,
+          data: rankCovidData([...state.covidCountryData], 'country', subtypes)
+        })
+      })
+
+    } 
+    // else if (state.selectedRankingType.value === 'nationwide') {
+
+    // }
+
+    return result
+  },
   /*
    * Map historical data values for the chosen data types: cases, deaths, and recovered to
    * CovidLineChart data structure.
