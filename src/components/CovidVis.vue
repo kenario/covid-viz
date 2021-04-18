@@ -278,11 +278,6 @@ export default Vue.extend({
   justify-content: center;
   margin: 10px 0 10px 0;
 }
-.covid-ranking-subtitle {
-  display: grid;
-  justify-content: center;
-  margin: 10px 0 10px 0;
-}
 .covid-ranking-layout {
   /* parent grid */
   grid-row: 6 / 7;
@@ -291,6 +286,7 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
   grid-column-gap: 1rem;
-  grid-template-columns: repeat(4, 300px);
+  grid-template-columns: repeat(auto-fit, 300px);
+  padding: 0 10% 0 10%;
 }
 </style>

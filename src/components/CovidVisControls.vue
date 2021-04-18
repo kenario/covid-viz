@@ -187,8 +187,7 @@ export default Vue.extend({
     ],
     rankingTypes: [
       { name: 'Worldwide', value: 'worldwide' },
-      { name: 'Nationwide', value: 'nationwide' },
-      { name: 'Statewide', value: 'statewide' }
+      { name: 'Nationwide', value: 'nationwide' }
     ],
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
