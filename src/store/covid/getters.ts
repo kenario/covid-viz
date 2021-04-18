@@ -85,22 +85,24 @@ export const getters = {
       'testsPerOneMillion'
     ]
 
-    if (state.selectedRankingType.value === 'worldwide') {
+    rankingSubtypes.forEach((subtypes: string): void => {
+      let data: CovidRankingData[] = []
+      let label = subtypes.replace('PerOneMillion', '')
+      label = label.slice(0, 1).toUpperCase() + label.slice(1)
 
-      rankingSubtypes.forEach((subtypes: string): void => {
-        let label = subtypes.replace('PerOneMillion', '')
-        label = label.slice(0, 1).toUpperCase() + label.slice(1)
+      if (state.selectedRankingType.value === 'worldwide') {
+        label = `Worldwide ${label}`
+        data = rankCovidData([...state.covidCountryData], 'country', subtypes)
+      } else if (state.selectedRankingType.value === 'nationwide') {
+        label = `USA ${label}`
+        data = rankCovidData([...state.covidStateData], 'state', subtypes)
+      }
 
-        result.push({
-          label: `Worldwide ${label}`,
-          data: rankCovidData([...state.covidCountryData], 'country', subtypes)
-        })
+      result.push({
+        label: label,
+        data: data
       })
-
-    } 
-    // else if (state.selectedRankingType.value === 'nationwide') {
-
-    // }
+    })
 
     return result
   },

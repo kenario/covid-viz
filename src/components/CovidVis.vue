@@ -188,6 +188,7 @@ export default Vue.extend({
     await this.$store.dispatch('getCovidVaccineGlobalData')
     await this.$store.dispatch('getCovidCountryData')
     await this.$store.dispatch('getCovidVaccineCountryData')
+    await this.$store.dispatch('getCovidStateData')
     this.locateUser()
   },
 
@@ -218,7 +219,6 @@ export default Vue.extend({
             const state = res.data.address.state
             const county = res.data.address.county.replace(' County', '')
 
-            await this.$store.dispatch('getCovidStateData')
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
             this.$store.commit('setSelectedCovidStateData')
 

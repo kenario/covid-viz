@@ -127,7 +127,7 @@
           <template v-slot="{ toggleDropdown }">
             <single-select
               :items="rankingTypes"
-              @selectedItem="toggleDropdown()"
+              @selectedItem="setSelectedRankingType($event); toggleDropdown()"
             />
           </template>
         </dropdown>
@@ -202,10 +202,6 @@ export default Vue.extend({
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidCountryData')
       await this.$store.dispatch('getHistoricalCountryData')
-
-      if (country.value.toLowerCase() === 'usa' && this.getAllAffectedStates.length < 1) {
-        await this.$store.dispatch('getCovidStateData')
-      }
     },
 
     /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
