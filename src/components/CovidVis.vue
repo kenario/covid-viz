@@ -66,15 +66,6 @@
           {{ rankingTitle }}
         </div>
       </transition>
-
-      <transition name="fade">
-        <div
-          v-if="renderComponents"
-          class="covid-ranking-subtitle standard-font"
-        >
-          {{ rankingSubtitle }}
-        </div>
-      </transition>
     </div>
     <!-- Covid Rankings -->
     <div class="covid-ranking-layout">
@@ -162,8 +153,7 @@ export default Vue.extend({
     usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
     totalsCountryNotification: 'Select a country or allow location access.',
-    rankingTitle: 'RANKINGS',
-    rankingSubtitle: 'All rankings are measured using "per one million" of a given population to have an accurate scaled comparison.'
+    rankingTitle: 'RANKINGS'
   }),
   /*
    * Created and Mount hook represent the Vuex store's entry point for initializing default state.

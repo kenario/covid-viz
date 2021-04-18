@@ -80,15 +80,14 @@ export const getters = {
   getCovidRankings: (state: CovidStateType): CovidRankings[] => {
     const result: CovidRankings[] = []
     const rankingSubtypes = [
-      'casesPerOneMillion',
-      'deathsPerOneMillion',
-      'testsPerOneMillion'
+      'cases',
+      'deaths',
+      'tests'
     ]
 
     rankingSubtypes.forEach((subtypes: string): void => {
       let data: CovidRankingData[] = []
-      let label = subtypes.replace('PerOneMillion', '')
-      label = label.slice(0, 1).toUpperCase() + label.slice(1)
+      let label = subtypes.slice(0, 1).toUpperCase() + subtypes.slice(1)
 
       if (state.selectedRankingType.value === 'worldwide') {
         label = `Worldwide ${label}`

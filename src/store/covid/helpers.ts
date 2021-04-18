@@ -61,7 +61,7 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
  * Sorts the data in descending order, takes the first 10, and maps the data name and data total
  * @param covidData - Any data that has baseData field
  * @param scope - country, state
- * @param covidDataType - casesPerOneMillion, deathsPerOneMillion, testsPerOneMillion
+ * @param covidDataType - cases, deaths, tests
  */
 export function rankCovidData(covidData: CovidDataType[], scope: string, covidDataType: string): CovidRankingData[] {
   const sortDescending = (current: CovidDataType, next: CovidDataType): number =>
