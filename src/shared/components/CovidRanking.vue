@@ -14,7 +14,7 @@
       </div>
 
       <div class="covid-ranking-total">
-        {{ item.total.toLocaleString('en-US') }}
+        {{ item.total && item.total.toLocaleString('en-US') }}
       </div>
     </div>
   </div>
@@ -36,6 +36,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.covid-ranking-container {
+  padding-bottom: 30px;
+}
 .covid-ranking-item {
   margin: 10px 0 10px 10px;
 }

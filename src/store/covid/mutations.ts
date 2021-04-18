@@ -1,4 +1,5 @@
 import { CovidStateType } from './CovidStateType'
+import Vue from 'vue'
 
 import {
   DateRange,
@@ -78,7 +79,8 @@ export const mutations = {
   /* We loop through each country and get the maps value using the country name as the key */
   setCovidVaccineCountryData: (state: CovidStateType, data: Map<string, number>) => {
     state.covidCountryData.forEach((countryTotal: CovidCountryData): void => {
-      countryTotal.baseData.vaccinated = data.get(countryTotal.country.toLowerCase())
+      const value = data.get(countryTotal.country.toLowerCase())
+      Vue.set(countryTotal.baseData, 'vaccinated', value !== undefined ? value : 0)
     })
   },
 

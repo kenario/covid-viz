@@ -291,7 +291,6 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
   grid-column-gap: 1rem;
-  grid-template-columns: repeat(3, 300px);
+  grid-template-columns: repeat(4, 300px);
 }
 </style>
-``

@@ -82,13 +82,22 @@ export const getters = {
     const rankingSubtypes = [
       'cases',
       'deaths',
-      'tests'
+      'tests',
+      'vaccinated'
     ]
 
     rankingSubtypes.forEach((subtypes: string): void => {
+      /*
+       * Determine if we should skip the specified subtype. */
+      if (state.selectedRankingType.value === 'nationwide' && subtypes === 'vaccinated') {
+        return
+      }
+
       let data: CovidRankingData[] = []
       let label = subtypes.slice(0, 1).toUpperCase() + subtypes.slice(1)
 
+      /*
+       * Assign the ranking label and map the data based on the ranking type selected. */
       if (state.selectedRankingType.value === 'worldwide') {
         label = `Worldwide ${label}`
         data = rankCovidData([...state.covidCountryData], 'country', subtypes)
