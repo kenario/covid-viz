@@ -7,7 +7,7 @@ import { CovidStateType } from '@/store/covid/CovidStateType'
 import { covidConstants, covidStateMocks } from '../../covidMocks'
 
 const {
-  getWorldwideCaseRankings,
+  getCovidRankings,
   getStatesAffectedCounties,
   getAllAffectedCountries,
   getCovidCountryTotals,
@@ -85,7 +85,8 @@ describe('CovidStoreGetters', (): void => {
       ...covidStateMocks.generateCovidDataAllCountries(),
       ...covidStateMocks.generateCovidDataAllCountries()
     ]
-    const countriesWithHighestCases = getWorldwideCaseRankings(covidState)
+    covidState.selectedRankingType = { name: 'Worldwide', value: 'worldwide' }
+    const countriesWithHighestCases = getCovidRankings(covidState)[0].data
     let isDescendingOrder = true
     /*
      * Iterate through result and make sure that the totals are in descending order.  Loop stops

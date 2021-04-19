@@ -82,12 +82,25 @@
         </transition>
       </template>
     </div>
+    <!--  Covid Graph header -->
+    <div class="covid-graph-title-layout">
+      <transition name="fade">
+        <div
+          v-if="renderComponents"
+          class="covid-graph-title section-title-font"
+        >
+          {{ graphTitle }}
+        </div>
+      </transition>
+    </div>
+    <!--  Covid Graph -->
+    <div class="covid-graph-layout">
+      <transition name="fade">
+        <covid-chart v-show="renderComponents" />
+      </transition>
+    </div>
 
-    <!-- <transition name="fade">
-      <covid-chart v-show="renderComponents" />
-    </transition>
-
-    <Footer /> -->
+    <!-- <Footer /> -->
   </div>
 </template>
 
@@ -115,8 +128,7 @@ export default Vue.extend({
     // Footer,
     CovidTotals,
     CovidRanking,
-    // CovidVisControls,
-    // CovidChart,
+    CovidChart,
     CovidIntro
   },
 
@@ -153,7 +165,8 @@ export default Vue.extend({
     usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
     totalsCountryNotification: 'Select a country or allow location access.',
-    rankingTitle: 'RANKINGS'
+    rankingTitle: 'RANKINGS',
+    graphTitle: 'GRAPH'
   }),
   /*
    * Created and Mount hook represent the Vuex store's entry point for initializing default state.
@@ -288,5 +301,18 @@ export default Vue.extend({
   grid-column-gap: 1rem;
   grid-template-columns: repeat(auto-fit, 300px);
   padding: 0 10% 0 10%;
+}
+.covid-graph-title-layout {
+  /* parent grid */
+  grid-row: 7 / 8;
+}
+.covid-graph-title {
+  display: grid;
+  justify-content: center;
+  margin: 10px 0 10px 0;
+}
+.covid-graph-layout {
+  /* parent grid */
+  grid-row: 8 / 9;
 }
 </style>
