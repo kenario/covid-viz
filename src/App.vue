@@ -9,6 +9,10 @@
 
     <div
       class="covid-filter-layout"
+      :class="{
+        'covid-filter-layout--z-index': showFilters === true,
+        'covid-filter-layout--z-index-slow': showFilters === false
+      }"
       v-click-outside="closeOpenedFilters"
     >
       <transition name="slide-left">
@@ -112,6 +116,15 @@ html, body, html * {
   right: 0px;
   overflow: hidden;
   top: 70px;
+
+  &--z-index {
+    z-index: 1;
+  }
+
+  &--z-index-slow {
+    transition: z-index 2s;
+    z-index: 0;
+  }
 }
 .section-title-font {
   color: $primary-color;
