@@ -32,7 +32,7 @@
           :title="'Nationwide'"
           :totals="getCovidCountryTotals"
         >
-          {{ totalsCountryNotification }}
+          {{ countryNotification }}
         </covid-totals>
       </transition>
 
@@ -94,11 +94,16 @@
       </transition>
     </div>
     <!--  Covid Graph -->
-    <div class="covid-graph-layout">
-      <transition name="fade">
-        <covid-chart v-show="renderComponents" />
-      </transition>
-    </div>
+    <transition name="fade">
+      <div
+        v-if="renderComponents"
+        class="covid-graph-layout"
+      >
+        <covid-chart>
+          {{ countryNotification }}
+        </covid-chart>
+      </div>
+    </transition>
 
     <!-- <Footer /> -->
   </div>
@@ -164,7 +169,7 @@ export default Vue.extend({
     renderComponents: false,
     usaOnlyNotification: 'data is only available if the country selected is USA.',
     totalsTitle: 'TOTALS',
-    totalsCountryNotification: 'Select a country or allow location access.',
+    countryNotification: 'Select a country or allow location access.',
     rankingTitle: 'RANKINGS',
     graphTitle: 'GRAPH'
   }),
@@ -314,5 +319,10 @@ export default Vue.extend({
 .covid-graph-layout {
   /* parent grid */
   grid-row: 8 / 9;
+}
+.covid-graph-notification-layout {
+  /* parent grid */
+  grid-row: 8 / 9;
+  margin: auto;
 }
 </style>

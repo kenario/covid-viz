@@ -1,10 +1,24 @@
 <template>
   <div class="covid-vis-chart-container">
-    <Chart
-      :labels="getCovidChartLabels"
-      :type="getSelectedGraphType.value"
-      :data="getCovidChartData"
-    />
+    <div
+      v-if="getCovidChartData.length > 0"
+      class="covid-vis-chart"
+    >
+      <Chart
+        :labels="getCovidChartLabels"
+        :type="getSelectedGraphType.value"
+        :data="getCovidChartData"
+      />
+    </div>
+
+    <div
+      v-else
+      class="covid-vis-chart-notification notification-font"
+    >
+      <slot>
+        {{ defaultNotification }}
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -21,6 +35,10 @@ export default Vue.extend({
     Chart
   },
 
+  data: () => ({
+    defaultNotification: 'Data unavailable'
+  }),
+
   computed: {
     ...mapGetters([
       'getSelectedGraphType',
@@ -28,6 +46,16 @@ export default Vue.extend({
       'getCovidChartData'
     ])
   }
-
 })
 </script>
+
+<style lang="scss" scoped>
+
+.covid-vis-chart-container {
+  display: grid;
+}
+.covid-vis-chart-notification {
+  margin: auto;
+}
+
+</style>
