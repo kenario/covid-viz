@@ -41,8 +41,12 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
   let result: number[] = []
 
   if (resultType.value === 'total') {
+    /*
+     * Return the value if it is greater than 0, otherwise we return 0 instead. This is a case for
+     * negative values that are skewing the chart for the recovered data type.  Recovered has also
+     * seemed to have stopped being recorded after a specific date. */
     // eslint-disable-next-line
-    result = data.map((d: any) => parseInt(d.value))
+    result = data.map((d: any) => parseInt(d.value) > 0 ? parseInt(d.value) : 0)
   } else if (resultType.value === 'totalPerDay') {
     /**
      * next element - current element, gives us the data for the current day.  This excludes
@@ -50,7 +54,11 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
      */
     for (let x = 0; x < data.length; x++) {
       if (x + 1 < data.length) {
-        result.push((parseInt(data[x + 1].value) - parseInt(data[x].value)))
+        /*
+         * If the data for the next and the current element is valid. */
+        if (parseInt(data[x + 1].value) > 0 && parseInt(data[x].value) > 0) {
+          result.push((parseInt(data[x + 1].value) - parseInt(data[x].value)))
+        }
       }
     }
   }

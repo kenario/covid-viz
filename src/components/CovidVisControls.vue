@@ -63,6 +63,26 @@
       </div>
     </div>
 
+    <div class="covid-vis-controls-rankings">
+      <div class="covid-vis-controls-rankings-label covid-vis-controls-label-styling">
+        {{ rankingsLabel }}
+      </div>
+
+      <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
+        <dropdown
+          :label="'Ranking Type'"
+          :selectedItem="getSelectedRankingType.name"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :items="rankingTypes"
+              @selectedItem="setSelectedRankingType($event); toggleDropdown()"
+            />
+          </template>
+        </dropdown>
+      </div>
+    </div>
+
     <div class="covid-vis-controls-graph">
       <div class="covid-vis-controls-graph-label covid-vis-controls-label-styling">
         {{ graphLabel }}
@@ -109,26 +129,6 @@
               :items="graphTypes"
               @selectedItem="setSelectedGraphType($event); toggleDropdown()"
             ></single-select>
-          </template>
-        </dropdown>
-      </div>
-    </div>
-
-    <div class="covid-vis-controls-rankings">
-      <div class="covid-vis-controls-rankings-label covid-vis-controls-label-styling">
-        {{ rankingsLabel }}
-      </div>
-
-      <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
-        <dropdown
-          :label="'Ranking Type'"
-          :selectedItem="getSelectedRankingType.name"
-        >
-          <template v-slot="{ toggleDropdown }">
-            <single-select
-              :items="rankingTypes"
-              @selectedItem="setSelectedRankingType($event); toggleDropdown()"
-            />
           </template>
         </dropdown>
       </div>
