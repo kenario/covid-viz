@@ -20,7 +20,8 @@ export default Vue.extend({
   },
 
   data: () => ({
-    chart: {} as Chart
+    chart: {} as Chart,
+    lineColor: [] as string[]
   }),
 
   created() {
@@ -32,30 +33,21 @@ export default Vue.extend({
   },
 
   mounted() {
+    /*
+     * Generate colors for each unique data point int he data. */
+    for (let x = 0; x < this.data.length; x++) {
+      this.lineColor.push(this.rgbGenerator())
+    }
     this.chart = this.createNewChart()
   },
 
   watch: {
     labels(newLabels: string[]): void {
-      /**
-       * If labels prop changes, update the charts labels.
-       */
       this.chart.data.labels = newLabels
       this.chart.update()
     },
     data(newData: CovidLineChart[]): void {
-      /**
-       * Add styling to the lines.
-       */
-      newData.forEach((data: CovidLineChart, index: number): void => {
-        const lineColor: string = this.rgbGenerator()
-        data.pointBackgroundColor = lineColor
-        data.backgroundColor = lineColor
-        data.fill = index
-      })
-      /**
-       * If data props changes, update charts data
-       */
+      this.generateChartStyling(newData)
       this.chart.data.datasets = newData
       this.chart.update()
     },
@@ -77,6 +69,7 @@ export default Vue.extend({
     },
 
     createNewChart: function(): Chart {
+      this.generateChartStyling(this.data)
       const ctx = document.getElementById('chart') as HTMLCanvasElement
       return new Chart(ctx, this.generateChartConfig())
     },
@@ -85,11 +78,8 @@ export default Vue.extend({
       return {
         type: this.type,
         data: {
-          labels: [],
-          datasets: [{
-            label: '# of Votes',
-            data: []
-          }]
+          labels: this.labels ? this.labels : [],
+          datasets: this.data ? this.data : [{ label: '# of Votes', data: [] }]
         },
         options: {
           maintainAspectRatio: false,
@@ -102,6 +92,14 @@ export default Vue.extend({
           }
         }
       }
+    },
+
+    generateChartStyling: function(data: CovidLineChart[]): void {
+      data.forEach((data: CovidLineChart, index: number): void => {
+        data.pointBackgroundColor = this.lineColor[index]
+        data.backgroundColor = this.lineColor[index]
+        data.fill = index
+      })
     }
   }
 })

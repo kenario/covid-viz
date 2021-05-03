@@ -74,7 +74,7 @@ describe('CovidStoreGetters', (): void => {
 
     const expected: CovidLineChart = {
       label: 'Cases',
-      data: [1, 1, 1, 1]
+      data: [1, 1, 1]
     }
 
     expect(getCovidChartData(covidState)).to.eql([expected])
