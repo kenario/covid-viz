@@ -50,7 +50,7 @@ export default Vue.extend({
 
   methods: {
     emitItemSelected(item: string): void {
-      this.$emit('selectedItem', item)
+      this.$emit('itemSelect', item)
     },
     clearSearchText() {
       this.searchText = ''

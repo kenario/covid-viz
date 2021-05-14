@@ -35,6 +35,9 @@ export const getters = {
 
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
+
+  getSelectedCovidDataTypes: (state: CovidStateType): SelectItem[] =>
+    state.selectedCovidDataType,
   /*
    * Map all affected countries names and country codes.
    */

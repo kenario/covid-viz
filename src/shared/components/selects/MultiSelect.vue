@@ -31,6 +31,7 @@ export default Vue.extend({
 
   props: {
     items: Array as () => SelectItem[],
+    selectedItems: Array as () => SelectItem[],
     allItemsCheckedOnMount: Boolean
   },
 
@@ -39,7 +40,8 @@ export default Vue.extend({
   }),
 
   mounted() {
-    if (this.allItemsCheckedOnMount) this.checkedItems = this.items
+    console.log('here: ', this.selectedItems)
+    if (this.allItemsCheckedOnMount) this.checkedItems = this.selectedItems
   },
 
   watch: {

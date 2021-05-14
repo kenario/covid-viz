@@ -12,8 +12,8 @@
       @click="toggleDropdown"
     >
       <div class="dropdown-button-label">
-        <template v-if="selectedItem.length > 0">
-          {{ selectedItem }}
+        <template v-if="selectedItemLabel.length > 0">
+          {{ selectedItemLabel }}
         </template>
 
         <template v-else>
@@ -43,7 +43,7 @@ export default Vue.extend({
 
   props: {
     label: String,
-    selectedItem: String
+    selectedItemLabel: String
   },
 
   data: () => ({
