@@ -4,17 +4,18 @@
       {{ label }}:
     </div>
 
-    <input
-      class='date-picker'
-    >
+    <v-date-picker
+      is-range
+      is-dark
+      :max-date="maxDate"
+      v-model="dateRange"
+    />
   </div>
 </template>
 
 <script lang='ts'>
 import Vue from 'vue'
 import moment from 'moment'
-import flatpickr from 'flatpickr'
-import '@/styles/customFlatpickr.scss'
 
 export default Vue.extend({
   name: 'DatePicker',
@@ -24,31 +25,25 @@ export default Vue.extend({
   },
 
   data: () => ({
-    datePicker: {} as flatpickr.Instance
+    dateRange: {} as { start: Date; end: Date },
+    maxDate: {} as Date
   }),
 
   mounted() {
-    /**
-     * Initialize date picker variable on the input element.
-     */
-    this.datePicker = flatpickr(this.$el.childNodes[this.$el.childNodes.length - 1], {
-      dateFormat: 'M d, Y',
-      mode: 'range',
-      disable: [
-        (date): boolean => moment.utc(date).isAfter(moment.utc())
-      ],
-      defaultDate: this.getDefaultDates(30)
-    })
-    /**
-     * Adds function to execute when a change happens.
-     */
-    this.datePicker.config.onChange.push(this.onDateSelect)
+    /*
+     * Initialize the date range and max date for the calendar. */
+    const [end, start] = this.getDefaultDates(30)
+    this.maxDate = end
+    this.dateRange = {
+      start: start,
+      end: end
+    }
   },
 
   methods: {
     getDefaultDates: (startDate: number): Date[] => [
-      moment().utc().toDate(),
-      moment().utc().subtract(startDate, 'days').toDate()
+      moment().utc().toDate(), // end date
+      moment().utc().subtract(startDate, 'days').toDate() // start date
     ],
     /**
      * When two dates are selected, emit 'selectDate' event.
