@@ -6,9 +6,9 @@
 
     <v-date-picker
       is-range
-      is-dark
       :max-date="maxDate"
       v-model="dateRange"
+      color="blue"
     />
   </div>
 </template>
@@ -85,5 +85,10 @@ export default Vue.extend({
 }
 .date-picker:hover {
   cursor: pointer;
+}
+
+// all styling underneath are modifying the v-calendar component
+.vc-container {
+  background-color: $secondary-color;
 }
 </style>
