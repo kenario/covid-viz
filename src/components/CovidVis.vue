@@ -225,14 +225,16 @@ export default Vue.extend({
           /* If the users geolocation is the United States, we also fetch the users state and county data */
           if (this.geolocationCountry.toLowerCase() === 'usa') {
             const state = res.data.address.state
-            const county = res.data.address.county.replace(' County', '')
+            const county = res.data.address.county?.replace(' County', '')
 
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
             this.$store.commit('setSelectedCovidStateData')
 
-            await this.$store.dispatch('getCovidCountyData')
-            this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
-            this.$store.commit('setSelectedCovidCountyData')
+            if (county) {
+              await this.$store.dispatch('getCovidCountyData')
+              this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+              this.$store.commit('setSelectedCovidCountyData')
+            }
           }
         })
       }
