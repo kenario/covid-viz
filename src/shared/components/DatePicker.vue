@@ -42,8 +42,10 @@ export default Vue.extend({
      * Since the date picker gets remounted when the filter is opened, we check if there was a
      * previously recorded state and use that instead.  Otherwise the default dates are used. */
     if (Object.keys(this.selectedDates).length > 0) {
-      this.dateRange.start = this.selectedDates.startDate
-      this.dateRange.end = this.selectedDates.endDate
+      this.dateRange = {
+        start: this.selectedDates.startDate,
+        end: this.selectedDates.endDate
+      }
     } else {
       const [end, start] = this.getDefaultDates(30)
       this.maxDate = end

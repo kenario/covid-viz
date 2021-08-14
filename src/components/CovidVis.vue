@@ -229,9 +229,9 @@ export default Vue.extend({
 
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
             this.$store.commit('setSelectedCovidStateData')
+            await this.$store.dispatch('getCovidCountyData')
 
             if (county) {
-              await this.$store.dispatch('getCovidCountyData')
               this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
               this.$store.commit('setSelectedCovidCountyData')
             }
