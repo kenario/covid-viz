@@ -18,7 +18,7 @@
 
         <template v-else>
           <div class="dropdown-button-label-placeholder">
-            Please select {{ label }}...
+            Select a {{ label }}...
           </div>
         </template>
       </div>

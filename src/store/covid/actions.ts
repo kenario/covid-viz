@@ -103,9 +103,8 @@ export const actions = {
     const endDate = moment.utc(state.selectedDates.endDate)
     const endDateNotToday = !today.isSame(endDate, 'day')
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
-    /**
-     * If we have specific dates we calculate how many days to query.
-     */
+    /*
+     * If we have specific dates we calculate how many days to query. */
     if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
     }
@@ -114,17 +113,17 @@ export const actions = {
       .replace('country', state.selectedCountry)
       .replace('numOfDays', numOfDays)
     const res = await axios.get(covidEP.COVID_API_BASE_URL + path)
-    /**
-     * If the specified dates end date is not today, we calculate which dates to include.
-     */
+
+    /*
+     * If the specified dates end date is not today, we calculate which dates to include. */
     if (endDateNotToday) {
       trimToSpecificDateRange(res.data.timeline.cases, startDate, endDate)
       trimToSpecificDateRange(res.data.timeline.deaths, startDate, endDate)
       trimToSpecificDateRange(res.data.timeline.recovered, startDate, endDate)
     }
-    /**
-     * Map cases, deaths, and recovered into CovidHistoricalData timeline type.
-     */
+
+    /*
+     * Map cases, deaths, and recovered into CovidHistoricalData timeline type. */
     const formattedData: CovidHistoricalData = {
       country: res.data.country,
       province: res.data.province,

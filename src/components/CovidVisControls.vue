@@ -88,53 +88,61 @@
         {{ graphLabel }}
       </div>
 
-      <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
-        <!-- Data type dropdown -->
-        <dropdown
-          :label="'Data Types'"
-          :selectedItemLabel="getNumberOfSelectedCovidDataTypes"
-        >
-          <template>
-            <multi-select
-              :items="dataTypes"
-              :selectedItems="getSelectedCovidDataTypes"
-              :allItemsCheckedOnMount="true"
-              @itemCheck="setSelectedDataType"
-            />
-          </template>
-        </dropdown>
-        <!-- Result type dropdown -->
-        <dropdown
-          :label="'Results Type'"
-          :selectedItemLabel="getSelectedResultType.name"
-        >
-          <template v-slot="{ toggleDropdown }">
-            <single-select
-              :items="resultTypes"
-              @itemSelect="setSelectedResultType($event); toggleDropdown()"
-            />
-          </template>
-        </dropdown>
-        <!-- Type of graph dropdown -->
-        <dropdown
-          :label="'Graph Type'"
-          :selectedItemLabel="getSelectedGraphType.name"
-        >
-          <template v-slot="{ toggleDropdown }">
-            <single-select
-              :items="graphTypes"
-              @itemSelect="setSelectedGraphType($event); toggleDropdown()"
-            ></single-select>
-          </template>
-        </dropdown>
+      <template v-if="getSelectedCountry">
+        <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
+          <!-- Data type dropdown -->
+          <dropdown
+            :label="'Data Types'"
+            :selectedItemLabel="getNumberOfSelectedCovidDataTypes"
+          >
+            <template>
+              <multi-select
+                :items="dataTypes"
+                :selectedItems="getSelectedCovidDataTypes"
+                :allItemsCheckedOnMount="true"
+                @itemCheck="setSelectedDataType"
+              />
+            </template>
+          </dropdown>
+          <!-- Result type dropdown -->
+          <dropdown
+            :label="'Results Type'"
+            :selectedItemLabel="getSelectedResultType.name"
+          >
+            <template v-slot="{ toggleDropdown }">
+              <single-select
+                :items="resultTypes"
+                @itemSelect="setSelectedResultType($event); toggleDropdown()"
+              />
+            </template>
+          </dropdown>
+          <!-- Type of graph dropdown -->
+          <dropdown
+            :label="'Graph Type'"
+            :selectedItemLabel="getSelectedGraphType.name"
+          >
+            <template v-slot="{ toggleDropdown }">
+              <single-select
+                :items="graphTypes"
+                @itemSelect="setSelectedGraphType($event); toggleDropdown()"
+              ></single-select>
+            </template>
+          </dropdown>
 
-        <!-- Date picker dropdown -->
-        <date-picker
-          :label="'Dates'"
-          :selectedDates="getSelectedDates"
-          @selectDate="setSelectedDateRange"
-        />
-      </div>
+          <!-- Date picker dropdown -->
+          <date-picker
+            :label="'Dates'"
+            :selectedDates="getSelectedDates"
+            @selectDate="setSelectedDateRange"
+          />
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="covid-vis-controls-graph-no-country-selected covid-vis-controls-filters-styling">
+          {{ noCountrySelected }}
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -196,7 +204,8 @@ export default Vue.extend({
     ],
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
-    rankingsLabel: 'RANKINGS'
+    rankingsLabel: 'RANKINGS',
+    noCountrySelected: 'Select a Country...'
   }),
 
   methods: {
@@ -205,7 +214,6 @@ export default Vue.extend({
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidCountryData')
-      await this.$store.dispatch('getHistoricalCountryData')
     },
 
     /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
@@ -285,5 +293,10 @@ export default Vue.extend({
   margin: 25px 0 10px 0;
   color: white;
   font-size: 0.8rem;
+}
+.covid-vis-controls-graph-no-country-selected {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #cccfba;
 }
 </style>
