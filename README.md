@@ -1,1 +1,2 @@
 # Covid Visualization
+A simple dashboard for visualing covid trends.  Granularity is only currently available for the United States and the granularity for the United States is only for the day to day cases, recoveries, and deaths.
