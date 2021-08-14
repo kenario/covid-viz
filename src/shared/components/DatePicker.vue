@@ -6,9 +6,9 @@
 
     <v-date-picker
       is-range
-      :max-date="maxDate"
-      v-model="dateRange"
       color="blue"
+      v-model="dateRange"
+      :max-date="maxDate"
     />
   </div>
 </template>
@@ -16,12 +16,14 @@
 <script lang='ts'>
 import Vue from 'vue'
 import moment from 'moment'
+import { DateRange } from '../../types/DateRange'
 
 export default Vue.extend({
   name: 'DatePicker',
 
   props: {
-    label: String
+    label: String,
+    selectedDates: Object as () => DateRange
   },
 
   data: () => ({
@@ -29,14 +31,26 @@ export default Vue.extend({
     maxDate: {} as Date
   }),
 
+  watch: {
+    dateRange() {
+      this.$emit('selectDate', { startDate: this.dateRange.start, endDate: this.dateRange.end })
+    }
+  },
+
   mounted() {
     /*
-     * Initialize the date range and max date for the calendar. */
-    const [end, start] = this.getDefaultDates(30)
-    this.maxDate = end
-    this.dateRange = {
-      start: start,
-      end: end
+     * Since the date picker gets remounted when the filter is opened, we check if there was a
+     * previously recorded state and use that instead.  Otherwise the default dates are used. */
+    if (Object.keys(this.selectedDates).length > 0) {
+      this.dateRange.start = this.selectedDates.startDate
+      this.dateRange.end = this.selectedDates.endDate
+    } else {
+      const [end, start] = this.getDefaultDates(30)
+      this.maxDate = end
+      this.dateRange = {
+        start: start,
+        end: end
+      }
     }
   },
 
@@ -44,15 +58,7 @@ export default Vue.extend({
     getDefaultDates: (startDate: number): Date[] => [
       moment().utc().toDate(), // end date
       moment().utc().subtract(startDate, 'days').toDate() // start date
-    ],
-    /**
-     * When two dates are selected, emit 'selectDate' event.
-     */
-    onDateSelect(selectedDates: Date[]): void {
-      if (selectedDates.length === 2) {
-        this.$emit('selectDate', selectedDates)
-      }
-    }
+    ]
   }
 })
 </script>

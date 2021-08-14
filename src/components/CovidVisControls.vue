@@ -89,11 +89,6 @@
       </div>
 
       <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
-        <!-- Date picker dropdown -->
-        <date-picker
-          :label="'Dates'"
-          @selectDate="setSelectedDateRange"
-        />
         <!-- Data type dropdown -->
         <dropdown
           :label="'Data Types'"
@@ -132,6 +127,13 @@
             ></single-select>
           </template>
         </dropdown>
+
+        <!-- Date picker dropdown -->
+        <date-picker
+          :label="'Dates'"
+          :selectedDates="getSelectedDates"
+          @selectDate="setSelectedDateRange"
+        />
       </div>
     </div>
   </div>
@@ -159,6 +161,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getSelectedDates',
       'getSelectedCountry',
       'getSelectedState',
       'getSelectedCounty',
@@ -224,9 +227,8 @@ export default Vue.extend({
       this.$store.commit('setSelectedCovidCountyData')
     },
 
-    setSelectedDateRange: async function(dates: Date[]): Promise<void> {
-      const dateRange: DateRange = { startDate: dates[0], endDate: dates[1] }
-      this.$store.commit('setSelectedDates', dateRange)
+    setSelectedDateRange: async function(dates: DateRange): Promise<void> {
+      this.$store.commit('setSelectedDates', dates)
       await this.$store.dispatch('getHistoricalCountryData')
     },
 

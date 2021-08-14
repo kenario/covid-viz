@@ -7,7 +7,8 @@ import {
   ResultType,
   SelectItem,
   CountryInfo,
-  RankingType
+  RankingType,
+  DateRange
 } from '@/types'
 
 import {
@@ -21,6 +22,8 @@ import {
 import { CovidRankings } from '@/types/covid/CovidRankings'
 
 export const getters = {
+  getSelectedDates: (state: CovidStateType): DateRange => state.selectedDates,
+
   getSelectedCountry: (state: CovidStateType): string => state.selectedCountry,
 
   getSelectedState: (state: CovidStateType): string => state.selectedState,
