@@ -1,7 +1,7 @@
 <template>
   <div class='date-picker-container'>
     <div class='date-picker-label'>
-      {{ label }}:
+      {{ label }}
     </div>
 
     <v-date-picker

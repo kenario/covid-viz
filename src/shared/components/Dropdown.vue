@@ -98,6 +98,7 @@ export default Vue.extend({
   overflow-y: auto;
   position: relative;
   box-shadow: 1px 1px 5px;
+  z-index: 3;
   /*
    * Mozilla firefox scrollbar.
    */
