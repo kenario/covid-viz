@@ -262,7 +262,13 @@ export default Vue.extend({
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
-    setSelectedRankingType: function(rankingType: RankingType): void {
+    setSelectedRankingType: async function(rankingType: RankingType): Promise<void> {
+      /*
+       * If we change the rankings to nationwide and we do not have state data, fetch the data. */
+      if (rankingType.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
+        await this.$store.dispatch('getCovidStateData')
+      }
+
       this.$store.commit('setSelectedRankingType', rankingType)
     },
 
