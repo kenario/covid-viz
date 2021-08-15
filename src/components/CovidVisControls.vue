@@ -225,6 +225,7 @@ export default Vue.extend({
     setSelectedState: async function(state: SelectItem): Promise<void> {
       if (this.getSelectedState !== state.name) {
         this.$store.commit('setSelectedCounty', { name: '', value: '' })
+        this.$store.commit('setSelectedCovidCountyData', { name: '', value: '' })
       }
       this.$store.commit('setSelectedState', state)
       this.$store.commit('setSelectedCovidStateData')

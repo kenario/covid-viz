@@ -33,27 +33,32 @@ export const mutations = {
   setSelectedDates: (state: CovidStateType, dates: DateRange): void => {
     state.selectedDates = dates
   },
-  /**
-   * Iterates through all countries, converts countries and country to lowercase, and assigns to
-   * selectedCovidCountryData state.  Asserts that country is not null, since country comes from the Covid
-   * API and is sure to exist.  This is the same for the selected state data as well.
-   */
+  /*
+   * The follow applies to selected covid country, state, and county data.  We iterate through the data
+   * and find a match.  We return undefined if the selected data is an empty string.  We assign the
+   * selected data if it exists, otherwise we assign an empty object. */
   setSelectedCovidCountryData: (state: CovidStateType): void => {
-    state.selectedCovidCountryData = state.covidCountryData.find((data: CovidCountryData): boolean =>
-      data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase())
+    const selectedCovidCountryData = state.covidCountryData.find((data: CovidCountryData): boolean =>
+      state.selectedCountry !== '' && data.country!.toLowerCase().includes(state.selectedCountry.toLowerCase())
     )!
+
+    state.selectedCovidCountryData = selectedCovidCountryData || {}
   },
 
   setSelectedCovidStateData: (state: CovidStateType): void => {
-    state.selectedCovidStateData = state.covidStateData.find((data: CovidStateData): boolean =>
-      data.state!.toLowerCase().includes(state.selectedState.toLowerCase())
+    const selectedCovidStateData = state.covidStateData.find((data: CovidStateData): boolean =>
+      state.selectedState !== '' && data.state!.toLowerCase().includes(state.selectedState.toLowerCase())
     )!
+
+    state.selectedCovidStateData = selectedCovidStateData || {}
   },
 
   setSelectedCovidCountyData: (state: CovidStateType): void => {
-    state.selectedCovidCountyData = state.covidCountyData.find((data: CovidCountyData): boolean =>
-      data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase())
+    const selectedCovidCountyData = state.covidCountyData.find((data: CovidCountyData): boolean =>
+      state.selectedCounty !== '' && data.county!.toLowerCase().includes(state.selectedCounty.toLowerCase())
     )!
+
+    state.selectedCovidCountyData = selectedCovidCountyData || {}
   },
 
   setCovidGlobalData: (state: CovidStateType, data: CovidGlobalData): void => {
