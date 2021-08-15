@@ -217,46 +217,30 @@ export default Vue.extend({
      * Sets the country and the countries data. */
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
-      this.$store.commit('setSelectedCovidCountryData')
 
       if (this.getSelectedCountry !== 'USA') {
         /*
          * If the country is not the USA and we have a selected state and county, we unset. */
-        if (this.getSelectedState.length > 0) {
-          this.$store.commit('setSelectedState', { name: '', value: '' })
-          this.$store.commit('setSelectedCovidStateData', { name: '', value: '' })
-        }
-        if (this.getSelectedCounty.length > 0) {
-          this.$store.commit('setSelectedCounty', { name: '', value: '' })
-          this.$store.commit('setSelectedCovidCountyData', { name: '', value: '' })
-        }
+        if (this.getSelectedState.length > 0) this.$store.commit('setSelectedState', { name: '', value: '' })
+        if (this.getSelectedCounty.length > 0) this.$store.commit('setSelectedCounty', { name: '', value: '' })
       } else {
         /*
          * If the country is USA and we have not retrieved all states, we fetch the states. */
-        if (this.getAllAffectedStates.length < 1) {
-          await this.$store.dispatch('getCovidStateData')
-        }
+        if (this.getAllAffectedStates.length < 1) await this.$store.dispatch('getCovidStateData')
       }
     },
 
     /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
        the state selected is not the currently selected state. */
     setSelectedState: async function(state: SelectItem): Promise<void> {
-      if (this.getSelectedState !== state.name) {
-        this.$store.commit('setSelectedCounty', { name: '', value: '' })
-        this.$store.commit('setSelectedCovidCountyData', { name: '', value: '' })
-      }
       this.$store.commit('setSelectedState', state)
-      this.$store.commit('setSelectedCovidStateData')
 
-      if (this.getStatesAffectedCounties.length < 1) {
-        await this.$store.dispatch('getCovidCountyData')
-      }
+      if (this.getSelectedState !== state.name) this.$store.commit('setSelectedCounty', { name: '', value: '' })
+      if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
     },
 
     setSelectedCounty: function(county: SelectItem): void {
       this.$store.commit('setSelectedCounty', county)
-      this.$store.commit('setSelectedCovidCountyData')
     },
 
     setSelectedDateRange: async function(dates: DateRange): Promise<void> {

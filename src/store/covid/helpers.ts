@@ -116,4 +116,20 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
   return result
 }
 
+/**
+ * Iterate through the data and find a match.  If the selected data is an empty string then the search will
+ * return undefined.  If undefined is returned, then the function will return an empty object.
+ *
+ * @param selectedData - state.selectedCountry | state.selectedState | state.selectedCounty
+ * @param data - state.selectedCovidCountryData | state.selectedCovidStateData | state.selectedCovidCountyData
+ * @param type - 'country' | 'state' | 'county'
+ * @returns - CovidCountryData | CovidStateData | CovidCountyData | {}
+ */
+// eslint-disable-next-line
+export const searchForSelectedData = (selectedData: string, data: any[], type: string): CovidDataType =>
+  // eslint-disable-next-line
+  data.find((d: any): boolean =>
+    selectedData !== '' && d[type]!.toLowerCase().includes(selectedData.toLowerCase())
+  )! || {}
+
 type CovidDataType = CovidGlobalData | CovidCountryData | CovidStateData | CovidCountyData

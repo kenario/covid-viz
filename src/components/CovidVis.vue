@@ -218,7 +218,6 @@ export default Vue.extend({
             name: this.geolocationCountry,
             value: this.geolocationCountry.toLowerCase()
           })
-          this.$store.commit('setSelectedCovidCountryData')
           await this.$store.dispatch('getHistoricalCountryData')
 
           /* If the users geolocation is the United States, we also fetch the users state and county data */
@@ -230,12 +229,7 @@ export default Vue.extend({
             await this.$store.dispatch('getCovidCountyData')
 
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
-            this.$store.commit('setSelectedCovidStateData')
-
-            if (county) {
-              this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
-              this.$store.commit('setSelectedCovidCountyData')
-            }
+            if (county) this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
           }
         })
       }
