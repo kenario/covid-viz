@@ -213,11 +213,30 @@ export default Vue.extend({
   }),
 
   methods: {
-    /* Also checks if selected country is USA and fetches state data if we do not have prior state data.
-       If */
+    /*
+     * Sets the country and the countries data. */
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
       this.$store.commit('setSelectedCountry', country)
       this.$store.commit('setSelectedCovidCountryData')
+
+      if (this.getSelectedCountry !== 'USA') {
+        /*
+         * If the country is not the USA and we have a selected state and county, we unset. */
+        if (this.getSelectedState.length > 0) {
+          this.$store.commit('setSelectedState', { name: '', value: '' })
+          this.$store.commit('setSelectedCovidStateData', { name: '', value: '' })
+        }
+        if (this.getSelectedCounty.length > 0) {
+          this.$store.commit('setSelectedCounty', { name: '', value: '' })
+          this.$store.commit('setSelectedCovidCountyData', { name: '', value: '' })
+        }
+      } else {
+        /*
+         * If the country is USA and we have not retrieved all states, we fetch the states. */
+        if (this.getAllAffectedStates.length < 1) {
+          await this.$store.dispatch('getCovidStateData')
+        }
+      }
     },
 
     /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
