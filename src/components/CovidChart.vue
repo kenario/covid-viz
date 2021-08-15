@@ -1,12 +1,20 @@
 <template>
   <div class="covid-vis-chart-container">
     <div
+      v-if="getSelectedCountry.length > 0"
+      class="covid-vis-chart-country-label label-font"
+    >
+      {{ getSelectedCountry }}
+    </div>
+
+    <div
       v-if="getCovidChartData.length > 0"
       class="covid-vis-chart"
     >
       <Chart
         :labels="getCovidChartLabels"
         :type="getSelectedGraphType.value"
+        :country="getSelectedCountry"
         :data="getCovidChartData"
       />
     </div>
@@ -43,7 +51,8 @@ export default Vue.extend({
     ...mapGetters([
       'getSelectedGraphType',
       'getCovidChartLabels',
-      'getCovidChartData'
+      'getCovidChartData',
+      'getSelectedCountry'
     ])
   }
 })
@@ -56,6 +65,10 @@ export default Vue.extend({
 }
 .covid-vis-chart-notification {
   margin: auto;
+}
+.covid-vis-chart-country-label {
+  margin: auto;
+  margin-bottom: 10px;
 }
 
 </style>

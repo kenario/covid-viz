@@ -55,7 +55,8 @@ export default Vue.extend({
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
       /*
        * Check if there is any difference between the data. */
-      const hasChanged = newData.length !== oldData.length || newData[0].data.length !== oldData[0].data.length
+      const hasChanged = newData.length !== oldData.length || !newData[0].data.some(newD => oldData[0].data.includes(newD))
+      // const hasChanged = newData.length !== oldData.length || newData[0].data.length !== oldData[0].data.length
 
       if (hasChanged) {
         this.generateChartStyling(newData)
