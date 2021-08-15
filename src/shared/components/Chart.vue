@@ -25,9 +25,8 @@ export default Vue.extend({
   }),
 
   created() {
-    /**
-     * Initialize font styling.
-     */
+    /*
+     * Initialize font styling. */
     Chart.defaults.global.defaultFontFamily = 'Roboto'
     Chart.defaults.global.defaultFontSize = 14
   },
@@ -42,19 +41,31 @@ export default Vue.extend({
   },
 
   watch: {
-    labels(newLabels: string[]): void {
-      this.chart.data.labels = newLabels
-      this.chart.update()
+    labels(newLabels: string[], oldLabels: string[]): void {
+      /*
+       * Check if there is any difference between the labels. */
+      const hasChanged = newLabels.length !== oldLabels.length ||
+        !newLabels.every((newLabel: string): boolean => oldLabels.includes(newLabel))
+
+      if (hasChanged) {
+        this.chart.data.labels = newLabels
+        this.chart.update()
+      }
     },
-    data(newData: CovidLineChart[]): void {
-      this.generateChartStyling(newData)
-      this.chart.data.datasets = newData
-      this.chart.update()
+    data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
+      /*
+       * Check if there is any difference between the data. */
+      const hasChanged = newData.length !== oldData.length || newData[0].data.length !== oldData[0].data.length
+
+      if (hasChanged) {
+        this.generateChartStyling(newData)
+        this.chart.data.datasets = newData
+        this.chart.update()
+      }
     },
     type(): void {
-      /**
-       * Re-creates the chart into the new given type, updates with the current labels and data.
-       */
+      /*
+       * Re-creates the chart into the new given type, updates with the current labels and data. */
       this.chart.destroy()
       this.chart = this.createNewChart()
       this.chart.data.labels = this.labels
