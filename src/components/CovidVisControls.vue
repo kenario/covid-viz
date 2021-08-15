@@ -23,6 +23,7 @@
           <template v-slot="{ toggleDropdown }">
             <single-select
               :hasSearchBar="true"
+              :searchbarPlaceholder="searchbarPlaceholder + ' Country'"
               :items="getAllAffectedCountries.map(countryInfo => { return { name: countryInfo.name, value: countryInfo.name } })"
               @itemSelect="setSelectedCountry($event); toggleDropdown()"
             />
@@ -39,6 +40,7 @@
               <single-select
                 :hasSearchBar="true"
                 :items="getAllAffectedStates"
+                :searchbarPlaceholder="searchbarPlaceholder + ' State'"
                 @itemSelect="setSelectedState($event); toggleDropdown()"
               />
             </template>
@@ -55,6 +57,7 @@
               <single-select
                 :hasSearchBar="true"
                 :items="getStatesAffectedCounties"
+                :searchbarPlaceholder="searchbarPlaceholder + ' County'"
                 @itemSelect="setSelectedCounty($event); toggleDropdown()"
               />
             </template>
@@ -205,7 +208,8 @@ export default Vue.extend({
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
     rankingsLabel: 'RANKINGS',
-    noCountrySelected: 'Select a Country...'
+    noCountrySelected: 'Select a Country...',
+    searchbarPlaceholder: 'Enter the name of a'
   }),
 
   methods: {

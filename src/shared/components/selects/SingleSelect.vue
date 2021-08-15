@@ -29,12 +29,12 @@ export default Vue.extend({
 
   props: {
     items: Array as () => SelectItem[] || Array as () => string[],
-    hasSearchBar: { type: Boolean, default: false }
+    hasSearchBar: { type: Boolean, default: false },
+    searchbarPlaceholder: String
   },
 
   data: () => ({
-    searchText: '',
-    searchbarPlaceholder: 'Enter the name of a country...'
+    searchText: ''
   }),
 
   computed: {
