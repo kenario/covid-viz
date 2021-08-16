@@ -5,21 +5,13 @@ import { mutations } from '@/store/covid/mutations'
 import { CovidStateType } from '@/store/covid/CovidStateType'
 import { covidStateMocks, covidConstants } from '../../covidMocks'
 
-const { setSelectedCovidCountryData, setCovidVaccineCountryData } = mutations
+const { setCovidVaccineCountryData } = mutations
 
 let covidState: CovidStateType = state()
 
 describe('CovidStoreMutations', (): void => {
   afterEach((): void => {
     covidState = state()
-  })
-
-  it('sets selected covid country data to appropriate country covid data when selectedCountry is mutated', (): void => {
-    covidState.covidCountryData = covidStateMocks.generateCovidDataAllCountries()
-    covidState.selectedCountry = covidConstants.affectedCountries[0].name
-
-    setSelectedCovidCountryData(covidState)
-    expect(covidState.selectedCovidCountryData).to.eql(covidState.covidCountryData[0])
   })
 
   it('sets covid vaccinated data for each country', (): void => {
