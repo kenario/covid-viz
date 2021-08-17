@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+gh_pages_readme.md
 
 # local env files
 .env.local
