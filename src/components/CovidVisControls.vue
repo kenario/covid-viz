@@ -329,10 +329,31 @@ export default Vue.extend({
   .covid-vis-controls-graph-filters {
     margin-bottom: 100px;
   }
+}
+@media only screen and (max-height: 820px) {
   .covid-vis-controls-close-button {
-    // This will triger only when a country has been selected.
+
+    // This will trigger only when a country has been selected.
     &--add-margin-top {
-      margin-top: 200px;
+      margin-top: 10vh;
+    }
+  }
+}
+@media only screen and (max-height: 740px) {
+  .covid-vis-controls-close-button {
+
+    // This will trigger only when a country has been selected.
+    &--add-margin-top {
+      margin-top: 20vh;
+    }
+  }
+}
+@media only screen and (max-height: 670px) {
+  .covid-vis-controls-close-button {
+
+    // This will trigger only when a country has been selected.
+    &--add-margin-top {
+      margin-top: 30vh;
     }
   }
 }
