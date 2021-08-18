@@ -42,7 +42,6 @@ export default Vue.extend({
 
   watch: {
     labels(newLabels: string[], oldLabels: string[]): void {
-      console.log('labels: ', newLabels)
       /*
        * Check if there is any difference between the labels. */
       const hasChanged = newLabels.length !== oldLabels.length ||
