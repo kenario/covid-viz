@@ -40,7 +40,6 @@ export default Vue.extend({
   }),
 
   mounted() {
-    console.log('here: ', this.selectedItems)
     if (this.allItemsCheckedOnMount) this.checkedItems = this.selectedItems
   },
 
