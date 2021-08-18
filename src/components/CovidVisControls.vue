@@ -1,6 +1,9 @@
 <template>
   <div class="covid-vis-controls-container">
-    <div class="covid-vis-controls-close-button">
+    <div
+      class="covid-vis-controls-close-button"
+      :class="{ 'covid-vis-controls-close-button--add-margin-top': getSelectedCountry }"
+    >
       <div
         class="material-icons covid-vis-controls-close-icon"
         @click="closeButtonClick"
@@ -327,7 +330,10 @@ export default Vue.extend({
     margin-bottom: 100px;
   }
   .covid-vis-controls-close-button {
-    margin-top: 200px;
+    // This will triger only when a country has been selected.
+    &--add-margin-top {
+      margin-top: 200px;
+    }
   }
 }
 </style>
