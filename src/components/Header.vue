@@ -63,9 +63,6 @@ export default Vue.extend({
   grid-column: 1 / 2;
   margin-left: 15px;
 }
-.covid-filters-button {
-  grid-column: 3 / 4;
-}
 .covid-header-title-part-one {
   color: $accent-color;
   font-size: 2.25rem;
@@ -79,6 +76,7 @@ export default Vue.extend({
   top: -4px;
 }
 .covid-filters-button {
+  grid-column: 3 / 4;
   font-size: 1.25rem;
   border: 0.13rem solid white;
   border-radius: 5px;
@@ -100,5 +98,18 @@ export default Vue.extend({
   color: white;
   font-family: 'Big Shoulders Display', cursive;
   letter-spacing: 1px;
+}
+
+// Reduce filter button size and remove filter label in mobile view.
+@media only screen and (max-width: 400px) {
+  .covid-filters-button-label {
+    display: none;
+  }
+  .covid-header-container {
+    grid-template-columns: 260px auto 40px;
+  }
+  .covid-filters-button {
+    padding: 2px 5px 4px 5px;
+  }
 }
 </style>
