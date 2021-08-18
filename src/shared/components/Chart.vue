@@ -42,6 +42,7 @@ export default Vue.extend({
 
   watch: {
     labels(newLabels: string[], oldLabels: string[]): void {
+      console.log('labels: ', newLabels)
       /*
        * Check if there is any difference between the labels. */
       const hasChanged = newLabels.length !== oldLabels.length ||
@@ -55,8 +56,7 @@ export default Vue.extend({
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
       /*
        * Check if there is any difference between the data. */
-      const hasChanged = newData.length !== oldData.length || !newData[0].data.some(newD => oldData[0].data.includes(newD))
-      // const hasChanged = newData.length !== oldData.length || newData[0].data.length !== oldData[0].data.length
+      const hasChanged = newData.length !== oldData.length || newData[0].data.some(newD => !oldData[0].data.includes(newD))
 
       if (hasChanged) {
         this.generateChartStyling(newData)
