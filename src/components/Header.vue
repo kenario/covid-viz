@@ -101,7 +101,7 @@ export default Vue.extend({
 }
 
 // Reduce filter button size and remove filter label in mobile view.
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 768px) {
   .covid-filters-button-label {
     display: none;
   }
