@@ -78,7 +78,7 @@
         >
           <template v-slot="{ toggleDropdown }">
             <single-select
-              :items="rankingTypes"
+              :items="getRankingTypes"
               @itemSelect="setSelectedRankingType($event); toggleDropdown()"
             />
           </template>
@@ -172,10 +172,11 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getRankingTypes',
       'getSelectedDates',
-      'getSelectedCountry',
       'getSelectedState',
       'getSelectedCounty',
+      'getSelectedCountry',
       'getSelectedGraphType',
       'getSelectedResultType',
       'getSelectedRankingType',
@@ -201,10 +202,6 @@ export default Vue.extend({
       { name: 'Line', value: 'line' },
       { name: 'Bar', value: 'bar' }
     ],
-    rankingTypes: [
-      { name: 'Worldwide', value: 'worldwide' },
-      { name: 'Nationwide', value: 'nationwide' }
-    ],
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
     rankingsLabel: 'RANKINGS',
@@ -220,9 +217,14 @@ export default Vue.extend({
 
       if (this.getSelectedCountry !== 'USA') {
         /*
-         * If the country is not the USA and we have a selected state and county, we unset. */
+         * If the country is not the USA and we have a selected state and county, we unset.
+         * If our selected ranking type is nationwide, then we set to worldwide since data for
+         * other nations provinces is not yet available. */
         if (this.getSelectedState.length > 0) this.$store.commit('setSelectedState', { name: '', value: '' })
         if (this.getSelectedCounty.length > 0) this.$store.commit('setSelectedCounty', { name: '', value: '' })
+        if (this.getSelectedRankingType.value === 'nationwide') {
+          this.$store.commit('setSelectedRankingType', { name: 'Worldwide', value: 'worldwide' })
+        }
       } else {
         /*
          * If the country is USA and we have not retrieved all states, we fetch the states. */

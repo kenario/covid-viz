@@ -83,6 +83,26 @@ export const getters = {
     return mapCovidTotals(data, { county: data.county })
   },
 
+  getRankingTypes: (state: CovidStateType): RankingType[] => {
+    const rankingTypes: RankingType[] = [
+      { name: 'Worldwide', value: 'worldwide' }
+    ]
+
+    const containsNationwideType: boolean = rankingTypes
+      .some((type: RankingType): boolean => type.value === 'nationwide')
+
+    /*
+     * This is to make sure that nationwide is not an option for Ranking Types in the Filter
+     * when the selected country is the United States. */
+    if (state.selectedCountry === 'USA' && !containsNationwideType) {
+      rankingTypes.push({ name: 'Nationwide', value: 'nationwide' })
+    } else if (state.selectedCountry !== 'USA' && containsNationwideType) {
+      rankingTypes.splice(rankingTypes.findIndex((type: RankingType) => type.value === 'nationwide'), 1)
+    }
+
+    return rankingTypes
+  },
+
   getCovidRankings: (state: CovidStateType): CovidRankings[] => {
     const result: CovidRankings[] = []
     const rankingSubtypes = [
