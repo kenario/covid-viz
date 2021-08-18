@@ -317,4 +317,17 @@ export default Vue.extend({
   font-size: 0.9rem;
   color: #cccfba;
 }
+
+// Allows the filters to scroll and for the close button and date picker to be visible.
+@media only screen and (max-width: 400px) {
+  .covid-vis-controls-container {
+    overflow: auto;
+  }
+  .covid-vis-controls-graph-filters {
+    margin-bottom: 100px;
+  }
+  .covid-vis-controls-close-button {
+    margin-top: 200px;
+  }
+}
 </style>
