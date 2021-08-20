@@ -7,21 +7,21 @@
       />
     </transition>
 
-    <div
-      class="covid-filter-layout"
-      :class="{
-        'covid-filter-layout--z-index': showFilters === true,
-        'covid-filter-layout--z-index-slow': showFilters === false
-      }"
-      v-click-outside="closeOpenedFilters"
-    >
-      <transition name="slide-left">
-        <covid-vis-controls
-          v-if="showFilters"
-          @closeButtonClick="toggleFilters"
-        />
-      </transition>
-    </div>
+    <transition name="slide-left">
+      <div
+        v-if="showFilters"
+        class="covid-filter-layout"
+        :class="{
+          'covid-filter-layout--z-index': showFilters === true,
+          'covid-filter-layout--z-index-slow': showFilters === false
+        }"
+      >
+          <covid-vis-controls
+            @closeButtonClick="toggleFilters"
+            v-click-outside="closeOpenedFilters"
+          />
+      </div>
+    </transition>
 
     <covid-vis/>
   </div>
@@ -59,15 +59,16 @@ export default Vue.extend({
     /*
      * This function closes the filter if the click is outside the filter and the filters
      * container.  The purpose for this is to make sure the Filter button is included as an element
-     * that is not outside the filters v-outside-click functionality.
+     * that is not outside the filters v-outside-click functionality. We also only toggle
+     * close if the filter is open.
      */
     closeOpenedFilters() {
       window.onclick = (e: MouseEvent): void => {
         const filterLeftBoundary = this.$el
           .getElementsByClassName('covid-filter-layout')[0]
-          .getBoundingClientRect().left
+          ?.getBoundingClientRect().left
 
-        if (this.showFilters && e.pageX < filterLeftBoundary) {
+        if (this.showFilters && e.pageX < filterLeftBoundary && filterLeftBoundary === 763) {
           this.toggleFilters()
         }
       }
@@ -110,11 +111,12 @@ html, body, html * {
   opacity: 0;
 }
 .covid-filter-layout {
+  background-color: $primary-color;
   position: fixed;
   height: 100%;
   width: 300px;
   right: 0px;
-  overflow: hidden;
+  overflow: auto;
   top: 70px;
 
   &--z-index {

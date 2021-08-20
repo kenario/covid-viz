@@ -289,9 +289,7 @@ export default Vue.extend({
 @import '../styles/main';
 
 .covid-vis-controls-container {
-  background-color: $primary-color;
   padding: 0 15px 0 15px;
-  height: 100%;
   display: grid;
   align-content: center;
 }
@@ -321,40 +319,11 @@ export default Vue.extend({
   color: #cccfba;
 }
 
-// Allows the filters to scroll and for the close button and date picker to be visible.
+// // Allows the filters to scroll and for the close button and date picker to be visible.
 @media only screen and (max-width: 768px) {
-  .covid-vis-controls-container {
-    overflow: auto;
-  }
   .covid-vis-controls-graph-filters {
     margin-bottom: 100px;
   }
 }
-@media only screen and (max-height: 820px) {
-  .covid-vis-controls-close-button {
 
-    // This will trigger only when a country has been selected.
-    &--add-margin-top {
-      margin-top: 10vh;
-    }
-  }
-}
-@media only screen and (max-height: 740px) {
-  .covid-vis-controls-close-button {
-
-    // This will trigger only when a country has been selected.
-    &--add-margin-top {
-      margin-top: 20vh;
-    }
-  }
-}
-@media only screen and (max-height: 670px) {
-  .covid-vis-controls-close-button {
-
-    // This will trigger only when a country has been selected.
-    &--add-margin-top {
-      margin-top: 30vh;
-    }
-  }
-}
 </style>
