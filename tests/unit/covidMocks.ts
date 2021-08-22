@@ -29,7 +29,9 @@ export const covidConstants = {
     return datesAndValues
   },
 
+  // eslint-disable-next-line
   rawDatesAndValues: (): any => {
+    // eslint-disable-next-line
     const datesAndValues: any = {}
 
     for (let x = 0; x < 5; x++) {
@@ -128,6 +130,7 @@ export const covidStateMocks = {
 
   // eslint-disable-next-line
   generateRawCovidHistoricalCountryData: (): any => {
+    // eslint-disable-next-line
     const datesAndValues: any = covidConstants.rawDatesAndValues()
 
     return {
