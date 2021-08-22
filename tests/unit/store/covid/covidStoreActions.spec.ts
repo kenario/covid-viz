@@ -13,8 +13,8 @@ import { CovidCountryData, CovidHistoricalData } from '@/types/covid'
 
 const { getCovidCountryData, getHistoricalCountryData } = actions
 
-describe('CovidStoreActions', (): void => {
-  const actionObject: ActionContext<CovidStateType, RS> = {
+const generateActionObject = (): ActionContext<CovidStateType, RS> => {
+  return {
     commit: (type: string): string => type,
     state: state(),
     dispatch: () => Promise.resolve(),
@@ -22,10 +22,15 @@ describe('CovidStoreActions', (): void => {
     rootGetters: {},
     rootState: { value: '' }
   }
+}
+
+describe('CovidStoreActions', (): void => {
+  let actionObject: ActionContext<CovidStateType, RS>
   let axiosGetStub: sinon.SinonStub
   let commitSpy: sinon.SinonSpy
 
   beforeEach((): void => {
+    actionObject = generateActionObject()
     commitSpy = sinon.spy(actionObject, 'commit')
     axiosGetStub = sinon.stub(axios, 'get')
   })
@@ -35,23 +40,45 @@ describe('CovidStoreActions', (): void => {
     axiosGetStub.restore()
   })
 
-  it('fetches covid data for all countries', async (): Promise<void> => {
-    const covidDataAllCountries: CovidCountryData[] = covidStateMocks.generateCovidDataAllCountries()
-    axiosGetStub.resolves({ data: covidDataAllCountries })
+  describe('getCovidCountryData', (): void => {
+    it('fetches covid data for all countries', async (): Promise<void> => {
+      const covidDataAllCountries: CovidCountryData[] = covidStateMocks.generateCovidDataAllCountries()
+      axiosGetStub.resolves({ data: covidDataAllCountries })
 
-    await getCovidCountryData(actionObject)
-    expect(commitSpy.called).to.be.true
+      await getCovidCountryData(actionObject)
+      expect(commitSpy.called).to.be.true
+    })
   })
 
-  it('fetches historical covid data within a date range ', async (): Promise<void> => {
-    const covidHistoricalCountryData: CovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
-    const mockDates: Date[] = [moment.utc().subtract(1, 'days').toDate(), moment.utc().toDate()]
-    const expected = '1'
+  describe('getHistoricalCountryData', (): void => {
+    it('fetches historical covid data within a date range ', async (): Promise<void> => {
+      // eslint-disable-next-line
+      const rawCovidHistoricalCountryData: any = covidStateMocks.generateRawCovidHistoricalCountryData()
+      const covidHistoricalCountryData: CovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
+      const mockDates: Date[] = [moment.utc().subtract(3, 'days').toDate(), moment.utc().subtract(1, 'days').toDate()]
+      const expectedPathCountryQuery = 'USA'
+      const expectedPathLastDayQuery = 'lastdays=3'
 
-    axiosGetStub.resolves({ data: covidHistoricalCountryData })
-    actionObject.state.selectedDates = { startDate: mockDates[0], endDate: mockDates[1] }
+      axiosGetStub.resolves({ data: rawCovidHistoricalCountryData })
+      actionObject.state.selectedDates = { startDate: mockDates[0], endDate: mockDates[1] }
+      actionObject.state.selectedCountry = 'USA'
+      await getHistoricalCountryData(actionObject)
 
-    await getHistoricalCountryData(actionObject)
-    expect((axiosGetStub.getCall(0).args[0] as string).includes(expected)).to.be.true
+      /*
+       * Some string manipulations happen to the historical data endpoint, so we test to make sure that those
+       * manipulations did take place. */
+      expect((axiosGetStub.getCall(0).args[0] as string).includes(expectedPathCountryQuery)).to.be.true
+      expect((axiosGetStub.getCall(0).args[0] as string).includes(expectedPathLastDayQuery)).to.be.true
+
+      /*
+       * We remove the 1st and last elements in the cases, deaths, and recovered arrays. Since the array
+       * assigned to cases,d eaths, and recovered are all the same reference, we only have to call pop once. */
+      covidHistoricalCountryData.timeline.cases.pop()
+      covidHistoricalCountryData.timeline.cases = covidHistoricalCountryData.timeline.cases.slice(1)
+      covidHistoricalCountryData.timeline.deaths = covidHistoricalCountryData.timeline.deaths.slice(1)
+      covidHistoricalCountryData.timeline.recovered = covidHistoricalCountryData.timeline.recovered.slice(1)
+
+      expect(commitSpy.getCall(0).args[1]).to.deep.equal(covidHistoricalCountryData)
+    })
   })
 })

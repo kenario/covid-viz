@@ -29,6 +29,16 @@ export const covidConstants = {
     return datesAndValues
   },
 
+  rawDatesAndValues: (): any => {
+    const datesAndValues: any = {}
+
+    for (let x = 0; x < 5; x++) {
+      datesAndValues[moment.utc().subtract(x, 'days').toString()] = x
+    }
+
+    return datesAndValues
+  },
+
   covidGlobalTotals: {
     country: 'Skellige',
     cases: 0,
@@ -114,6 +124,24 @@ export const covidStateMocks = {
     }
 
     return result
+  },
+
+  // eslint-disable-next-line
+  generateRawCovidHistoricalCountryData: (): any => {
+    const datesAndValues: any = covidConstants.rawDatesAndValues()
+
+    return {
+      country: 'Gondor',
+      province: [
+        'Shire',
+        'Prancing Pony'
+      ],
+      timeline: {
+        cases: datesAndValues,
+        deaths: datesAndValues,
+        recovered: datesAndValues
+      }
+    }
   },
 
   generateCovidHistoricalCountryData: (): CovidHistoricalData => {
