@@ -16,10 +16,9 @@ import moment from 'moment'
  * @param startDate
  * @param endDate
  */
-// eslint-disable-next-line
 export const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: moment.Moment): any => {
   Object.keys(data).forEach((key: string): void => {
-    const date = moment.utc(key)
+    const date = moment.utc(key, ['ddd MMM DD YYYY HH:mm:ss Z', 'YYYY-MM-DD'])
 
     if (date.isBefore(startDate, 'day') || date.isAfter(endDate, 'day')) {
       delete data[key]
@@ -33,7 +32,6 @@ export const trimToSpecificDateRange = (data: any, startDate: moment.Moment, end
  * @param data - example: { '7/23/21': 305050 }
  * @returns
  */
-// eslint-disable-next-line
 export const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
   Object.entries(data).map((x: unknown[]): DateValue => {
     return {
@@ -44,7 +42,6 @@ export const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
 /**
  * Creates covid chart data based on the selected result type.
  */
-// eslint-disable-next-line
 export const determineCovidChartData = (data: any, resultType: ResultType): number[] => {
   let result: number[] = []
 
@@ -53,7 +50,7 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
      * Return the value if it is greater than 0, otherwise we return 0 instead. This is a case for
      * negative values that are skewing the chart for the recovered data type.  Recovered has also
      * seemed to have stopped being recorded after a specific date. */
-    // eslint-disable-next-line
+
     result = data.map((d: any) => parseInt(d.value) > 0 ? parseInt(d.value) : 0)
   } else if (resultType.value === 'totalPerDay') {
     /**
@@ -84,8 +81,8 @@ export function rankCovidData(covidData: CovidDataType[], scope: string, covidDa
     (next.baseData[covidDataType] as number) - (current.baseData[covidDataType] as number)
   const nameAndTotal = (data: CovidDataType): CovidRankingData => {
     return {
-      // eslint-disable-next-line
-      name: (data as any)[scope], 
+
+      name: (data as any)[scope],
       total: data.baseData[covidDataType] as number
     }
   }
@@ -133,9 +130,8 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
  * @param type - 'country' | 'state' | 'county'
  * @returns - CovidCountryData | CovidStateData | CovidCountyData | {}
  */
-// eslint-disable-next-line
 export const searchForSelectedData = (selectedData: string, data: any[], type: string): CovidDataType =>
-  // eslint-disable-next-line
+
   data.find((d: any): boolean =>
     selectedData !== '' && d[type]!.toLowerCase().includes(selectedData.toLowerCase())
   )! || {}

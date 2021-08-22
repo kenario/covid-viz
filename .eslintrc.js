@@ -17,6 +17,7 @@ module.exports = {
     'space-before-function-paren': 0,
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': 0,
+    '@typescript-eslint/no-explicit-any': 'off',
     'no-unused-expressions': 'off',
     'operator-linebreak': 'off'
   },

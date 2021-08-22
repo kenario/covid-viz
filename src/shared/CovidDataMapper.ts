@@ -19,7 +19,6 @@ export class CovidDataMapper {
     'deathsPerOneMillion'
   ]
 
-  // eslint-disable-next-line
   public static map<T>(data: any): T {
     const result = {
       ...JSON.parse(JSON.stringify(data)),
