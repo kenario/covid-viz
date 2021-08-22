@@ -51,6 +51,39 @@ export const covidConstants = {
     updated: '4'
   },
 
+  rawVaccinatedData: [
+    {
+      state: 'redania',
+      timeline: {
+        '8/21/21': 1
+      }
+    },
+    {
+      state: 'temeria',
+      timeline: {
+        '8/21/21': 2
+      }
+    },
+    {
+      state: 'nilfgaard',
+      timeline: {
+        '8/21/21': 3
+      }
+    },
+    {
+      state: 'toussaint',
+      timeline: {
+        '8/21/21': 4
+      }
+    },
+    {
+      state: 'zerrikania',
+      timeline: {
+        '8/21/21': 5
+      }
+    }
+  ],
+
   vaccinatedData: [
     ['redania', 1],
     ['temeria', 2],

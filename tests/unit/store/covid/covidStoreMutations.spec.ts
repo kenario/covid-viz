@@ -3,7 +3,7 @@ import { state } from '@/store/covid/state'
 import { CovidCountryData } from '@/types/covid'
 import { mutations } from '@/store/covid/mutations'
 import { CovidStateType } from '@/store/covid/CovidStateType'
-import { covidStateMocks, covidConstants } from '../../covidMocks'
+import { covidStateMocks } from '../../covidMocks'
 
 const { setCovidVaccineCountryData } = mutations
 

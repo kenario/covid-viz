@@ -3,14 +3,15 @@ import {
   mapCovidTotals,
   determineCovidChartData,
   trimToSpecificDateRange,
-  mapHistoricalDataToDateValue
+  mapHistoricalDataToDateValue,
+  transformVaccineDataToMap
 } from '@/store/covid/helpers'
 
 import moment from 'moment'
 import { expect } from 'chai'
 import { SelectItem } from '@/types'
 import { CovidCountryData, CovidRankingData, CovidTotals } from '@/types/covid'
-import { covidStateMocks } from '../../covidMocks'
+import { covidStateMocks, covidConstants } from '../../covidMocks'
 
 describe('CovidStoreHelpers', (): void => {
   const data = {
@@ -86,6 +87,21 @@ describe('CovidStoreHelpers', (): void => {
       expect(covidCountryTotals.tests).to.equal(data.baseData.tests)
       expect(covidCountryTotals.vaccinated).to.equal(data.baseData.vaccinated)
       expect(covidCountryTotals.updated).to.equal(data.baseData.updated)
+    })
+  })
+
+  describe('transformVaccineDataToMap', (): void => {
+    it('transforms a vaccine object into a map of vaccine data', (): void => {
+      const vaccineDataMap = transformVaccineDataToMap(covidConstants.rawVaccinatedData, 'state')
+      const keys = vaccineDataMap.keys()
+      const values = vaccineDataMap.values()
+      const actual = []
+
+      for (let x = 0; x < vaccineDataMap.size; x++) {
+        actual.push([keys.next().value, values.next().value])
+      }
+
+      expect(actual).to.deep.equal(covidConstants.vaccinatedData)
     })
   })
 })

@@ -140,4 +140,21 @@ export const searchForSelectedData = (selectedData: string, data: any[], type: s
     selectedData !== '' && d[type]!.toLowerCase().includes(selectedData.toLowerCase())
   )! || {}
 
+/**
+ * Transforms vaccination data to a map that contains the 'country' or 'state' as the key
+ * and the current vaccination coverage as the value.
+ *
+ * @param data - example: { 'state': 'Alabama', 'timeline': { '8/21/21': 715503 } }
+ * @returns - Map<string, number>
+ */
+export const transformVaccineDataToMap = (data: any, type: string): Map<string, number> => {
+  const result: Map<string, number> = new Map<string, number>()
+
+  data.forEach((d: any): void => {
+    result.set(d[type].toLowerCase(), Object.values(d.timeline)[0] as number)
+  })
+
+  return result
+}
+
 type CovidDataType = CovidGlobalData | CovidCountryData | CovidStateData | CovidCountyData
