@@ -11,6 +11,10 @@ import moment from 'moment'
 
 /**
  * Helper function that trims the queried dates to a specific range.
+ * 
+ * @param data - example: { '7/23/21': 305050 }
+ * @param startDate 
+ * @param endDate 
  */
 // eslint-disable-next-line
 export const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: moment.Moment): any => {
@@ -22,8 +26,12 @@ export const trimToSpecificDateRange = (data: any, startDate: moment.Moment, end
     }
   })
 }
+
 /**
  * Helper function for mapping historical data.
+ * 
+ * @param data - example: { '7/23/21': 305050 }
+ * @returns 
  */
 // eslint-disable-next-line
 export const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
