@@ -141,7 +141,7 @@ export const actions = {
       }
     }
 
-    commit('setHistoricalCountryData', formattedData)
+    commit('setSelectedHistoricalCovidData', formattedData)
   }
 
   // getHistoricalCountryVaccineData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {

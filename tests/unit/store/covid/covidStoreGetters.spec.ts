@@ -37,7 +37,7 @@ describe('CovidStoreGetters', (): void => {
   })
 
   it('gets chart labels needed for covid chart', (): void => {
-    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedCovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
     expect(getCovidChartLabels(covidState)).to
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })
@@ -55,7 +55,7 @@ describe('CovidStoreGetters', (): void => {
   })
 
   it('gets covid chart data that are overall totals', (): void => {
-    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedCovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
     covidState.selectedResultType = { name: 'Total', value: 'total' }
 
@@ -68,7 +68,7 @@ describe('CovidStoreGetters', (): void => {
   })
 
   it('gets covid chart data that are totalPerDay', (): void => {
-    covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedCovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
     covidState.selectedResultType = { name: 'Total Per Day', value: 'totalPerDay' }
 
