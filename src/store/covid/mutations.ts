@@ -59,11 +59,21 @@ export const mutations = {
     state.covidGlobalData.baseData.vaccinated = data
   },
 
-  /* We loop through each country and get the maps value using the country name as the key */
+  /* We loop through each country and get the maps value using the country name as the key.
+   * We use Vue to set the data since we want this to be reactive. */
   setCovidVaccineCountryData: (state: CovidStateType, data: Map<string, number>) => {
     state.covidCountryData.forEach((countryTotal: CovidCountryData): void => {
       const value = data.get(countryTotal.country.toLowerCase())
       Vue.set(countryTotal.baseData, 'vaccinated', value !== undefined ? value : 0)
+    })
+  },
+
+  /* We loop through each state and get the maps value using the state name as the key.
+   * We use Vue to set the data since we want this to be reactive. */
+  setCovidVaccineStateData: (state: CovidStateType, data: Map<string, number>) => {
+    state.covidStateData.forEach((stateTotal: CovidStateData): void => {
+      const value = data.get(stateTotal.state.toLowerCase())
+      Vue.set(stateTotal.baseData, 'vaccinated', value !== undefined ? value : 0)
     })
   },
 

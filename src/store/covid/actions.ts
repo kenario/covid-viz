@@ -6,7 +6,7 @@ import { ActionContext } from 'vuex'
 import { covidEP } from '@/shared/constants'
 import { CovidStateType } from './CovidStateType'
 import { CovidDataMapper } from '@/shared/CovidDataMapper'
-import { trimToSpecificDateRange, mapHistoricalDataToDateValue } from './helpers'
+import { trimToSpecificDateRange, mapHistoricalDataToDateValue, transformVaccineDataToMap } from './helpers'
 
 import {
   CovidData,
@@ -66,7 +66,7 @@ export const actions = {
 
   /* Vaccine data is queried just for the latest date but it is returned as a single key value pair with
    * the key being a date string in the format of 'xx/xx/xxxx', so we just loop over for simplicity
-   * instead of delcaring an interface with an index signature or getting the current date. */
+   * instead of declaring an interface with an index signature or getting the current date. */
   getCovidVaccineGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS
     const res = await axios.get(vaccineGlobalDataEP)
@@ -80,18 +80,20 @@ export const actions = {
   getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES
     const res = await axios.get(vaccineCountryDataEP)
-    const countryVaccinatedData: Map<string, number> = new Map<string, number>()
-
-    // eslint-disable-next-line
-    res.data.forEach((data: any) => {
-      let vaccinated = 0
-      Object.keys(data.timeline).forEach((key: string): void => { vaccinated = data.timeline[key] })
-      countryVaccinatedData.set(data.country.toLowerCase(), vaccinated)
-    })
+    const countryVaccinatedData: Map<string, number> = transformVaccineDataToMap(res.data, 'country')
 
     commit('setCovidVaccineCountryData', countryVaccinatedData)
   },
-  /**
+
+  getCovidVaccineStateData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
+    const vaccineStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_STATES
+    const res = await axios.get(vaccineStateDataEP)
+    const stateVaccinatedData: Map<string, number> = transformVaccineDataToMap(res.data, 'state')
+
+    commit('setCovidVaccineStateData', stateVaccinatedData)
+  },
+
+  /*
    * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
    * specified.
    */
@@ -103,6 +105,7 @@ export const actions = {
     const endDate = moment.utc(state.selectedDates.endDate)
     const endDateNotToday = !today.isSame(endDate, 'day')
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
+
     /*
      * If we have specific dates we calculate how many days to query. */
     if (hasSpecificDates) {

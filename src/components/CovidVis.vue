@@ -226,6 +226,7 @@ export default Vue.extend({
             const county = res.data.address.county?.replace(' County', '')
 
             await this.$store.dispatch('getCovidStateData')
+            await this.$store.dispatch('getCovidVaccineStateData')
             await this.$store.dispatch('getCovidCountyData')
 
             this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })

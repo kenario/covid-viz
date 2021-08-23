@@ -231,7 +231,10 @@ export default Vue.extend({
       } else {
         /*
          * If the country is USA and we have not retrieved all states, we fetch the states. */
-        if (this.getAllAffectedStates.length < 1) await this.$store.dispatch('getCovidStateData')
+        if (this.getAllAffectedStates.length < 1) {
+          await this.$store.dispatch('getCovidStateData')
+          await this.$store.dispatch('getCovidVaccineStateData')
+        }
       }
 
       await this.$store.dispatch('getHistoricalCountryData')
