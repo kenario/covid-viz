@@ -75,8 +75,9 @@ export const actions = {
     })
   },
 
-  /* We pre-process the vaccination data per country into a map that has the country name in lowercase as
-   * the key and the value as the total vaccinations */
+  /*
+   * Process vaccination data into a map with the country it belongs to as the key and the vaccination
+   * count as the value.  This will make for an easier merge with the main country covid data structure. */
   getCovidVaccineCountryData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES
     const res = await axios.get(vaccineCountryDataEP)
@@ -85,6 +86,9 @@ export const actions = {
     commit('setCovidVaccineCountryData', countryVaccinatedData)
   },
 
+  /*
+   * Process vaccination data into a map with the state it belongs to as the key and the vaccination
+   * count as the value.  This will make for an easier merge with the main state covid data structure. */
   getCovidVaccineStateData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
     const vaccineStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_STATES
     const res = await axios.get(vaccineStateDataEP)
@@ -139,4 +143,8 @@ export const actions = {
 
     commit('setHistoricalCountryData', formattedData)
   }
+
+  // getHistoricalCountryVaccineData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
+
+  // }
 }
