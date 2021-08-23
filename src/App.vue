@@ -65,10 +65,10 @@ export default Vue.extend({
     closeOpenedFilters() {
       window.onclick = (e: MouseEvent): void => {
         const filterLeftBoundary = this.$el
-          .getElementsByClassName('covid-filter-layout')[0]
-          ?.getBoundingClientRect().left
+          .getElementsByClassName('covid-vis-container')[0]
+          ?.getBoundingClientRect().right - 300
 
-        if (this.showFilters && e.pageX < filterLeftBoundary && filterLeftBoundary === 763) {
+        if (this.showFilters && e.pageX < filterLeftBoundary) {
           this.toggleFilters()
         }
       }
