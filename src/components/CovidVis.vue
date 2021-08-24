@@ -139,18 +139,19 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
-      'renderStateTotals',
-      'renderCountyTotals',
-      'getAllAffectedCountries',
       'getCovidRankings',
-      'getAllAffectedStates',
-      'getCovidCountryTotals',
-      'getCovidGlobalTotals',
-      'getCovidStateTotals',
-      'getCovidCountyTotals',
-      'getSelectedCountry',
       'getSelectedState',
-      'getSelectedCounty'
+      'renderStateTotals',
+      'getSelectedCounty',
+      'renderCountyTotals',
+      'getSelectedCountry',
+      'getCovidStateTotals',
+      'getAllAffectedStates',
+      'getCovidGlobalTotals',
+      'getCovidCountyTotals',
+      'getCovidCountryTotals',
+      'getAllAffectedCountries',
+      'getStatesAffectedCounties'
     ]),
     totalsStateNotification: function(): string {
       return this.getSelectedCountry === 'USA'
@@ -213,23 +214,31 @@ export default Vue.extend({
             res.data.address.country_code.toUpperCase() === countryInfo.countryCode).name
 
           /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
-             that countries historical data. */
+             that countries historical data if we don't already have it. */
           this.$store.commit('setSelectedCountry', {
             name: this.geolocationCountry,
             value: this.geolocationCountry.toLowerCase()
           })
           await this.$store.dispatch('getHistoricalCountryData')
 
-          /* If the users geolocation is the United States, we also fetch the users state and county data */
+          /*
+           * If the users geolocation is the United States, we also fetch the users state and county data
+           * if we don't already have it. */
           if (this.geolocationCountry.toLowerCase() === 'usa') {
             const state = res.data.address.state
             const county = res.data.address.county?.replace(' County', '')
 
-            await this.$store.dispatch('getCovidStateData')
-            await this.$store.dispatch('getCovidVaccineStateData')
-            await this.$store.dispatch('getCovidCountyData')
+            if (this.getAllAffectedStates.length < 1) {
+              await this.$store.dispatch('getCovidStateData')
+              await this.$store.dispatch('getCovidVaccineStateData')
+              this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
+            }
 
-            this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
+            if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
+
+            /*
+             * Somtimes when pinging the geolocation API, county data is not available, we have this check
+             * just in case. */
             if (county) this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
           }
         })

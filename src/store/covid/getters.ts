@@ -41,6 +41,7 @@ export const getters = {
 
   getSelectedCovidDataTypes: (state: CovidStateType): SelectItem[] =>
     state.selectedCovidDataType,
+
   /*
    * Map all affected countries names and country codes.
    */
@@ -48,11 +49,13 @@ export const getters = {
     state.covidCountryData.map((data: CovidCountryData): CountryInfo => {
       return { name: data.country!, countryCode: data.countryInfo?.iso2! }
     }),
+
   /*  Map all affected state names. */
   getAllAffectedStates: (state: CovidStateType): SelectItem[] =>
     state.covidStateData.map((data: CovidStateData): SelectItem => {
       return { name: data.state, value: data.state.toLowerCase() }
     }),
+
   /* Map all affected counties of the selected state. */
   getStatesAffectedCounties: (state: CovidStateType): SelectItem[] =>
     state.covidCountyData
@@ -60,6 +63,7 @@ export const getters = {
       .map((data: CovidCountyData): SelectItem => {
         return { name: data.county, value: data.county.toLowerCase() }
       }),
+
   /*
    * Map the dates provided by the selected countries historical data.
    */
