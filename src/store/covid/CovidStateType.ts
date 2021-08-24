@@ -23,13 +23,12 @@ export interface CovidStateType {
   selectedResultType: ResultType;
   selectedRankingType: RankingType;
   selectedCovidDataType: SelectItem[];
+  selectedCovidCountryData: CovidCountryData;
   selectedCovidStateData: CovidStateData;
   selectedCovidCountyData: CovidCountyData;
-  selectedCovidCountryData: CovidCountryData;
-  selectedCovidHistoricalData: CovidHistoricalData
   covidGlobalData: CovidGlobalData;
+  covidCountryData: CovidCountryData[];
   covidStateData: CovidStateData[];
   covidCountyData: CovidCountyData[];
-  covidCountryData: CovidCountryData[];
-  covidHistoricalCountryData: CovidHistoricalData[];
+  covidHistoricalCountryData: CovidHistoricalData;
 }

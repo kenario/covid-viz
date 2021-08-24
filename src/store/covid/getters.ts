@@ -64,7 +64,7 @@ export const getters = {
    * Map the dates provided by the selected countries historical data.
    */
   getCovidChartLabels: (state: CovidStateType): string[] =>
-    state.selectedCovidHistoricalData.timeline?.cases.map((x: DateValue): string => x.date),
+    state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
 
   getCovidGlobalTotals: (state: CovidStateType): CovidTotals => mapCovidTotals(state.covidGlobalData),
 
@@ -147,12 +147,12 @@ export const getters = {
   getCovidChartData: (state: CovidStateType): CovidLineChart[] => {
     const covidChartData: CovidLineChart[] = []
 
-    if (state.selectedCovidHistoricalData.timeline) {
+    if (state.covidHistoricalCountryData.timeline) {
       state.selectedCovidDataType.forEach((type: SelectItem): void => {
         covidChartData.push({
           label: type.name,
           data: determineCovidChartData(
-            state.selectedCovidHistoricalData.timeline[type.value],
+            state.covidHistoricalCountryData.timeline[type.value],
             state.selectedResultType
           )
         })

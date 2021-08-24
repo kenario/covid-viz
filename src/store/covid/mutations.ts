@@ -77,8 +77,8 @@ export const mutations = {
     })
   },
 
-  setSelectedHistoricalCovidData: (state: CovidStateType, data: CovidHistoricalData): void => {
-    state.selectedCovidHistoricalData = data
+  setHistoricalCountryData: (state: CovidStateType, data: CovidHistoricalData): void => {
+    state.covidHistoricalCountryData = data
   },
 
   setSelectedCovidDataType: (state: CovidStateType, dataType: SelectItem[]): void => {

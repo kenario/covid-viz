@@ -6,9 +6,8 @@ import { DateValue } from '../'
  */
 
 export interface CovidHistoricalData {
-  state?: string;
-  country?: string;
-  province?: string[];
+  country: string;
+  province: string[];
   timeline: HistoricalDataCategories;
 }
 
