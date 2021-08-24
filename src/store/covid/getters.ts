@@ -117,12 +117,6 @@ export const getters = {
     ]
 
     rankingSubtypes.forEach((subtypes: string): void => {
-      /*
-       * Determine if we should skip the specified subtype. */
-      if (state.selectedRankingType.value === 'nationwide' && subtypes === 'vaccinated') {
-        return
-      }
-
       let data: CovidRankingData[] = []
       let label = subtypes.slice(0, 1).toUpperCase() + subtypes.slice(1)
 
