@@ -16,4 +16,5 @@ interface HistoricalDataCategories {
   cases: DateValue[];
   deaths: DateValue[];
   recovered: DateValue[];
+  vaccinated: DateValue[];
 }
