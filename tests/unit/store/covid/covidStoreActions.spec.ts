@@ -6,6 +6,7 @@ import { ActionContext } from 'vuex'
 
 import { RS } from '@/store/RS'
 import { state } from '@/store/covid/state'
+import { covidEP } from '@/shared/constants'
 import { actions } from '@/store/covid/actions'
 import { covidStateMocks } from '../../covidMocks'
 import { CovidStateType } from '@/store/covid/CovidStateType'
@@ -52,14 +53,28 @@ describe('CovidStoreActions', (): void => {
 
   describe('getHistoricalCountryData', (): void => {
     it('fetches historical covid data within a date range ', async (): Promise<void> => {
-      // eslint-disable-next-line
       const rawCovidHistoricalCountryData: any = covidStateMocks.generateRawCovidHistoricalCountryData()
+      const rawCovidHistoricalVaccineCountryData: any = covidStateMocks.generateRawCovidHistoricalVaccineCountryData()
       const covidHistoricalCountryData: CovidHistoricalData = covidStateMocks.generateCovidHistoricalCountryData()
       const mockDates: Date[] = [moment.utc().subtract(3, 'days').toDate(), moment.utc().subtract(1, 'days').toDate()]
       const expectedPathCountryQuery = 'USA'
       const expectedPathLastDayQuery = 'lastdays=3'
+      const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
+        .replace('country', expectedPathCountryQuery)
+        .replace('numOfDays', '3')
+      const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE
+        .replace('country', expectedPathCountryQuery)
+        .replace('numOfDays', '3')
 
-      axiosGetStub.resolves({ data: rawCovidHistoricalCountryData })
+      /*
+       * Two http get requests are made so we have to stub the specific requests and have them resolve
+       * their own specific data. */
+      axiosGetStub
+        .withArgs(covidEP.COVID_API_BASE_URL + baseDataPath)
+        .resolves({ data: rawCovidHistoricalCountryData })
+      axiosGetStub
+        .withArgs(covidEP.COVID_API_BASE_URL + vaccineDataPath)
+        .resolves({ data: rawCovidHistoricalVaccineCountryData })
       actionObject.state.selectedDates = { startDate: mockDates[0], endDate: mockDates[1] }
       actionObject.state.selectedCountry = 'USA'
       await getHistoricalCountryData(actionObject)
@@ -71,13 +86,15 @@ describe('CovidStoreActions', (): void => {
       expect((axiosGetStub.getCall(0).args[0] as string).includes(expectedPathLastDayQuery)).to.be.true
 
       /*
-       * We remove the 1st and last elements in the cases, deaths, and recovered arrays. Since the array
-       * assigned to cases,d eaths, and recovered are all the same reference, we only have to call pop once. */
+       * We remove the 1st and last elements in the cases, deaths, recovered, vaccinated arrays.
+       * Since the array assigned to cases, deaths, recovered, and vaccinated are all the same reference,
+       * we only have to call pop once. */
       covidHistoricalCountryData.timeline.cases.pop()
       covidHistoricalCountryData.timeline.cases = covidHistoricalCountryData.timeline.cases.slice(1)
       covidHistoricalCountryData.timeline.deaths = covidHistoricalCountryData.timeline.deaths.slice(1)
       covidHistoricalCountryData.timeline.recovered = covidHistoricalCountryData.timeline.recovered.slice(1)
-
+      covidHistoricalCountryData.timeline.vaccinated = covidHistoricalCountryData.timeline.vaccinated.slice(1)
+      
       expect(commitSpy.getCall(0).args[1]).to.deep.equal(covidHistoricalCountryData)
     })
   })

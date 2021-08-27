@@ -29,9 +29,7 @@ export const covidConstants = {
     return datesAndValues
   },
 
-  // eslint-disable-next-line
   rawDatesAndValues: (): any => {
-    // eslint-disable-next-line
     const datesAndValues: any = {}
 
     for (let x = 0; x < 5; x++) {
@@ -161,9 +159,7 @@ export const covidStateMocks = {
     return result
   },
 
-  // eslint-disable-next-line
   generateRawCovidHistoricalCountryData: (): any => {
-    // eslint-disable-next-line
     const datesAndValues: any = covidConstants.rawDatesAndValues()
 
     return {
@@ -180,6 +176,15 @@ export const covidStateMocks = {
     }
   },
 
+  generateRawCovidHistoricalVaccineCountryData: (): any => {
+    const datesAndValues: any = covidConstants.rawDatesAndValues()
+
+    return {
+      country: 'USA',
+      timeline: datesAndValues
+    }
+  },
+
   generateCovidHistoricalCountryData: (): CovidHistoricalData => {
     const datesAndValues: DateValue[] = covidConstants.datesAndValues()
 
@@ -192,7 +197,8 @@ export const covidStateMocks = {
       timeline: {
         cases: datesAndValues,
         deaths: datesAndValues,
-        recovered: datesAndValues
+        recovered: datesAndValues,
+        vaccinated: datesAndValues
       }
     }
   },
