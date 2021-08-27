@@ -90,7 +90,7 @@ export default Vue.extend({
         type: this.type,
         data: {
           labels: this.labels ? this.labels : [],
-          datasets: this.data ? this.data : [{ label: '# of Votes', data: [] }]
+          datasets: this.data ? this.data : [{ label: 'No Data', data: [] }]
         },
         options: {
           maintainAspectRatio: false,

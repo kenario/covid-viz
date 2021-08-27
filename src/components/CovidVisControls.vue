@@ -199,7 +199,8 @@ export default Vue.extend({
     dataTypes: [
       { name: 'Cases', value: 'cases' },
       { name: 'Deaths', value: 'deaths' },
-      { name: 'Recovered', value: 'recovered' }
+      { name: 'Recovered', value: 'recovered' },
+      { name: 'Vaccinated', value: 'vaccinated' }
     ],
     graphTypes: [
       { name: 'Line', value: 'line' },

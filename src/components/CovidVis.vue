@@ -184,7 +184,8 @@ export default Vue.extend({
     this.$store.commit('setSelectedCovidDataType', [
       { name: 'Cases', value: 'cases' },
       { name: 'Recovered', value: 'recovered' },
-      { name: 'Deaths', value: 'deaths' }
+      { name: 'Deaths', value: 'deaths' },
+      { name: 'Vaccinated', value: 'vaccinated' }
     ])
     /*
      * Conditional rendering of components to allow for transitions.
