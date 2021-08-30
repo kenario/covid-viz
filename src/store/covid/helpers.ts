@@ -61,7 +61,7 @@ export const determineCovidChartData = (data: any, resultType: ResultType): numb
       if (x + 1 < data.length) {
         /*
          * If the data for the next and the current element is valid. */
-        if (parseInt(data[x + 1].value) > 0 && parseInt(data[x].value) > 0) {
+        if (parseInt(data[x + 1].value) >= 0 && parseInt(data[x].value) >= 0) {
           result.push((parseInt(data[x + 1].value) - parseInt(data[x].value)))
         }
       }
