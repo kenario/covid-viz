@@ -121,8 +121,10 @@ export const actions = {
     const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE
       .replace('country', state.selectedCountry)
       .replace('numOfDays', numOfDays)
-    const baseDataRes = await axios.get(covidEP.COVID_API_BASE_URL + baseDataPath)
-    const vaccineDataRes = await axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
+    const [baseDataRes, vaccineDataRes] = await Promise.all([
+      axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
+      axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
+    ])
 
     /*
      * Vaccine related data does not exist before 12/1/2020, so when we query for historical data
