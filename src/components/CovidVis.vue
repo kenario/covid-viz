@@ -196,8 +196,10 @@ export default Vue.extend({
   async mounted() {
     await Promise.all([
       this.$store.dispatch('getCovidGlobalData'),
+      this.$store.dispatch('getCovidCountryData')
+    ])
+    await Promise.all([
       this.$store.dispatch('getCovidVaccineGlobalData'),
-      this.$store.dispatch('getCovidCountryData'),
       this.$store.dispatch('getCovidVaccineCountryData')
     ])
     this.locateUser()
@@ -232,10 +234,8 @@ export default Vue.extend({
             const county = res.data.address.county?.replace(' County', '')
 
             if (this.getAllAffectedStates.length < 1) {
-              await Promise.all([
-                this.$store.dispatch('getCovidStateData'),
-                this.$store.dispatch('getCovidVaccineStateData')
-              ])
+              await this.$store.dispatch('getCovidStateData')
+              await this.$store.dispatch('getCovidVaccineStateData')
               this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
             }
 
