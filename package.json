@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit --colors",
+    "test": "vue-cli-service test:unit --colors tests",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
