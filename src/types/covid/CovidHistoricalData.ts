@@ -1,13 +1,7 @@
 import { DateValue } from '../'
 
-/**
- * Historical Country Data for specific country and default or specified number of days from the
- * NovelCOVID API.
- */
-
 export interface CovidHistoricalData {
   country: string;
-  province: string[];
   timeline: HistoricalDataCategories;
 }
 

@@ -59,7 +59,7 @@ describe('CovidStoreActions', (): void => {
       const mockDates: Date[] = [moment.utc().subtract(3, 'days').toDate(), moment.utc().subtract(1, 'days').toDate()]
       const expectedPathCountryQuery = 'USA'
       const expectedPathLastDayQuery = 'lastdays=3'
-      const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
+      const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATA
         .replace('country', expectedPathCountryQuery)
         .replace('numOfDays', '3')
       const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE

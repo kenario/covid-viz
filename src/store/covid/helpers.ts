@@ -4,10 +4,77 @@ import {
   CovidStateData,
   CovidRankingData,
   CovidCountyData,
-  CovidTotals
+  CovidTotals,
+  CovidHistoricalData,
+  CovidRawHistoricalData
 } from '@/types/covid'
 import { ResultType, DateValue } from '@/types'
 import moment from 'moment'
+
+/**
+ * This is used to process historical data for any countries, for any state in the USA, and for any
+ * counties within a state of the USA.
+ * 
+ * @param data - raw historical data
+ * @param startDate - starting date of historical data
+ * @param endDate - ending date of historical data
+ * @returns - CovidHistoricalData
+ */
+export const processHistoricalData = (data: CovidRawHistoricalData, startDate: moment.Moment, endDate: moment.Moment): CovidHistoricalData => {
+
+  let result: CovidHistoricalData
+  const today = moment.utc()
+  const vaccineStartDate = moment.utc('12/1/2020', 'M/D/YY')
+  const endDateNotToday = !today.isSame(endDate, 'day')
+
+  /*
+   * Vaccine related data does not exist before 12/1/2020, so when we query for historical data
+   * before that time, we get a longer array of cases, deaths, and recoveries.  When the chart
+   * is created using that data, vaccine data is joined with earliest dates of cases, deaths,
+   * and recoveries. In this case, we have to perform some processing on vaccine data. */
+  if (startDate.isBefore(vaccineStartDate)) {
+    const cleanVaccineData: any = {}
+    const dirtyVaccineData: any = data.timeline.vaccinated
+    const dates = Object.keys(data.timeline.cases)
+
+    /*
+     * Removes dates on or after 12/1/2020 and creates new vaccine data with any
+     * queried dates before 12/1/2020. */
+    dates.length = dates.indexOf('12/1/20')
+    dates.forEach((date: string): void => {
+      cleanVaccineData[date] = 0
+    })
+
+    /*
+     * Using custom process of merging data since merging using spread operator seems
+     * to eliminate all days 1 through 12 of any given month. */
+    Object.keys(dirtyVaccineData).forEach((key: string): void => {
+      cleanVaccineData[key] = dirtyVaccineData[key]
+    })
+    data.timeline.vaccinated = cleanVaccineData
+  }
+
+  if (endDateNotToday) {
+    trimToSpecificDateRange(data.timeline.cases, startDate, endDate)
+    trimToSpecificDateRange(data.timeline.deaths, startDate, endDate)
+    trimToSpecificDateRange(data.timeline.recovered, startDate, endDate)
+    trimToSpecificDateRange(data.timeline.vaccinated, startDate, endDate)
+  }
+
+  result = {
+    country: data.country,
+    timeline: {
+      /*
+       * Historical data is mapped into the following: [{ date: '12/1/20', value: 0 }] */
+      cases: mapHistoricalDataToDateValue(data.timeline.cases),
+      deaths: mapHistoricalDataToDateValue(data.timeline.deaths),
+      recovered: mapHistoricalDataToDateValue(data.timeline.recovered),
+      vaccinated: mapHistoricalDataToDateValue(data.timeline.vaccinated)
+    }
+  }
+
+  return result
+}
 
 /**
  * Helper function that trims the queried dates to a specific range.

@@ -190,10 +190,6 @@ export const covidStateMocks = {
 
     return {
       country: 'Gondor',
-      province: [
-        'Shire',
-        'Prancing Pony'
-      ],
       timeline: {
         cases: datesAndValues,
         deaths: datesAndValues,

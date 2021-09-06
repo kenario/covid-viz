@@ -6,7 +6,7 @@ import { ActionContext } from 'vuex'
 import { covidEP } from '@/shared/constants'
 import { CovidStateType } from './CovidStateType'
 import { CovidDataMapper } from '@/shared/CovidDataMapper'
-import { trimToSpecificDateRange, mapHistoricalDataToDateValue, transformVaccineDataToMap } from './helpers'
+import { transformVaccineDataToMap, processHistoricalData } from './helpers'
 
 import {
   CovidData,
@@ -15,7 +15,7 @@ import {
   CovidCountyData,
   CovidCountryData,
   CovidCountyDataRaw,
-  CovidHistoricalData
+  CovidRawHistoricalData
 } from '@/types/covid'
 
 export const actions = {
@@ -97,25 +97,22 @@ export const actions = {
     commit('setCovidVaccineStateData', stateVaccinatedData)
   },
 
-  /*
-   * Gets historical covid data for specific country.  Goes back to a default of 30 days unless otherwise
-   * specified.
-   */
   getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
     let numOfDays = ''
 
     const today = moment.utc()
-    const vaccineStartDate = moment.utc('12/1/2020', 'M/D/YY')
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
-    const endDateNotToday = !today.isSame(endDate, 'day')
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
 
+    /*
+     * Without specific dates, the number of days default is 30, which is initialized in the entry point
+     * but should probably be moved into this function. */
     if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
     }
 
-    const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATES
+    const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATA
       .replace('country', state.selectedCountry)
       .replace('numOfDays', numOfDays)
     const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE
@@ -126,53 +123,65 @@ export const actions = {
       axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
     ])
 
-    /*
-     * Vaccine related data does not exist before 12/1/2020, so when we query for historical data
-     * before that time, we get a longer array of cases, deaths, and recoveries.  When the chart
-     * is created using that data, vaccine data is joined with earliest dates of cases, deaths,
-     * and recoveries. In this case, we have to perform some processing on vaccine data. */
-    if (startDate.isBefore(vaccineStartDate)) {
-      const cleanVaccineData: any = {}
-      const dirtyVaccineData: any = vaccineDataRes.data.timeline
-      const dates = Object.keys(baseDataRes.data.timeline.cases)
-
-      /*
-       * Removes dates on or after 12/1/2020 and creates new vaccine data with any
-       * queried dates before 12/1/2020. */
-      dates.length = dates.indexOf('12/1/20')
-      dates.forEach((date: string): void => {
-        cleanVaccineData[date] = 0
-      })
-
-      /*
-       * Using custom process of merging data since merging using spread operator seems
-       * to eliminate all days 1 through 12 of any given month. */
-      Object.keys(dirtyVaccineData).forEach((key: string): void => {
-        cleanVaccineData[key] = dirtyVaccineData[key]
-      })
-      vaccineDataRes.data.timeline = cleanVaccineData
-    }
-
-    if (endDateNotToday) {
-      trimToSpecificDateRange(baseDataRes.data.timeline.cases, startDate, endDate)
-      trimToSpecificDateRange(baseDataRes.data.timeline.deaths, startDate, endDate)
-      trimToSpecificDateRange(baseDataRes.data.timeline.recovered, startDate, endDate)
-      trimToSpecificDateRange(vaccineDataRes.data.timeline, startDate, endDate)
-    }
-
-    const formattedData: CovidHistoricalData = {
+    const rawData: CovidRawHistoricalData = {
       country: baseDataRes.data.country,
-      province: baseDataRes.data.province,
-      timeline: {
-        /*
-         * Historical data is mapped into the following: [{ date: '12/1/20', value: 0 }] */
-        cases: mapHistoricalDataToDateValue(baseDataRes.data.timeline.cases),
-        deaths: mapHistoricalDataToDateValue(baseDataRes.data.timeline.deaths),
-        recovered: mapHistoricalDataToDateValue(baseDataRes.data.timeline.recovered),
-        vaccinated: mapHistoricalDataToDateValue(vaccineDataRes.data.timeline)
-      }
+      timeline: baseDataRes.data.timeline
     }
+    rawData.timeline.vaccinated = vaccineDataRes.data.timeline
 
-    commit('setHistoricalCountryData', formattedData)
-  }
+    commit('setHistoricalCountryData', processHistoricalData(rawData, startDate, endDate))
+  },
+
+  // getHistoricalStateData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
+  //   let numOfDays = ''
+
+  //   const today = moment.utc()
+  //   const vaccineStartDate = moment.utc('12/1/2020', 'M/D/YY')
+  //   const startDate = moment.utc(state.selectedDates.startDate)
+  //   const endDate = moment.utc(state.selectedDates.endDate)
+  //   const endDateNotToday = !today.isSame(endDate, 'day')
+  //   const hasSpecificDates = Object.values(state.selectedDates).length === 2
+
+  //   if (hasSpecificDates) {
+  //     numOfDays = today.diff(startDate, 'days').toString()
+  //   }
+
+  //   const baseDataPath = covidEP.COVID_API_HISTORICAL_STATE_DATA
+  //     .replace('state', state.selectedState)
+  //     .replace('numOfDays', numOfDays)
+  //   const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
+  //     .replace('state', state.selectedState)
+  //     .replace('numOfDays', numOfDays)
+  //   const [baseDataRes, vaccineDataRes] = await Promise.all([
+  //     axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
+  //     axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
+  //   ])
+
+  //   /*
+  //    * Vaccine related data does not exist before 12/1/2020, so when we query for historical data
+  //    * before that time, we get a longer array of cases, deaths, and recoveries.  When the chart
+  //    * is created using that data, vaccine data is joined with earliest dates of cases, deaths,
+  //    * and recoveries. In this case, we have to perform some processing on vaccine data. */
+  //   if (startDate.isBefore(vaccineStartDate)) {
+  //     const cleanVaccineData: any = {}
+  //     const dirtyVaccineData: any = vaccineDataRes.data.timeline
+  //     const dates = Object.keys(baseDataRes.data.timeline.cases)
+
+  //     /*
+  //      * Removes dates on or after 12/1/2020 and creates new vaccine data with any
+  //      * queried dates before 12/1/2020. */
+  //     dates.length = dates.indexOf('12/1/20')
+  //     dates.forEach((date: string): void => {
+  //       cleanVaccineData[date] = 0
+  //     })
+
+  //     /*
+  //      * Using custom process of merging data since merging using spread operator seems
+  //      * to eliminate all days 1 through 12 of any given month. */
+  //     Object.keys(dirtyVaccineData).forEach((key: string): void => {
+  //       cleanVaccineData[key] = dirtyVaccineData[key]
+  //     })
+  //     vaccineDataRes.data.timeline = cleanVaccineData
+  //   }
+  // }
 }
