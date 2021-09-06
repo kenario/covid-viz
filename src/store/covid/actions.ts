@@ -105,9 +105,6 @@ export const actions = {
     const endDate = moment.utc(state.selectedDates.endDate)
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
 
-    /*
-     * Without specific dates, the number of days default is 30, which is initialized in the entry point
-     * but should probably be moved into this function. */
     if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
     }
@@ -132,56 +129,30 @@ export const actions = {
     commit('setHistoricalCountryData', processHistoricalData(rawData, startDate, endDate))
   },
 
-  // getHistoricalStateData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
-  //   let numOfDays = ''
+  getHistoricalStateData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
+    let numOfDays = ''
 
-  //   const today = moment.utc()
-  //   const vaccineStartDate = moment.utc('12/1/2020', 'M/D/YY')
-  //   const startDate = moment.utc(state.selectedDates.startDate)
-  //   const endDate = moment.utc(state.selectedDates.endDate)
-  //   const endDateNotToday = !today.isSame(endDate, 'day')
-  //   const hasSpecificDates = Object.values(state.selectedDates).length === 2
+    const today = moment.utc()
+    const startDate = moment.utc(state.selectedDates.startDate)
+    const endDate = moment.utc(state.selectedDates.endDate)
+    const hasSpecificDates = Object.values(state.selectedDates).length === 2
 
-  //   if (hasSpecificDates) {
-  //     numOfDays = today.diff(startDate, 'days').toString()
-  //   }
+    if (hasSpecificDates) {
+      numOfDays = today.diff(startDate, 'days').toString()
+    }
 
-  //   const baseDataPath = covidEP.COVID_API_HISTORICAL_STATE_DATA
-  //     .replace('state', state.selectedState)
-  //     .replace('numOfDays', numOfDays)
-  //   const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
-  //     .replace('state', state.selectedState)
-  //     .replace('numOfDays', numOfDays)
-  //   const [baseDataRes, vaccineDataRes] = await Promise.all([
-  //     axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
-  //     axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
-  //   ])
+    const baseDataPath = covidEP.COVID_API_HISTORICAL_STATE_DATA
+      .replace('state', state.selectedState)
+      .replace('numOfDays', numOfDays)
+    const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
+      .replace('state', state.selectedState)
+      .replace('numOfDays', numOfDays)
+    const [baseDataRes, vaccineDataRes] = await Promise.all([
+      axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
+      axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
+    ])
 
-  //   /*
-  //    * Vaccine related data does not exist before 12/1/2020, so when we query for historical data
-  //    * before that time, we get a longer array of cases, deaths, and recoveries.  When the chart
-  //    * is created using that data, vaccine data is joined with earliest dates of cases, deaths,
-  //    * and recoveries. In this case, we have to perform some processing on vaccine data. */
-  //   if (startDate.isBefore(vaccineStartDate)) {
-  //     const cleanVaccineData: any = {}
-  //     const dirtyVaccineData: any = vaccineDataRes.data.timeline
-  //     const dates = Object.keys(baseDataRes.data.timeline.cases)
-
-  //     /*
-  //      * Removes dates on or after 12/1/2020 and creates new vaccine data with any
-  //      * queried dates before 12/1/2020. */
-  //     dates.length = dates.indexOf('12/1/20')
-  //     dates.forEach((date: string): void => {
-  //       cleanVaccineData[date] = 0
-  //     })
-
-  //     /*
-  //      * Using custom process of merging data since merging using spread operator seems
-  //      * to eliminate all days 1 through 12 of any given month. */
-  //     Object.keys(dirtyVaccineData).forEach((key: string): void => {
-  //       cleanVaccineData[key] = dirtyVaccineData[key]
-  //     })
-  //     vaccineDataRes.data.timeline = cleanVaccineData
-  //   }
-  // }
+    console.log('here: ', baseDataRes.data)
+    console.log('here: ', vaccineDataRes.data)
+  }
 }

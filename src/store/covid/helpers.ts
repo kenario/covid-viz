@@ -14,15 +14,13 @@ import moment from 'moment'
 /**
  * This is used to process historical data for any countries, for any state in the USA, and for any
  * counties within a state of the USA.
- * 
+ *
  * @param data - raw historical data
  * @param startDate - starting date of historical data
  * @param endDate - ending date of historical data
  * @returns - CovidHistoricalData
  */
 export const processHistoricalData = (data: CovidRawHistoricalData, startDate: moment.Moment, endDate: moment.Moment): CovidHistoricalData => {
-
-  let result: CovidHistoricalData
   const today = moment.utc()
   const vaccineStartDate = moment.utc('12/1/2020', 'M/D/YY')
   const endDateNotToday = !today.isSame(endDate, 'day')
@@ -61,7 +59,7 @@ export const processHistoricalData = (data: CovidRawHistoricalData, startDate: m
     trimToSpecificDateRange(data.timeline.vaccinated, startDate, endDate)
   }
 
-  result = {
+  const result: CovidHistoricalData = {
     country: data.country,
     timeline: {
       /*
