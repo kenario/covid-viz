@@ -7,7 +7,7 @@ import {
   ResultType,
   SelectItem,
   CountryInfo,
-  DataScale,
+  RankingType,
   DateRange
 } from '@/types'
 
@@ -34,7 +34,7 @@ export const getters = {
 
   getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
 
-  getSelectedRankingType: (state: CovidStateType): DataScale => state.selectedRankingType,
+  getSelectedRankingType: (state: CovidStateType): RankingType => state.selectedRankingType,
 
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
@@ -87,19 +87,21 @@ export const getters = {
     return mapCovidTotals(data, { county: data.county })
   },
 
-  getRankingTypes: (state: CovidStateType): DataScale[] => {
-    const rankingTypes: DataScale[] = ['worldwide']
+  getRankingTypes: (state: CovidStateType): RankingType[] => {
+    const rankingTypes: RankingType[] = [
+      { name: 'Worldwide', value: 'worldwide' }
+    ]
 
     const containsNationwideType: boolean = rankingTypes
-      .some((type: DataScale): boolean => type === 'nationwide')
+      .some((type: RankingType): boolean => type.value === 'nationwide')
 
     /*
      * This is to make sure that nationwide is not an option for Ranking Types in the Filter
      * when the selected country is the United States. */
     if (state.selectedCountry === 'USA' && !containsNationwideType) {
-      rankingTypes.push('nationwide')
+      rankingTypes.push({ name: 'Nationwide', value: 'nationwide' })
     } else if (state.selectedCountry !== 'USA' && containsNationwideType) {
-      rankingTypes.splice(rankingTypes.findIndex((type: DataScale) => type === 'nationwide'), 1)
+      rankingTypes.splice(rankingTypes.findIndex((type: RankingType) => type.value === 'nationwide'), 1)
     }
 
     return rankingTypes
@@ -120,10 +122,10 @@ export const getters = {
 
       /*
        * Assign the ranking label and map the data based on the ranking type selected. */
-      if (state.selectedRankingType === 'worldwide') {
+      if (state.selectedRankingType.value === 'worldwide') {
         label = `Worldwide ${label}`
         data = rankCovidData([...state.covidCountryData], 'country', subtypes)
-      } else if (state.selectedRankingType === 'nationwide') {
+      } else if (state.selectedRankingType.value === 'nationwide') {
         label = `USA ${label}`
         data = rankCovidData([...state.covidStateData], 'state', subtypes)
       }

@@ -1,7 +1,7 @@
 import {
   DateRange,
   GraphType,
-  DataScale,
+  RankingType,
   ResultType,
   SelectItem
 } from '@/types'
@@ -21,7 +21,7 @@ export interface CovidStateType {
   selectedDates: DateRange;
   selectedGraphType: GraphType;
   selectedResultType: ResultType;
-  selectedRankingType: DataScale;
+  selectedRankingType: RankingType;
   selectedCovidDataType: SelectItem[];
   selectedCovidCountryData: CovidCountryData;
   selectedCovidStateData: CovidStateData;
