@@ -157,7 +157,7 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem, RankingType } from '@/types'
+import { DateRange, ResultType, GraphType, SelectItem, DataScale } from '@/types'
 import Dropdown from '@/shared/components/Dropdown.vue'
 import DatePicker from '@/shared/components/DatePicker.vue'
 import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
@@ -271,10 +271,10 @@ export default Vue.extend({
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
-    setSelectedRankingType: async function(rankingType: RankingType): Promise<void> {
+    setSelectedRankingType: async function(rankingType: DataScale): Promise<void> {
       /*
        * If we change the rankings to nationwide and we do not have state data, fetch the data. */
-      if (rankingType.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
+      if (rankingType === 'nationwide' && this.getAllAffectedStates.length < 1) {
         await this.$store.dispatch('getCovidStateData')
       }
 

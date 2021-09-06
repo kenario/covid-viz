@@ -3,7 +3,7 @@ import {
   DateRange,
   SelectItem,
   ResultType,
-  RankingType
+  DataScale
 } from '@/types'
 
 import {
@@ -20,7 +20,7 @@ export const state = () => ({
   selectedCounty: '',
   selectedGraphType: {} as GraphType,
   selectedResultType: {} as ResultType,
-  selectedRankingType: {} as RankingType,
+  selectedRankingType: {} as DataScale,
   selectedDates: {} as DateRange,
   selectedCovidCountryData: {} as CovidCountryData,
   selectedCovidStateData: {} as CovidStateData,
