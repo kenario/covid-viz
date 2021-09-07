@@ -96,6 +96,19 @@
 
       <template v-if="getSelectedCountry">
         <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
+          <!-- Data Scale dropdown -->
+          <dropdown
+            v-if="getSelectedCountry === 'USA'"
+            :label="'Scale of Data'"
+            :selectedItemLabel="getSelectedDataScale.name"
+          >
+            <template v-slot="{ toggleDropdown }">
+              <single-select
+                :items="dataScale"
+                @itemSelect="setSelectedDataScale($event); toggleDropdown()"
+              />
+            </template>
+          </dropdown>
           <!-- Data type dropdown -->
           <dropdown
             :label="'Data Types'"
@@ -180,6 +193,7 @@ export default Vue.extend({
       'getSelectedState',
       'getSelectedCounty',
       'getSelectedCountry',
+      'getSelectedDataScale',
       'getSelectedGraphType',
       'getSelectedResultType',
       'getSelectedRankingType',
@@ -201,6 +215,11 @@ export default Vue.extend({
       { name: 'Deaths', value: 'deaths' },
       { name: 'Recovered', value: 'recovered' },
       { name: 'Vaccinated', value: 'vaccinated' }
+    ],
+    dataScale: [
+      { name: 'Nationwide', value: 'nationwide' },
+      { name: 'Statewide', value: 'statewide' },
+      { name: 'Countywide', value: 'countywide' }
     ],
     graphTypes: [
       { name: 'Line', value: 'line' },
@@ -279,6 +298,15 @@ export default Vue.extend({
       }
 
       this.$store.commit('setSelectedRankingType', rankingType)
+    },
+
+    setSelectedDataScale: async function(scale: RankingType): Promise<void> {
+      if (this.getSelectedDataScale.value !== scale.value) {
+        if (scale.value === 'nationwide') await this.$store.dispatch('getHistoricalCountryData')
+        if (scale.value === 'statewide') await this.$store.dispatch('getHistoricalStateData')
+        // if (scale.value === 'countywide')
+        this.$store.commit('setSelectedDataScale', scale)
+      }
     },
 
     closeButtonClick: function() {

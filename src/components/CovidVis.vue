@@ -187,6 +187,7 @@ export default Vue.extend({
       { name: 'Deaths', value: 'deaths' },
       { name: 'Vaccinated', value: 'vaccinated' }
     ])
+    this.$store.commit('setSelectedDataScale', { name: 'Nationwide', value: 'nationwide' })
     /*
      * Conditional rendering of components to allow for transitions.
      */
