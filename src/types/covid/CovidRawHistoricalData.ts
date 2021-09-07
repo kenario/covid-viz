@@ -1,14 +1,16 @@
 export interface CovidRawHistoricalData {
-  country: string;
+  country?: string;
+  state?: string;
+  county?: string;
   timeline: RawHistoricalDataCategories;
 }
 
 interface RawHistoricalDataCategories {
-  [key: string]: RawDateValue[];
-  cases: RawDateValue[];
-  deaths: RawDateValue[];
-  recovered: RawDateValue[];
-  vaccinated: RawDateValue[];
+  [key: string]: RawDateValue;
+  cases: RawDateValue;
+  deaths: RawDateValue;
+  recovered: RawDateValue;
+  vaccinated: RawDateValue;
 }
 
 interface RawDateValue {
