@@ -21,6 +21,7 @@ export const state = () => ({
   selectedGraphType: {} as GraphType,
   selectedResultType: {} as ResultType,
   selectedRankingType: {} as RankingType,
+  selectedDataScale: {} as RankingType,
   selectedDates: {} as DateRange,
   selectedCovidCountryData: {} as CovidCountryData,
   selectedCovidStateData: {} as CovidStateData,

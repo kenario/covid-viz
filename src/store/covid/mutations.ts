@@ -99,5 +99,9 @@ export const mutations = {
 
   setSelectedRankingType: (state: CovidStateType, rankingType: RankingType): void => {
     state.selectedRankingType = rankingType
+  },
+
+  setSelectedDataScale: (state: CovidStateType, scale: RankingType): void => {
+    state.selectedDataScale = scale
   }
 }

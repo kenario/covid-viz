@@ -12,6 +12,41 @@ import { ResultType, DateValue } from '@/types'
 import moment from 'moment'
 
 /**
+ * The New York Times historical state covid API uses a different date format from
+ * the Johny Hopkins historical covid API, which is the baseline used for covid data
+ * in this application.
+ *
+ * @param date - date in string format the uses '-'
+ * @returns - date in string format that uses '/'
+ */
+export const transformDashDateToSlashDate = (date: string): string => {
+  /*
+   * Parse each portion of the date to remove any leading zeroes since the baseline
+   * only uses single digits when possible for month and day. */
+  let result = date.split('-').map(d => parseInt(d, 10).toString())
+  const year = result[0]
+
+  /*
+   * Remove the year from the front and add to the back since the baseline is of the format
+   * 'x-x-xxxx' */
+  // result.splice(0, 1).push(year)
+  result = result.slice(1)
+  result.push(year)
+  return result.join('/')
+}
+
+export const generateEmptyCovidRawHistoricalData = (): CovidRawHistoricalData => {
+  return {
+    timeline: {
+      cases: {},
+      deaths: {},
+      recovered: {},
+      vaccinated: {}
+    }
+  }
+}
+
+/**
  * This is used to process historical data for any countries, for any state in the USA, and for any
  * counties within a state of the USA.
  *
@@ -60,7 +95,7 @@ export const processHistoricalData = (data: CovidRawHistoricalData, startDate: m
   }
 
   const result: CovidHistoricalData = {
-    country: data.country,
+    country: data.country as string,
     timeline: {
       /*
        * Historical data is mapped into the following: [{ date: '12/1/20', value: 0 }] */

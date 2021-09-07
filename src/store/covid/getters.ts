@@ -36,6 +36,8 @@ export const getters = {
 
   getSelectedRankingType: (state: CovidStateType): RankingType => state.selectedRankingType,
 
+  getSelectedDataScale: (state: CovidStateType): RankingType => state.selectedDataScale,
+
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
 
@@ -138,9 +140,12 @@ export const getters = {
 
     return result
   },
-  /*
-   * Map historical data values for the chosen data types: cases, deaths, and recovered to
-   * CovidLineChart data structure.
+
+  /**
+   * Takes historical covid data and converts to a data structure to be used by a chart component.
+   *
+   * @param state
+   * @returns - CovidLineChart[]
    */
   getCovidChartData: (state: CovidStateType): CovidLineChart[] => {
     const covidChartData: CovidLineChart[] = []

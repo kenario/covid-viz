@@ -22,6 +22,7 @@ export interface CovidStateType {
   selectedGraphType: GraphType;
   selectedResultType: ResultType;
   selectedRankingType: RankingType;
+  selectedDataScale: RankingType;
   selectedCovidDataType: SelectItem[];
   selectedCovidCountryData: CovidCountryData;
   selectedCovidStateData: CovidStateData;

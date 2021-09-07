@@ -6,7 +6,12 @@ import { ActionContext } from 'vuex'
 import { covidEP } from '@/shared/constants'
 import { CovidStateType } from './CovidStateType'
 import { CovidDataMapper } from '@/shared/CovidDataMapper'
-import { transformVaccineDataToMap, processHistoricalData } from './helpers'
+import {
+  processHistoricalData,
+  transformVaccineDataToMap,
+  transformDashDateToSlashDate,
+  generateEmptyCovidRawHistoricalData
+} from './helpers'
 
 import {
   CovidData,
@@ -104,6 +109,7 @@ export const actions = {
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
+    const rawData: CovidRawHistoricalData = generateEmptyCovidRawHistoricalData()
 
     if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
@@ -120,10 +126,8 @@ export const actions = {
       axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
     ])
 
-    const rawData: CovidRawHistoricalData = {
-      country: baseDataRes.data.country,
-      timeline: baseDataRes.data.timeline
-    }
+    rawData.country = baseDataRes.data.country
+    rawData.timeline = baseDataRes.data.timeline
     rawData.timeline.vaccinated = vaccineDataRes.data.timeline
 
     commit('setHistoricalCountryData', processHistoricalData(rawData, startDate, endDate))
@@ -136,16 +140,17 @@ export const actions = {
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
     const hasSpecificDates = Object.values(state.selectedDates).length === 2
+    const rawData: CovidRawHistoricalData = generateEmptyCovidRawHistoricalData()
 
     if (hasSpecificDates) {
       numOfDays = today.diff(startDate, 'days').toString()
     }
 
     const baseDataPath = covidEP.COVID_API_HISTORICAL_STATE_DATA
-      .replace('state', state.selectedState)
+      .replace('{state}', state.selectedState)
       .replace('numOfDays', numOfDays)
     const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
-      .replace('state', state.selectedState)
+      .replace('{state}', state.selectedState)
       .replace('numOfDays', numOfDays)
     const [baseDataRes, vaccineDataRes] = await Promise.all([
       axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
@@ -154,5 +159,17 @@ export const actions = {
 
     console.log('here: ', baseDataRes.data)
     console.log('here: ', vaccineDataRes.data)
+
+    baseDataRes.data.forEach((data: any) => {
+      const date = transformDashDateToSlashDate(data.date)
+      rawData.timeline.cases[date] = data.cases
+      rawData.timeline.deaths[date] = data.deaths
+      rawData.timeline.recovered[date] = 0
+    })
+
+    rawData.state = vaccineDataRes.data.state
+    rawData.timeline.vaccinated = vaccineDataRes.data.timeline
+
+    commit('setHistoricalStateData', processHistoricalData(rawData, startDate, endDate))
   }
 }
