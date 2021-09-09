@@ -221,7 +221,7 @@ export default Vue.extend({
 
           /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
              that countries historical data if we don't already have it. */
-          this.$store.commit('setSelectedCountry', {
+          this.$store.dispatch('setCountryDependents', {
             name: this.geolocationCountry,
             value: this.geolocationCountry.toLowerCase()
           })

@@ -22,7 +22,6 @@ import { searchForSelectedData } from './helpers'
 export const mutations = {
   setSelectedCountry: (state: CovidStateType, country: SelectItem): void => {
     state.selectedCountry = country.name
-    state.selectedCovidCountryData = searchForSelectedData(country.name, state.covidCountryData, 'country') as CovidCountryData
   },
 
   setSelectedState: (state: CovidStateType, selectedState: SelectItem): void => {
@@ -33,6 +32,14 @@ export const mutations = {
   setSelectedCounty: (state: CovidStateType, county: SelectItem): void => {
     state.selectedCounty = county.name
     state.selectedCovidCountyData = searchForSelectedData(county.name, state.covidCountyData, 'county') as CovidCountyData
+  },
+
+  setSelectedCovidCountryData: (state: CovidStateType, country: SelectItem): void => {
+    state.selectedCovidCountryData = searchForSelectedData(
+      country.name,
+      state.covidCountryData,
+      'country'
+    ) as CovidCountryData
   },
 
   setSelectedDates: (state: CovidStateType, dates: DateRange): void => {
@@ -103,5 +110,13 @@ export const mutations = {
 
   setSelectedDataScale: (state: CovidStateType, scale: RankingType): void => {
     state.selectedDataScale = scale
+  },
+
+  addDataScale: (state: CovidStateType, scale: RankingType): void => {
+    state.dataScales.push(scale)
+  },
+
+  removeDataScale: (state: CovidStateType, scale: RankingType): void => {
+    state.dataScales.splice(state.dataScales.findIndex((data: RankingType): boolean => data.value === scale.value), 1)
   }
 }

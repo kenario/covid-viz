@@ -104,7 +104,7 @@
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
-                :items="dataScale"
+                :items="getDataScales"
                 @itemSelect="setSelectedDataScale($event); toggleDropdown()"
               />
             </template>
@@ -188,6 +188,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getDataScales',
       'getRankingTypes',
       'getSelectedDates',
       'getSelectedState',
@@ -216,11 +217,6 @@ export default Vue.extend({
       { name: 'Recovered', value: 'recovered' },
       { name: 'Vaccinated', value: 'vaccinated' }
     ],
-    dataScale: [
-      { name: 'Nationwide', value: 'nationwide' },
-      { name: 'Statewide', value: 'statewide' },
-      { name: 'Countywide', value: 'countywide' }
-    ],
     graphTypes: [
       { name: 'Line', value: 'line' },
       { name: 'Bar', value: 'bar' }
@@ -236,7 +232,7 @@ export default Vue.extend({
     /*
      * Sets the country and the countries data. */
     setSelectedCountry: async function(country: SelectItem): Promise<void> {
-      this.$store.commit('setSelectedCountry', country)
+      this.$store.dispatch('setCountryDependents', country)
 
       if (this.getSelectedCountry !== 'USA') {
         /*

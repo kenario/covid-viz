@@ -33,4 +33,5 @@ export interface CovidStateType {
   covidCountyData: CovidCountyData[];
   covidHistoricalCountryData: CovidHistoricalData;
   covidHistoricalStateData: CovidHistoricalData;
+  dataScales: RankingType[];
 }

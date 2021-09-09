@@ -32,5 +32,6 @@ export const state = () => ({
   covidStateData: [] as CovidStateData[],
   covidCountyData: [] as CovidCountyData[],
   covidHistoricalCountryData: {} as CovidHistoricalData,
-  covidHistoricalStateData: {} as CovidHistoricalData
+  covidHistoricalStateData: {} as CovidHistoricalData,
+  dataScales: [] as RankingType[]
 })

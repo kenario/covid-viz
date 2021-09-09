@@ -22,6 +22,7 @@ import {
   CovidCountyDataRaw,
   CovidRawHistoricalData
 } from '@/types/covid'
+import { SelectItem } from '@/types'
 
 export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
@@ -171,5 +172,10 @@ export const actions = {
     rawData.timeline.vaccinated = vaccineDataRes.data.timeline
 
     commit('setHistoricalStateData', processHistoricalData(rawData, startDate, endDate))
+  },
+
+  setCountryDependents: ({ commit }: ActionContext<CovidStateType, RS>, country: SelectItem): void => {
+    commit('setSelectedCountry', country)
+    commit('setSelectedCovidCountryData', country)
   }
 }

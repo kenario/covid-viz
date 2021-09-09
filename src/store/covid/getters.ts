@@ -109,6 +109,8 @@ export const getters = {
     return rankingTypes
   },
 
+  getDataScales: (state: CovidStateType): RankingType[] => state.dataScales,
+
   getCovidRankings: (state: CovidStateType): CovidRankings[] => {
     const result: CovidRankings[] = []
     const rankingSubtypes = [
