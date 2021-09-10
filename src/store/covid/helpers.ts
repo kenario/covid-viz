@@ -24,7 +24,7 @@ export const transformDashDateToSlashDate = (date: string): string => {
    * Parse each portion of the date to remove any leading zeroes since the baseline
    * only uses single digits when possible for month and day. */
   let result = date.split('-').map(d => parseInt(d, 10).toString())
-  const year = result[0]
+  const year = result[0].substring(2)
 
   /*
    * Remove the year from the front and add to the back since the baseline is of the format
@@ -95,7 +95,8 @@ export const processHistoricalData = (data: CovidRawHistoricalData, startDate: m
   }
 
   const result: CovidHistoricalData = {
-    country: data.country as string,
+    country: data.country,
+    state: data.state,
     timeline: {
       /*
        * Historical data is mapped into the following: [{ date: '12/1/20', value: 0 }] */

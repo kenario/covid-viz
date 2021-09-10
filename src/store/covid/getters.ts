@@ -17,7 +17,8 @@ import {
   CovidStateData,
   CovidCountyData,
   CovidCountryData,
-  CovidRankingData
+  CovidRankingData,
+  CovidHistoricalData
 } from '@/types/covid'
 import { CovidRankings } from '@/types/covid/CovidRankings'
 
@@ -151,13 +152,20 @@ export const getters = {
    */
   getCovidChartData: (state: CovidStateType): CovidLineChart[] => {
     const covidChartData: CovidLineChart[] = []
+    let historicalData: CovidHistoricalData
 
-    if (state.covidHistoricalCountryData.timeline) {
+    if (state.selectedDataScale.value === 'nationwide') {
+      historicalData = state.covidHistoricalCountryData
+    } else {
+      historicalData = state.covidHistoricalStateData
+    }
+
+    if (historicalData.timeline) {
       state.selectedCovidDataType.forEach((type: SelectItem): void => {
         covidChartData.push({
           label: type.name,
           data: determineCovidChartData(
-            state.covidHistoricalCountryData.timeline[type.value],
+            historicalData.timeline[type.value],
             state.selectedResultType
           )
         })

@@ -158,9 +158,6 @@ export const actions = {
       axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
     ])
 
-    console.log('here: ', baseDataRes.data)
-    console.log('here: ', vaccineDataRes.data)
-
     baseDataRes.data.forEach((data: any) => {
       const date = transformDashDateToSlashDate(data.date)
       rawData.timeline.cases[date] = data.cases
@@ -177,5 +174,16 @@ export const actions = {
   setCountryDependents: ({ commit }: ActionContext<CovidStateType, RS>, country: SelectItem): void => {
     commit('setSelectedCountry', country)
     commit('setSelectedCovidCountryData', country)
+  },
+
+  setUsaStateDependents: ({ commit, state }: ActionContext<CovidStateType, RS>, usaState: SelectItem): void => {
+    commit('setSelectedState', usaState)
+    commit('setSelectedCovidStateData', usaState)
+
+    if (state.selectedCountry.toLowerCase() === 'usa') {
+      commit('addDataScale', { name: 'Statewide', value: 'statewide' })
+    } else {
+      commit('removeDataScale', { name: 'Statewide', value: 'statewide' })
+    }
   }
 }

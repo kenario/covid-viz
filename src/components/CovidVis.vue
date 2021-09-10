@@ -172,7 +172,8 @@ export default Vue.extend({
     totalsTitle: 'TOTALS',
     countryNotification: 'Select a country or allow location access.',
     rankingTitle: 'RANKINGS',
-    graphTitle: 'GRAPH'
+    graphTitle: 'GRAPH',
+    initialDataScale: { name: 'Nationwide', value: 'nationwide' }
   }),
   /*
    * Created and Mount hook represent the Vuex store's entry point for initializing default state.
@@ -187,7 +188,8 @@ export default Vue.extend({
       { name: 'Deaths', value: 'deaths' },
       { name: 'Vaccinated', value: 'vaccinated' }
     ])
-    this.$store.commit('setSelectedDataScale', { name: 'Nationwide', value: 'nationwide' })
+    this.$store.commit('setSelectedDataScale', this.initialDataScale)
+    this.$store.commit('addDataScale', this.initialDataScale)
     /*
      * Conditional rendering of components to allow for transitions.
      */
@@ -237,7 +239,7 @@ export default Vue.extend({
             if (this.getAllAffectedStates.length < 1) {
               await this.$store.dispatch('getCovidStateData')
               await this.$store.dispatch('getCovidVaccineStateData')
-              this.$store.commit('setSelectedState', { name: state, value: state.toLowerCase() })
+              this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
             }
 
             if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')

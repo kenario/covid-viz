@@ -1,10 +1,10 @@
 <template>
   <div class="covid-vis-chart-container">
     <div
-      v-if="getSelectedCountry.length > 0"
+      v-if="chartHeader.length > 0"
       class="covid-vis-chart-country-label label-font"
     >
-      {{ getSelectedCountry }}
+      {{ chartHeader }}
     </div>
 
     <div
@@ -14,7 +14,6 @@
       <Chart
         :labels="getCovidChartLabels"
         :type="getSelectedGraphType.value"
-        :country="getSelectedCountry"
         :data="getCovidChartData"
       />
     </div>
@@ -50,10 +49,17 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedGraphType',
+      'getSelectedDataScale',
       'getCovidChartLabels',
       'getCovidChartData',
-      'getSelectedCountry'
-    ])
+      'getSelectedCountry',
+      'getSelectedState'
+    ]),
+    chartHeader() {
+      return this.getSelectedDataScale.value === 'nationwide'
+        ? this.getSelectedCountry
+        : this.getSelectedState
+    }
   }
 })
 </script>
