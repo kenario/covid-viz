@@ -58,6 +58,7 @@ describe('CovidStoreGetters', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
     covidState.selectedResultType = { name: 'Total', value: 'total' }
+    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
 
     const expected: CovidLineChart = {
       label: 'Cases',
@@ -71,6 +72,7 @@ describe('CovidStoreGetters', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
     covidState.selectedResultType = { name: 'Total Per Day', value: 'totalPerDay' }
+    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
 
     const expected: CovidLineChart = {
       label: 'Cases',
