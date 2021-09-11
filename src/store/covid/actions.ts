@@ -22,7 +22,7 @@ import {
   CovidCountyDataRaw,
   CovidRawHistoricalData
 } from '@/types/covid'
-import { SelectItem } from '@/types'
+import { RankingType, SelectItem } from '@/types'
 
 export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
@@ -105,7 +105,7 @@ export const actions = {
 
   getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
     let numOfDays = ''
-    // debugger
+
     const today = moment.utc()
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
@@ -135,7 +135,7 @@ export const actions = {
   },
 
   getHistoricalStateData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
-    let numOfDays = ''
+    let numOfDays = '30'
 
     const today = moment.utc()
     const startDate = moment.utc(state.selectedDates.startDate)
@@ -176,14 +176,23 @@ export const actions = {
     commit('setSelectedCovidCountryData', country)
   },
 
-  setUsaStateDependents: ({ commit, state }: ActionContext<CovidStateType, RS>, usaState: SelectItem): void => {
+  setUsaStateDependents: async ({ commit, state, dispatch }: ActionContext<CovidStateType, RS>, usaState: SelectItem): Promise<void> => {
+    const statewide: RankingType = { name: 'Statewide', value: 'statewide' }
+    const containsStatewide = state.dataScales.map((scale: RankingType): string => scale.value).includes(statewide.value)
+
     commit('setSelectedState', usaState)
     commit('setSelectedCovidStateData', usaState)
 
     if (state.selectedCountry.toLowerCase() === 'usa') {
-      commit('addDataScale', { name: 'Statewide', value: 'statewide' })
+      /*
+       * Statewide scale should only be added if the array does not contain it.  (probably better to use set here) */
+      if (!containsStatewide) {
+        commit('addDataScale', statewide)
+      }
     } else {
-      commit('removeDataScale', { name: 'Statewide', value: 'statewide' })
+      commit('removeDataScale', statewide)
     }
+
+    await dispatch('getHistoricalStateData')
   }
 }
