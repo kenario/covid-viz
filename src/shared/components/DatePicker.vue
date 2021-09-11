@@ -32,8 +32,17 @@ export default Vue.extend({
   }),
 
   watch: {
-    dateRange() {
-      this.$emit('selectDate', { startDate: this.dateRange.start, endDate: this.dateRange.end })
+    dateRange(newDateRange, oldDateRange) {
+      const newDateStart = moment.utc(newDateRange.start)
+      const newDateEnd = moment.utc(newDateRange.end)
+      const oldDateStart = moment.utc(oldDateRange.start)
+      const oldDateEnd = moment.utc(oldDateRange.end)
+
+      if (!newDateStart.isSame(oldDateStart, 'day') || !newDateEnd.isSame(oldDateEnd, 'day')) {
+        if (Object.keys(oldDateRange).length !== 0) {
+          this.$emit('selectDate', { startDate: this.dateRange.start, endDate: this.dateRange.end })
+        }
+      }
     }
   },
 

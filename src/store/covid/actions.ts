@@ -105,7 +105,7 @@ export const actions = {
 
   getHistoricalCountryData: async ({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
     let numOfDays = ''
-
+    // debugger
     const today = moment.utc()
     const startDate = moment.utc(state.selectedDates.startDate)
     const endDate = moment.utc(state.selectedDates.endDate)
