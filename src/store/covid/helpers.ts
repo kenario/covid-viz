@@ -119,7 +119,7 @@ export const processHistoricalData = (data: CovidRawHistoricalData, startDate: m
  */
 export const trimToSpecificDateRange = (data: any, startDate: moment.Moment, endDate: moment.Moment): any => {
   Object.keys(data).forEach((key: string): void => {
-    const date = moment.utc(key, ['ddd MMM DD YYYY HH:mm:ss Z', 'YYYY-MM-DD'])
+    const date = moment.utc(new Date(key))
 
     if (date.isBefore(startDate, 'day') || date.isAfter(endDate, 'day')) {
       delete data[key]
