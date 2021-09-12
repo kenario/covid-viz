@@ -84,24 +84,25 @@ export const getters = {
     return mapCovidTotals(data, { county: data.county })
   },
 
+  /**
+   * RankingTypes is pulled from the data scale data structure + an added worldwide scale.
+   *
+   * @returns - RankingType[]
+   */
   getRankingTypes: (state: CovidStateType): RankingType[] => {
-    const rankingTypes: RankingType[] = [
-      { name: 'Worldwide', value: 'worldwide' }
+    let result: RankingType[] = [
+      { name: 'Worldwide', value: 'worldwide' },
+      ...state.dataScales
     ]
-
-    const containsNationwideType: boolean = rankingTypes
-      .some((type: RankingType): boolean => type.value === 'nationwide')
-
     /*
-     * This is to make sure that nationwide is not an option for Ranking Types in the Filter
-     * when the selected country is the United States. */
-    if (state.selectedCountry === 'USA' && !containsNationwideType) {
-      rankingTypes.push({ name: 'Nationwide', value: 'nationwide' })
-    } else if (state.selectedCountry !== 'USA' && containsNationwideType) {
-      rankingTypes.splice(rankingTypes.findIndex((type: RankingType) => type.value === 'nationwide'), 1)
+     * The data scales are determined by their own operations but in the case of RankingTypes, we
+     * need to make sure worldwide is the only one present when the country is not USA since it is
+     * not a part of the normal data scales. */
+    if (state.selectedCountry.toLowerCase() !== 'usa') {
+      result = [{ name: 'Worldwide', value: 'worldwide' }]
     }
 
-    return rankingTypes
+    return result
   },
 
   getDataScales: (state: CovidStateType): RankingType[] => state.dataScales,
