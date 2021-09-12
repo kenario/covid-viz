@@ -67,12 +67,6 @@ export const getters = {
         return { name: data.county, value: data.county.toLowerCase() }
       }),
 
-  /*
-   * Map the dates provided by the selected countries historical data.
-   */
-  getCovidChartLabels: (state: CovidStateType): string[] =>
-    state.covidHistoricalCountryData.timeline?.cases.map((x: DateValue): string => x.date),
-
   getCovidGlobalTotals: (state: CovidStateType): CovidTotals => mapCovidTotals(state.covidGlobalData),
 
   getCovidCountryTotals: (state: CovidStateType): CovidTotals => {
@@ -144,6 +138,20 @@ export const getters = {
     return result
   },
 
+  getCovidChartLabels: (state: CovidStateType): string[] => {
+    let historicalData: CovidHistoricalData
+
+    if (state.selectedDataScale.value === 'nationwide') {
+      historicalData = state.covidHistoricalCountryData
+    } else if (state.selectedDataScale.value === 'statewide') {
+      historicalData = state.covidHistoricalStateData
+    } else {
+      historicalData = state.covidHistoricalCountyData
+    }
+
+    return historicalData.timeline?.cases.map((x: DateValue): string => x.date)
+  },
+
   /**
    * Takes historical covid data and converts to a data structure to be used by a chart component.
    *
@@ -151,7 +159,7 @@ export const getters = {
    * @returns - CovidLineChart[]
    */
   getCovidChartData: (state: CovidStateType): CovidLineChart[] => {
-    const covidChartData: CovidLineChart[] = []
+    const result: CovidLineChart[] = []
     let historicalData: CovidHistoricalData
 
     if (state.selectedDataScale.value === 'nationwide') {
@@ -164,7 +172,7 @@ export const getters = {
 
     if (historicalData.timeline) {
       state.selectedCovidDataType.forEach((type: SelectItem): void => {
-        covidChartData.push({
+        result.push({
           label: type.name,
           data: determineCovidChartData(
             historicalData.timeline[type.value],
@@ -174,6 +182,6 @@ export const getters = {
       })
     }
 
-    return covidChartData
+    return result
   }
 }

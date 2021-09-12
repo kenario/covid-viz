@@ -198,7 +198,6 @@ export const actions = {
     })
 
     rawData.county = baseDataRes.data[0].county
-    console.log('here: ', rawData)
     commit('setHistoricalCountyData', processHistoricalData(rawData, startDate, endDate))
   },
 
