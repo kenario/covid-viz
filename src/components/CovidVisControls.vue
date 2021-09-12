@@ -256,17 +256,16 @@ export default Vue.extend({
       await this.$store.dispatch('getHistoricalCountryData')
     },
 
-    /* Sets the state, if covidCountyTotals is empty, we fetch the data.  We also unset the county if
-       the state selected is not the currently selected state. */
     setSelectedState: async function(state: SelectItem): Promise<void> {
       await this.$store.dispatch('setUsaStateDependents', state)
 
+      /* Unset the county if the state selected is not the currently selected state. */
       if (this.getSelectedState !== state.name) this.$store.commit('setSelectedCounty', { name: '', value: '' })
       if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
     },
 
-    setSelectedCounty: function(county: SelectItem): void {
-      this.$store.commit('setSelectedCounty', county)
+    setSelectedCounty: async function(county: SelectItem): Promise<void> {
+      await this.$store.dispatch('setUsaCountyDependents', county)
     },
 
     setSelectedDateRange: async function(dates: DateRange): Promise<void> {
@@ -274,8 +273,10 @@ export default Vue.extend({
 
       if (this.getSelectedDataScale.value === 'nationwide') {
         await this.$store.dispatch('getHistoricalCountryData')
-      } else {
+      } else if (this.getSelectedDataScale.value === 'statewide') {
         await this.$store.dispatch('getHistoricalStateData')
+      } else {
+        await this.$store.dispatch('getHistoricalCountyData')
       }
     },
 

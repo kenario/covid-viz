@@ -171,6 +171,37 @@ export const actions = {
     commit('setHistoricalStateData', processHistoricalData(rawData, startDate, endDate))
   },
 
+  getHistoricalCountyData: async({ commit, state }: ActionContext<CovidStateType, RS>): Promise<void> => {
+    let numOfDays = '30'
+
+    const today = moment.utc()
+    const startDate = moment.utc(state.selectedDates.startDate)
+    const endDate = moment.utc(state.selectedDates.endDate)
+    const hasSpecificDates = Object.values(state.selectedDates).length === 2
+    const rawData: CovidRawHistoricalData = generateEmptyCovidRawHistoricalData()
+
+    if (hasSpecificDates) {
+      numOfDays = today.diff(startDate, 'days').toString()
+    }
+
+    const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTY_DATA
+      .replace('{county}', state.selectedCounty)
+      .replace('numOfDays', numOfDays)
+    const baseDataRes = await axios.get(covidEP.COVID_API_BASE_URL + baseDataPath)
+
+    baseDataRes.data.forEach((data: any) => {
+      const date = transformDashDateToSlashDate(data.date)
+      rawData.timeline.cases[date] = data.cases
+      rawData.timeline.deaths[date] = data.deaths
+      rawData.timeline.recovered[date] = 0
+      rawData.timeline.vaccinated[date] = 0
+    })
+
+    rawData.county = baseDataRes.data[0].county
+    console.log('here: ', rawData)
+    commit('setHistoricalCountyData', processHistoricalData(rawData, startDate, endDate))
+  },
+
   setCountryDependents: ({ commit }: ActionContext<CovidStateType, RS>, country: SelectItem): void => {
     commit('setSelectedCountry', country)
     commit('setSelectedCovidCountryData', country)
@@ -178,14 +209,16 @@ export const actions = {
 
   setUsaStateDependents: async ({ commit, state, dispatch }: ActionContext<CovidStateType, RS>, usaState: SelectItem): Promise<void> => {
     const statewide: RankingType = { name: 'Statewide', value: 'statewide' }
-    const containsStatewide = state.dataScales.map((scale: RankingType): string => scale.value).includes(statewide.value)
+    const containsStatewide = state.dataScales
+      .map((scale: RankingType): string => scale.value)
+      .includes(statewide.value)
 
     commit('setSelectedState', usaState)
     commit('setSelectedCovidStateData', usaState)
 
     if (state.selectedCountry.toLowerCase() === 'usa') {
       /*
-       * Statewide scale should only be added if the array does not contain it.  (probably better to use set here) */
+       * Statewide scale should only be added if the array does not contain it. */
       if (!containsStatewide) {
         commit('addDataScale', statewide)
       }
@@ -194,5 +227,27 @@ export const actions = {
     }
 
     await dispatch('getHistoricalStateData')
+  },
+
+  setUsaCountyDependents: async ({ commit, state, dispatch }: ActionContext<CovidStateType, RS>, county: SelectItem): Promise<void> => {
+    const countywide: RankingType = { name: 'Countywide', value: 'countywide' }
+    const containsCountywide = state.dataScales
+      .map((scale: RankingType): string => scale.value)
+      .includes(countywide.value)
+
+    commit('setSelectedCounty', county)
+    commit('setSelectedCovidCountyData', county)
+
+    if (state.selectedCountry.toLowerCase() === 'usa') {
+      /*
+       * Countywide scale should only be added if the array does not contain it. */
+      if (!containsCountywide) {
+        commit('addDataScale', countywide)
+      }
+    } else {
+      commit('removeDataScale', countywide)
+    }
+
+    await dispatch('getHistoricalCountyData')
   }
 }

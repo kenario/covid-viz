@@ -49,6 +49,14 @@ export const mutations = {
     ) as CovidStateData
   },
 
+  setSelectedCovidCountyData: (state: CovidStateType, county: SelectItem): void => {
+    state.selectedCovidCountyData = searchForSelectedData(
+      county.name,
+      state.covidCountyData,
+      'county'
+    ) as CovidCountyData
+  },
+
   setSelectedDates: (state: CovidStateType, dates: DateRange): void => {
     state.selectedDates = dates
   },
@@ -97,6 +105,10 @@ export const mutations = {
 
   setHistoricalStateData: (state: CovidStateType, data: CovidHistoricalData): void => {
     state.covidHistoricalStateData = data
+  },
+
+  setHistoricalCountyData: (state: CovidStateType, data: CovidHistoricalData): void => {
+    state.covidHistoricalCountyData = data
   },
 
   setSelectedCovidDataType: (state: CovidStateType, dataType: SelectItem[]): void => {

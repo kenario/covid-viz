@@ -239,7 +239,7 @@ export default Vue.extend({
             if (this.getAllAffectedStates.length < 1) {
               await this.$store.dispatch('getCovidStateData')
               await this.$store.dispatch('getCovidVaccineStateData')
-              this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
+              await this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
             }
 
             if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
@@ -247,7 +247,10 @@ export default Vue.extend({
             /*
              * Somtimes when pinging the geolocation API, county data is not available, we have this check
              * just in case. */
-            if (county) this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+            if (county) {
+              this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+              await this.$store.dispatch('setUsaCountyDependents', { name: county, value: county.toLowerCase() })
+            }
           }
         })
       }

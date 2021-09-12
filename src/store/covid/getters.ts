@@ -156,8 +156,10 @@ export const getters = {
 
     if (state.selectedDataScale.value === 'nationwide') {
       historicalData = state.covidHistoricalCountryData
-    } else {
+    } else if (state.selectedDataScale.value === 'statewide') {
       historicalData = state.covidHistoricalStateData
+    } else {
+      historicalData = state.covidHistoricalCountyData
     }
 
     if (historicalData.timeline) {

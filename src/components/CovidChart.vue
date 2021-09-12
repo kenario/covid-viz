@@ -53,12 +53,15 @@ export default Vue.extend({
       'getCovidChartLabels',
       'getCovidChartData',
       'getSelectedCountry',
-      'getSelectedState'
+      'getSelectedState',
+      'getSelectedCounty'
     ]),
     chartHeader() {
       return this.getSelectedDataScale.value === 'nationwide'
         ? this.getSelectedCountry
-        : this.getSelectedState
+        : this.getSelectedDataScale.value === 'statewide'
+          ? this.getSelectedState
+          : this.getSelectedCounty
     }
   }
 })
