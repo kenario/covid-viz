@@ -102,6 +102,16 @@ export const getters = {
       result = [{ name: 'Worldwide', value: 'worldwide' }]
     }
 
+    /*
+     * We remove the option for county wide since that type of ranking belongs to state wide. */
+    const containsCountywide = result
+      .map((rankingType: RankingType): string => rankingType.value)
+      .includes('countywide')
+
+    if (containsCountywide) {
+      result.splice(result.findIndex((rankingType: RankingType): boolean => rankingType.value === 'countywide'))
+    }
+
     return result
   },
 
