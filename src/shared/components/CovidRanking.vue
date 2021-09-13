@@ -23,13 +23,14 @@
 <script lang="ts">
 
 import Vue from 'vue'
+import { CovidRankingData } from '../../types/covid/CovidRankingData'
 
 export default Vue.extend({
   name: 'CovidRanking',
 
   props: {
     title: String,
-    items: Array as () => string[]
+    items: Array as () => CovidRankingData[]
   }
 
 })

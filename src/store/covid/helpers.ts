@@ -181,7 +181,6 @@ export function rankCovidData(covidData: CovidDataType[], scope: string, covidDa
     (next.baseData[covidDataType] as number) - (current.baseData[covidDataType] as number)
   const nameAndTotal = (data: CovidDataType): CovidRankingData => {
     return {
-
       name: (data as any)[scope],
       total: data.baseData[covidDataType] as number
     }

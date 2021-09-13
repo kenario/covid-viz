@@ -128,6 +128,15 @@ export const getters = {
       } else if (state.selectedRankingType.value === 'nationwide') {
         label = `USA ${label}`
         data = rankCovidData([...state.covidStateData], 'state', subtypes)
+      } else {
+        /*
+         * County data does not currently contain test and vaccinations, so we skip making rankings
+         * for this. */
+        if (subtypes === 'tests' || subtypes === 'vaccinated') return
+        const countyData: CovidCountyData[] = state.covidCountyData
+          .filter((county: CovidCountyData): boolean => county.state === state.selectedState)
+        label = `${state.selectedState} ${label}`
+        data = rankCovidData(countyData, 'county', subtypes)
       }
 
       result.push({
