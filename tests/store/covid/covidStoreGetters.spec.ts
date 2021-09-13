@@ -38,6 +38,7 @@ describe('CovidStoreGetters', (): void => {
 
   it('gets chart labels needed for covid chart', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
+    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
     expect(getCovidChartLabels(covidState)).to
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })
