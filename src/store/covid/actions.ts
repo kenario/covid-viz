@@ -122,10 +122,13 @@ export const actions = {
     const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE
       .replace('country', state.selectedCountry)
       .replace('numOfDays', numOfDays)
+
+    commit('setIsLoading', true)
     const [baseDataRes, vaccineDataRes] = await Promise.all([
       axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
       axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
     ])
+    commit('setIsLoading', false)
 
     rawData.country = baseDataRes.data.country
     rawData.timeline = baseDataRes.data.timeline
@@ -153,10 +156,13 @@ export const actions = {
     const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
       .replace('{state}', state.selectedState)
       .replace('numOfDays', numOfDays)
+
+    commit('setIsLoading', true)
     const [baseDataRes, vaccineDataRes] = await Promise.all([
       axios.get(covidEP.COVID_API_BASE_URL + baseDataPath),
       axios.get(covidEP.COVID_API_BASE_URL + vaccineDataPath)
     ])
+    commit('setIsLoading', false)
 
     baseDataRes.data.forEach((data: any) => {
       const date = transformDashDateToSlashDate(data.date)
@@ -187,7 +193,10 @@ export const actions = {
     const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTY_DATA
       .replace('{county}', state.selectedCounty)
       .replace('numOfDays', numOfDays)
+
+    commit('setIsLoading', true)
     const baseDataRes = await axios.get(covidEP.COVID_API_BASE_URL + baseDataPath)
+    commit('setIsLoading', false)
 
     baseDataRes.data.forEach((data: any) => {
       const date = transformDashDateToSlashDate(data.date)

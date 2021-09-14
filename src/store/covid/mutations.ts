@@ -137,5 +137,9 @@ export const mutations = {
 
   removeDataScale: (state: CovidStateType, scale: RankingType): void => {
     state.dataScales.splice(state.dataScales.findIndex((data: RankingType): boolean => data.value === scale.value), 1)
+  },
+
+  setIsLoading: (state: CovidStateType, isLoading: boolean): void => {
+    state.isLoading = isLoading
   }
 }

@@ -39,6 +39,8 @@ export const getters = {
 
   getSelectedDataScale: (state: CovidStateType): RankingType => state.selectedDataScale,
 
+  getIsLoading: (state: CovidStateType): boolean => state.isLoading,
+
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
 

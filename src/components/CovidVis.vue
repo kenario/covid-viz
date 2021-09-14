@@ -1,5 +1,12 @@
 <template>
   <div class="covid-vis-container">
+    <div
+      v-if="getIsLoading"
+      class="covid-vis-loading-indicator"
+    >
+      <vue-loaders-ball-beat :color="'#206c87'" :scale="2"/>
+    </div>
+
     <div class="covid-intro-layout">
       <transition name="fade">
         <covid-intro v-if="renderComponents" />
@@ -112,7 +119,6 @@
 <script lang="ts">
 
 import Vue from 'vue'
-import Footer from './Footer.vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
 import CovidRanking from '@/shared/components/CovidRanking.vue'
@@ -130,7 +136,6 @@ export default Vue.extend({
   name: 'CovidVis',
 
   components: {
-    // Footer,
     CovidTotals,
     CovidRanking,
     CovidChart,
@@ -139,6 +144,7 @@ export default Vue.extend({
 
   computed: {
     ...mapGetters([
+      'getIsLoading',
       'getCovidRankings',
       'getSelectedState',
       'renderStateTotals',
@@ -342,5 +348,10 @@ export default Vue.extend({
   /* parent grid */
   grid-row: 8 / 9;
   margin: auto;
+}
+.covid-vis-loading-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 }
 </style>
