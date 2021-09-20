@@ -141,5 +141,9 @@ export const mutations = {
 
   setIsLoading: (state: CovidStateType, isLoading: boolean): void => {
     state.isLoading = isLoading
+  },
+
+  setHasError: (state: CovidStateType, hasError: boolean): void => {
+    state.hasError = hasError
   }
 }

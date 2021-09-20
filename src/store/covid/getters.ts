@@ -41,6 +41,8 @@ export const getters = {
 
   getIsLoading: (state: CovidStateType): boolean => state.isLoading,
 
+  getHasError: (state: CovidStateType): boolean => state.hasError,
+
   getNumberOfSelectedCovidDataTypes: (state: CovidStateType): string =>
     `(${state.selectedCovidDataType.length}) data types selected`,
 

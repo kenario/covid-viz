@@ -354,4 +354,5 @@ export default Vue.extend({
   top: 50%;
   left: 50%;
 }
+
 </style>

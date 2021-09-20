@@ -194,20 +194,28 @@ export const actions = {
       .replace('{county}', state.selectedCounty)
       .replace('numOfDays', numOfDays)
 
-    commit('setIsLoading', true)
-    const baseDataRes = await axios.get(covidEP.COVID_API_BASE_URL + baseDataPath)
-    commit('setIsLoading', false)
+    /*
+     * We wrap the https request in a try catch for this specific action, since querying county data past 30 days
+     * seems to produce a 504 from the end point. */
+    try {
+      commit('setIsLoading', true)
+      const baseDataRes = await axios.get(covidEP.COVID_API_BASE_URL + baseDataPath)
+      commit('setIsLoading', false)
 
-    baseDataRes.data.forEach((data: any) => {
-      const date = transformDashDateToSlashDate(data.date)
-      rawData.timeline.cases[date] = data.cases
-      rawData.timeline.deaths[date] = data.deaths
-      rawData.timeline.recovered[date] = 0
-      rawData.timeline.vaccinated[date] = 0
-    })
+      baseDataRes.data.forEach((data: any) => {
+        const date = transformDashDateToSlashDate(data.date)
+        rawData.timeline.cases[date] = data.cases
+        rawData.timeline.deaths[date] = data.deaths
+        rawData.timeline.recovered[date] = 0
+        rawData.timeline.vaccinated[date] = 0
+      })
 
-    rawData.county = baseDataRes.data[0].county
-    commit('setHistoricalCountyData', processHistoricalData(rawData, startDate, endDate))
+      rawData.county = baseDataRes.data[0].county
+      commit('setHistoricalCountyData', processHistoricalData(rawData, startDate, endDate))
+    } catch (e) {
+      commit('setIsLoading', false)
+      commit('setHasError', true)
+    }
   },
 
   setCountryDependents: ({ commit }: ActionContext<CovidStateType, RS>, country: SelectItem): void => {

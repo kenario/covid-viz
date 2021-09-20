@@ -23,6 +23,13 @@
       </div>
     </transition>
 
+    <div
+      v-if="getHasError"
+      class="covid-vis-error"
+    >
+      <error-modal @closeErrorModal="onCloseErrorModal" />
+    </div>
+
     <covid-vis/>
   </div>
 </template>
@@ -32,13 +39,16 @@
 import Vue from 'vue'
 import CovidVis from './components/CovidVis.vue'
 import CovidVisControls from './components/CovidVisControls.vue'
+import ErrorModal from './shared/components/ErrorModal.vue'
 import Header from './components/Header.vue'
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
   name: 'App',
 
   components: {
     CovidVisControls,
+    ErrorModal,
     CovidVis,
     Header
   },
@@ -52,10 +62,21 @@ export default Vue.extend({
     setTimeout(() => { this.renderHeader = true }, 100)
   },
 
+  computed: {
+    ...mapGetters([
+      'getHasError'
+    ])
+  },
+
   methods: {
     toggleFilters() {
       this.showFilters = !this.showFilters
     },
+
+    onCloseErrorModal() {
+      this.$store.commit('setHasError', false)
+    },
+
     /*
      * This function closes the filter if the click is outside the filter and the filters
      * container.  The purpose for this is to make sure the Filter button is included as an element
@@ -158,4 +179,10 @@ html, body, html * {
   font-weight: 500;
   font-size: 1.25rem;
 }
+.covid-vis-error {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+}
+
 </style>
