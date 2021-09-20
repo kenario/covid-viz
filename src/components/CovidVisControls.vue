@@ -257,11 +257,11 @@ export default Vue.extend({
     },
 
     setSelectedState: async function(state: SelectItem): Promise<void> {
-      await this.$store.dispatch('setUsaStateDependents', state)
-
       /* Unset the county if the state selected is not the currently selected state. */
       if (this.getSelectedState !== state.name) this.$store.commit('setSelectedCounty', { name: '', value: '' })
       if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
+
+      await this.$store.dispatch('setUsaStateDependents', state)
     },
 
     setSelectedCounty: async function(county: SelectItem): Promise<void> {
