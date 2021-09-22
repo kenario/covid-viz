@@ -95,7 +95,7 @@ describe('CovidStoreActions', (): void => {
       covidHistoricalCountryData.timeline.recovered = covidHistoricalCountryData.timeline.recovered.slice(1)
       covidHistoricalCountryData.timeline.vaccinated = covidHistoricalCountryData.timeline.vaccinated.slice(1)
 
-      expect(commitSpy.getCall(0).args[1]).to.deep.equal(covidHistoricalCountryData)
+      expect(commitSpy.getCall(2).args[1]).to.deep.equal(covidHistoricalCountryData)
     })
   })
 })
