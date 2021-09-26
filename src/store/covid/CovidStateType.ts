@@ -20,6 +20,7 @@ export interface CovidStateType {
   selectedCounty: string;
   selectedDates: DateRange;
   selectedGraphType: GraphType;
+  selectedRankingMeasurementType: MeasurementType;
   selectedGraphMeasurementType: MeasurementType;
   selectedRankingDataScale: DataScale;
   selectedGraphDataScale: DataScale;

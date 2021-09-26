@@ -19,6 +19,7 @@ export const state = () => ({
   selectedState: '',
   selectedCounty: '',
   selectedGraphType: {} as GraphType,
+  selectedRankingMeasurementType: {} as MeasurementType,
   selectedGraphMeasurementType: {} as MeasurementType,
   selectedRankingDataScale: {} as DataScale,
   selectedGraphDataScale: {} as DataScale,

@@ -33,6 +33,8 @@ export const getters = {
 
   getSelectedGraphType: (state: CovidStateType): GraphType => state.selectedGraphType,
 
+  getSelectedRankingMeasurementType: (state: CovidStateType): MeasurementType => state.selectedRankingMeasurementType,
+
   getSelectedGraphMeasurementType: (state: CovidStateType): MeasurementType => state.selectedGraphMeasurementType,
 
   getSelectedRankingDataScale: (state: CovidStateType): DataScale => state.selectedRankingDataScale,
