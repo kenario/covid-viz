@@ -7,7 +7,7 @@ import {
   ResultType,
   SelectItem,
   CountryInfo,
-  RankingType,
+  DataScale,
   DateRange
 } from '@/types'
 
@@ -35,9 +35,9 @@ export const getters = {
 
   getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
 
-  getSelectedRankingDataScale: (state: CovidStateType): RankingType => state.selectedRankingDataScale,
+  getSelectedRankingDataScale: (state: CovidStateType): DataScale => state.selectedRankingDataScale,
 
-  getSelectedGraphDataScale: (state: CovidStateType): RankingType => state.selectedGraphDataScale,
+  getSelectedGraphDataScale: (state: CovidStateType): DataScale => state.selectedGraphDataScale,
 
   getIsLoading: (state: CovidStateType): boolean => state.isLoading,
 
@@ -91,10 +91,10 @@ export const getters = {
   /**
    * RankingTypes is pulled from the data scale data structure + an added worldwide scale.
    *
-   * @returns - RankingType[]
+   * @returns - DataScale[]
    */
-  getRankingTypes: (state: CovidStateType): RankingType[] => {
-    let result: RankingType[] = [
+  getRankingDataScales: (state: CovidStateType): DataScale[] => {
+    let result: DataScale[] = [
       { name: 'Worldwide', value: 'worldwide' },
       ...state.dataScales
     ]
@@ -109,17 +109,17 @@ export const getters = {
     /*
      * We remove the option for county wide since that type of ranking belongs to state wide. */
     const containsCountywide = result
-      .map((rankingType: RankingType): string => rankingType.value)
+      .map((rankingType: DataScale): string => rankingType.value)
       .includes('countywide')
 
     if (containsCountywide) {
-      result.splice(result.findIndex((rankingType: RankingType): boolean => rankingType.value === 'countywide'))
+      result.splice(result.findIndex((rankingType: DataScale): boolean => rankingType.value === 'countywide'))
     }
 
     return result
   },
 
-  getDataScales: (state: CovidStateType): RankingType[] => state.dataScales,
+  getDataScales: (state: CovidStateType): DataScale[] => state.dataScales,
 
   getCovidRankings: (state: CovidStateType): CovidRankings[] => {
     const result: CovidRankings[] = []

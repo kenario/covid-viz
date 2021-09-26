@@ -22,7 +22,7 @@ import {
   CovidCountyDataRaw,
   CovidRawHistoricalData
 } from '@/types/covid'
-import { RankingType, SelectItem } from '@/types'
+import { DataScale, SelectItem } from '@/types'
 
 export const actions = {
   getCovidGlobalData: async ({ commit }: ActionContext<CovidStateType, RS>): Promise<void> => {
@@ -224,9 +224,9 @@ export const actions = {
   },
 
   setUsaStateDependents: async ({ commit, state, dispatch }: ActionContext<CovidStateType, RS>, usaState: SelectItem): Promise<void> => {
-    const statewide: RankingType = { name: 'Statewide', value: 'statewide' }
+    const statewide: DataScale = { name: 'Statewide', value: 'statewide' }
     const containsStatewide = state.dataScales
-      .map((scale: RankingType): string => scale.value)
+      .map((scale: DataScale): string => scale.value)
       .includes(statewide.value)
 
     commit('setSelectedState', usaState)
@@ -246,9 +246,9 @@ export const actions = {
   },
 
   setUsaCountyDependents: async ({ commit, state, dispatch }: ActionContext<CovidStateType, RS>, county: SelectItem): Promise<void> => {
-    const countywide: RankingType = { name: 'Countywide', value: 'countywide' }
+    const countywide: DataScale = { name: 'Countywide', value: 'countywide' }
     const containsCountywide = state.dataScales
-      .map((scale: RankingType): string => scale.value)
+      .map((scale: DataScale): string => scale.value)
       .includes(countywide.value)
 
     commit('setSelectedCounty', county)

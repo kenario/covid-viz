@@ -76,7 +76,7 @@
 
       <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
         <dropdown
-          :label="'Ranking Type'"
+          :label="'Scale of Data'"
           :selectedItemLabel="getSelectedRankingDataScale.name"
         >
           <template v-slot="{ toggleDropdown }">
@@ -170,7 +170,7 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem, RankingType } from '@/types'
+import { DateRange, ResultType, GraphType, SelectItem, DataScale } from '@/types'
 import Dropdown from '@/shared/components/Dropdown.vue'
 import DatePicker from '@/shared/components/DatePicker.vue'
 import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
@@ -189,7 +189,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getDataScales',
-      'getRankingTypes',
+      'getRankingDataScales',
       'getSelectedDates',
       'getSelectedState',
       'getSelectedCounty',
@@ -292,17 +292,17 @@ export default Vue.extend({
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
-    setSelectedRankingDataScale: async function(rankingType: RankingType): Promise<void> {
+    setSelectedRankingDataScale: async function(scale: DataScale): Promise<void> {
       /*
        * If we change the rankings to nationwide and we do not have state data, fetch the data. */
-      if (rankingType.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
+      if (scale.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
         await this.$store.dispatch('getCovidStateData')
       }
 
-      this.$store.commit('setSelectedRankingDataScale', rankingType)
+      this.$store.commit('setSelectedRankingDataScale', scale)
     },
 
-    setSelectedGraphDataScale: async function(scale: RankingType): Promise<void> {
+    setSelectedGraphDataScale: async function(scale: DataScale): Promise<void> {
       if (this.getSelectedGraphDataScale.value !== scale.value) {
         if (scale.value === 'nationwide') await this.$store.dispatch('getHistoricalCountryData')
         if (scale.value === 'statewide') await this.$store.dispatch('getHistoricalStateData')

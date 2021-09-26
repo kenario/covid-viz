@@ -6,7 +6,7 @@ import {
   GraphType,
   SelectItem,
   ResultType,
-  RankingType
+  DataScale
 } from '@/types'
 
 import {
@@ -123,20 +123,20 @@ export const mutations = {
     state.selectedGraphType = graphType
   },
 
-  setSelectedRankingDataScale: (state: CovidStateType, rankingType: RankingType): void => {
-    state.selectedRankingDataScale = rankingType
+  setSelectedRankingDataScale: (state: CovidStateType, dataScale: DataScale): void => {
+    state.selectedRankingDataScale = dataScale
   },
 
-  setSelectedGraphDataScale: (state: CovidStateType, scale: RankingType): void => {
+  setSelectedGraphDataScale: (state: CovidStateType, scale: DataScale): void => {
     state.selectedGraphDataScale = scale
   },
 
-  addDataScale: (state: CovidStateType, scale: RankingType): void => {
+  addDataScale: (state: CovidStateType, scale: DataScale): void => {
     state.dataScales.push(scale)
   },
 
-  removeDataScale: (state: CovidStateType, scale: RankingType): void => {
-    state.dataScales.splice(state.dataScales.findIndex((data: RankingType): boolean => data.value === scale.value), 1)
+  removeDataScale: (state: CovidStateType, scale: DataScale): void => {
+    state.dataScales.splice(state.dataScales.findIndex((data: DataScale): boolean => data.value === scale.value), 1)
   },
 
   setIsLoading: (state: CovidStateType, isLoading: boolean): void => {
