@@ -49,7 +49,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getSelectedGraphType',
-      'getSelectedDataScale',
+      'getSelectedGraphDataScale',
       'getCovidChartLabels',
       'getCovidChartData',
       'getSelectedCountry',
@@ -57,9 +57,9 @@ export default Vue.extend({
       'getSelectedCounty'
     ]),
     chartHeader() {
-      return this.getSelectedDataScale.value === 'nationwide'
+      return this.getSelectedGraphDataScale.value === 'nationwide'
         ? this.getSelectedCountry
-        : this.getSelectedDataScale.value === 'statewide'
+        : this.getSelectedGraphDataScale.value === 'statewide'
           ? this.getSelectedState
           : this.getSelectedCounty
     }

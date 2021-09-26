@@ -123,12 +123,12 @@ export const mutations = {
     state.selectedGraphType = graphType
   },
 
-  setSelectedRankingType: (state: CovidStateType, rankingType: RankingType): void => {
-    state.selectedRankingType = rankingType
+  setSelectedRankingDataScale: (state: CovidStateType, rankingType: RankingType): void => {
+    state.selectedRankingDataScale = rankingType
   },
 
-  setSelectedDataScale: (state: CovidStateType, scale: RankingType): void => {
-    state.selectedDataScale = scale
+  setSelectedGraphDataScale: (state: CovidStateType, scale: RankingType): void => {
+    state.selectedGraphDataScale = scale
   },
 
   addDataScale: (state: CovidStateType, scale: RankingType): void => {

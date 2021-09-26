@@ -35,9 +35,9 @@ export const getters = {
 
   getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
 
-  getSelectedRankingType: (state: CovidStateType): RankingType => state.selectedRankingType,
+  getSelectedRankingDataScale: (state: CovidStateType): RankingType => state.selectedRankingDataScale,
 
-  getSelectedDataScale: (state: CovidStateType): RankingType => state.selectedDataScale,
+  getSelectedGraphDataScale: (state: CovidStateType): RankingType => state.selectedGraphDataScale,
 
   getIsLoading: (state: CovidStateType): boolean => state.isLoading,
 
@@ -136,10 +136,10 @@ export const getters = {
 
       /*
        * Assign the ranking label and map the data based on the ranking type selected. */
-      if (state.selectedRankingType.value === 'worldwide') {
+      if (state.selectedRankingDataScale.value === 'worldwide') {
         label = `Worldwide ${label}`
         data = rankCovidData([...state.covidCountryData], 'country', subtypes)
-      } else if (state.selectedRankingType.value === 'nationwide') {
+      } else if (state.selectedRankingDataScale.value === 'nationwide') {
         label = `USA ${label}`
         data = rankCovidData([...state.covidStateData], 'state', subtypes)
       } else {
@@ -165,9 +165,9 @@ export const getters = {
   getCovidChartLabels: (state: CovidStateType): string[] => {
     let historicalData: CovidHistoricalData
 
-    if (state.selectedDataScale.value === 'nationwide') {
+    if (state.selectedGraphDataScale.value === 'nationwide') {
       historicalData = state.covidHistoricalCountryData
-    } else if (state.selectedDataScale.value === 'statewide') {
+    } else if (state.selectedGraphDataScale.value === 'statewide') {
       historicalData = state.covidHistoricalStateData
     } else {
       historicalData = state.covidHistoricalCountyData
@@ -186,9 +186,9 @@ export const getters = {
     const result: CovidLineChart[] = []
     let historicalData: CovidHistoricalData
 
-    if (state.selectedDataScale.value === 'nationwide') {
+    if (state.selectedGraphDataScale.value === 'nationwide') {
       historicalData = state.covidHistoricalCountryData
-    } else if (state.selectedDataScale.value === 'statewide') {
+    } else if (state.selectedGraphDataScale.value === 'statewide') {
       historicalData = state.covidHistoricalStateData
     } else {
       historicalData = state.covidHistoricalCountyData

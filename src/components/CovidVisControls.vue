@@ -77,12 +77,12 @@
       <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
         <dropdown
           :label="'Ranking Type'"
-          :selectedItemLabel="getSelectedRankingType.name"
+          :selectedItemLabel="getSelectedRankingDataScale.name"
         >
           <template v-slot="{ toggleDropdown }">
             <single-select
               :items="getRankingTypes"
-              @itemSelect="setSelectedRankingType($event); toggleDropdown()"
+              @itemSelect="setSelectedRankingDataScale($event); toggleDropdown()"
             />
           </template>
         </dropdown>
@@ -100,12 +100,12 @@
           <dropdown
             v-if="getSelectedCountry === 'USA'"
             :label="'Scale of Data'"
-            :selectedItemLabel="getSelectedDataScale.name"
+            :selectedItemLabel="getSelectedGraphDataScale.name"
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
                 :items="getDataScales"
-                @itemSelect="setSelectedDataScale($event); toggleDropdown()"
+                @itemSelect="setSelectedGraphDataScale($event); toggleDropdown()"
               />
             </template>
           </dropdown>
@@ -194,10 +194,10 @@ export default Vue.extend({
       'getSelectedState',
       'getSelectedCounty',
       'getSelectedCountry',
-      'getSelectedDataScale',
+      'getSelectedGraphDataScale',
       'getSelectedGraphType',
       'getSelectedResultType',
-      'getSelectedRankingType',
+      'getSelectedRankingDataScale',
       'getAllAffectedCountries',
       'getAllAffectedStates',
       'getStatesAffectedCounties',
@@ -241,8 +241,8 @@ export default Vue.extend({
          * other nations provinces is not yet available. */
         if (this.getSelectedState.length > 0) this.$store.commit('setSelectedState', { name: '', value: '' })
         if (this.getSelectedCounty.length > 0) this.$store.commit('setSelectedCounty', { name: '', value: '' })
-        if (this.getSelectedRankingType.value === 'nationwide') {
-          this.$store.commit('setSelectedRankingType', { name: 'Worldwide', value: 'worldwide' })
+        if (this.getSelectedRankingDataScale.value === 'nationwide') {
+          this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
         }
       } else {
         /*
@@ -271,9 +271,9 @@ export default Vue.extend({
     setSelectedDateRange: async function(dates: DateRange): Promise<void> {
       this.$store.commit('setSelectedDates', dates)
 
-      if (this.getSelectedDataScale.value === 'nationwide') {
+      if (this.getSelectedGraphDataScale.value === 'nationwide') {
         await this.$store.dispatch('getHistoricalCountryData')
-      } else if (this.getSelectedDataScale.value === 'statewide') {
+      } else if (this.getSelectedGraphDataScale.value === 'statewide') {
         await this.$store.dispatch('getHistoricalStateData')
       } else {
         await this.$store.dispatch('getHistoricalCountyData')
@@ -292,22 +292,22 @@ export default Vue.extend({
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
-    setSelectedRankingType: async function(rankingType: RankingType): Promise<void> {
+    setSelectedRankingDataScale: async function(rankingType: RankingType): Promise<void> {
       /*
        * If we change the rankings to nationwide and we do not have state data, fetch the data. */
       if (rankingType.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
         await this.$store.dispatch('getCovidStateData')
       }
 
-      this.$store.commit('setSelectedRankingType', rankingType)
+      this.$store.commit('setSelectedRankingDataScale', rankingType)
     },
 
-    setSelectedDataScale: async function(scale: RankingType): Promise<void> {
-      if (this.getSelectedDataScale.value !== scale.value) {
+    setSelectedGraphDataScale: async function(scale: RankingType): Promise<void> {
+      if (this.getSelectedGraphDataScale.value !== scale.value) {
         if (scale.value === 'nationwide') await this.$store.dispatch('getHistoricalCountryData')
         if (scale.value === 'statewide') await this.$store.dispatch('getHistoricalStateData')
         // if (scale.value === 'countywide')
-        this.$store.commit('setSelectedDataScale', scale)
+        this.$store.commit('setSelectedGraphDataScale', scale)
       }
     },
 
