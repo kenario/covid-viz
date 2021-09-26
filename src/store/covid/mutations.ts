@@ -5,7 +5,7 @@ import {
   DateRange,
   GraphType,
   SelectItem,
-  ResultType,
+  MeasurementType,
   DataScale
 } from '@/types'
 
@@ -115,8 +115,8 @@ export const mutations = {
     state.selectedCovidDataType = dataType
   },
 
-  setSelectedResultType: (state: CovidStateType, resultType: ResultType): void => {
-    state.selectedResultType = resultType
+  setSelectedGraphMeasurementType: (state: CovidStateType, measurement: MeasurementType): void => {
+    state.selectedGraphMeasurementType = measurement
   },
 
   setSelectedGraphType: (state: CovidStateType, graphType: GraphType): void => {

@@ -186,7 +186,7 @@ export default Vue.extend({
    */
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
-    this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
+    this.$store.commit('setSelectedGraphMeasurementType', { name: 'Total', value: 'total' })
     this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
     this.$store.commit('setSelectedCovidDataType', [
       { name: 'Cases', value: 'cases' },

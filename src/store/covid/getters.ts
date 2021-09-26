@@ -4,7 +4,7 @@ import { rankCovidData, determineCovidChartData, mapCovidTotals } from './helper
 import {
   DateValue,
   GraphType,
-  ResultType,
+  MeasurementType,
   SelectItem,
   CountryInfo,
   DataScale,
@@ -33,7 +33,7 @@ export const getters = {
 
   getSelectedGraphType: (state: CovidStateType): GraphType => state.selectedGraphType,
 
-  getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
+  getSelectedGraphMeasurementType: (state: CovidStateType): MeasurementType => state.selectedGraphMeasurementType,
 
   getSelectedRankingDataScale: (state: CovidStateType): DataScale => state.selectedRankingDataScale,
 
@@ -200,7 +200,7 @@ export const getters = {
           label: type.name,
           data: determineCovidChartData(
             historicalData.timeline[type.value],
-            state.selectedResultType
+            state.selectedGraphMeasurementType
           )
         })
       })

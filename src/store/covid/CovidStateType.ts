@@ -2,7 +2,7 @@ import {
   DateRange,
   GraphType,
   DataScale,
-  ResultType,
+  MeasurementType,
   SelectItem
 } from '@/types'
 
@@ -20,7 +20,7 @@ export interface CovidStateType {
   selectedCounty: string;
   selectedDates: DateRange;
   selectedGraphType: GraphType;
-  selectedResultType: ResultType;
+  selectedGraphMeasurementType: MeasurementType;
   selectedRankingDataScale: DataScale;
   selectedGraphDataScale: DataScale;
   selectedCovidDataType: SelectItem[];

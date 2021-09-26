@@ -8,7 +8,7 @@ import {
   CovidHistoricalData,
   CovidRawHistoricalData
 } from '@/types/covid'
-import { ResultType, DateValue } from '@/types'
+import { MeasurementType, DateValue } from '@/types'
 import moment from 'moment'
 
 /**
@@ -143,16 +143,16 @@ export const mapHistoricalDataToDateValue = (data: any): DateValue[] =>
 /**
  * Creates covid chart data based on the selected result type.
  */
-export const determineCovidChartData = (data: any, resultType: ResultType): number[] => {
+export const determineCovidChartData = (data: any, measurement: MeasurementType): number[] => {
   let result: number[] = []
 
-  if (resultType.value === 'total') {
+  if (measurement.value === 'total') {
     /*
      * Return the value if it is greater than 0, otherwise we return 0 instead. This is a case for
      * negative values that are skewing the chart for the recovered data type.  Recovered has also
      * seemed to have stopped being recorded after a specific date. */
     result = data.map((d: any) => parseInt(d.value) > 0 ? parseInt(d.value) : 0)
-  } else if (resultType.value === 'totalPerDay') {
+  } else if (measurement.value === 'totalPerDay') {
     /**
      * next element - current element, gives us the data for the current day.  This excludes
      * the very last day.

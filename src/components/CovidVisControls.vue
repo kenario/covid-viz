@@ -81,7 +81,7 @@
         >
           <template v-slot="{ toggleDropdown }">
             <single-select
-              :items="getRankingTypes"
+              :items="getRankingDataScales"
               @itemSelect="setSelectedRankingDataScale($event); toggleDropdown()"
             />
           </template>
@@ -126,12 +126,12 @@
           <!-- Result type dropdown -->
           <dropdown
             :label="'Results Type'"
-            :selectedItemLabel="getSelectedResultType.name"
+            :selectedItemLabel="getSelectedGraphMeasurementType.name"
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
                 :items="resultTypes"
-                @itemSelect="setSelectedResultType($event); toggleDropdown()"
+                @itemSelect="setSelectedGraphMeasurementType($event); toggleDropdown()"
               />
             </template>
           </dropdown>
@@ -170,7 +170,7 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem, DataScale } from '@/types'
+import { DateRange, MeasurementType, GraphType, SelectItem, DataScale } from '@/types'
 import Dropdown from '@/shared/components/Dropdown.vue'
 import DatePicker from '@/shared/components/DatePicker.vue'
 import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
@@ -196,7 +196,7 @@ export default Vue.extend({
       'getSelectedCountry',
       'getSelectedGraphDataScale',
       'getSelectedGraphType',
-      'getSelectedResultType',
+      'getSelectedGraphMeasurementType',
       'getSelectedRankingDataScale',
       'getAllAffectedCountries',
       'getAllAffectedStates',
@@ -284,8 +284,8 @@ export default Vue.extend({
       this.$store.commit('setSelectedCovidDataType', dataType)
     },
 
-    setSelectedResultType: function(resultType: ResultType): void {
-      this.$store.commit('setSelectedResultType', resultType)
+    setSelectedGraphMeasurementType: function(measurement: MeasurementType): void {
+      this.$store.commit('setSelectedGraphMeasurementType', measurement)
     },
 
     setSelectedGraphType: function(graphType: GraphType): void {
