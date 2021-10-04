@@ -33,7 +33,7 @@ export default Vue.extend({
 
   mounted() {
     /*
-     * Generate colors for each unique data point int he data. */
+     * Generate colors for each unique data point in the data. */
     for (let x = 0; x < this.data.length; x++) {
       this.lineColor.push(this.rgbGenerator())
     }
@@ -53,6 +53,16 @@ export default Vue.extend({
       }
     },
     data(newData: CovidLineChart[], oldData: CovidLineChart[]): void {
+      /*
+       * There is an edge case where a user unselects all of the data types (cases, recovered, etc.).
+       * When the user first selects a data type after unselecting all data types, the chart is rendered
+       * with only one lineColor due to only having one data type selected. When this happens we make sure
+       * to push new lineColors until newData and lineColor has the same length. */
+      if (newData.length > this.lineColor.length) {
+        for (let x = 0; newData.length > this.lineColor.length; x++) {
+          this.lineColor.push(this.rgbGenerator())
+        }
+      }
       /*
        * The following determines what has changed in data respective of the code:
        * 1. If the data types to be rendered have changed i.e. cases, recovered, etc.
