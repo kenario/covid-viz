@@ -4,10 +4,10 @@ import { rankCovidData, determineCovidChartData, mapCovidTotals } from './helper
 import {
   DateValue,
   GraphType,
-  ResultType,
+  MeasurementType,
   SelectItem,
   CountryInfo,
-  RankingType,
+  DataScale,
   DateRange
 } from '@/types'
 
@@ -33,11 +33,13 @@ export const getters = {
 
   getSelectedGraphType: (state: CovidStateType): GraphType => state.selectedGraphType,
 
-  getSelectedResultType: (state: CovidStateType): ResultType => state.selectedResultType,
+  getSelectedRankingMeasurementType: (state: CovidStateType): MeasurementType => state.selectedRankingMeasurementType,
 
-  getSelectedRankingType: (state: CovidStateType): RankingType => state.selectedRankingType,
+  getSelectedGraphMeasurementType: (state: CovidStateType): MeasurementType => state.selectedGraphMeasurementType,
 
-  getSelectedDataScale: (state: CovidStateType): RankingType => state.selectedDataScale,
+  getSelectedRankingDataScale: (state: CovidStateType): DataScale => state.selectedRankingDataScale,
+
+  getSelectedGraphDataScale: (state: CovidStateType): DataScale => state.selectedGraphDataScale,
 
   getIsLoading: (state: CovidStateType): boolean => state.isLoading,
 
@@ -91,10 +93,10 @@ export const getters = {
   /**
    * RankingTypes is pulled from the data scale data structure + an added worldwide scale.
    *
-   * @returns - RankingType[]
+   * @returns - DataScale[]
    */
-  getRankingTypes: (state: CovidStateType): RankingType[] => {
-    let result: RankingType[] = [
+  getRankingDataScales: (state: CovidStateType): DataScale[] => {
+    let result: DataScale[] = [
       { name: 'Worldwide', value: 'worldwide' },
       ...state.dataScales
     ]
@@ -109,17 +111,17 @@ export const getters = {
     /*
      * We remove the option for county wide since that type of ranking belongs to state wide. */
     const containsCountywide = result
-      .map((rankingType: RankingType): string => rankingType.value)
+      .map((rankingType: DataScale): string => rankingType.value)
       .includes('countywide')
 
     if (containsCountywide) {
-      result.splice(result.findIndex((rankingType: RankingType): boolean => rankingType.value === 'countywide'))
+      result.splice(result.findIndex((rankingType: DataScale): boolean => rankingType.value === 'countywide'))
     }
 
     return result
   },
 
-  getDataScales: (state: CovidStateType): RankingType[] => state.dataScales,
+  getDataScales: (state: CovidStateType): DataScale[] => state.dataScales,
 
   getCovidRankings: (state: CovidStateType): CovidRankings[] => {
     const result: CovidRankings[] = []
@@ -136,10 +138,10 @@ export const getters = {
 
       /*
        * Assign the ranking label and map the data based on the ranking type selected. */
-      if (state.selectedRankingType.value === 'worldwide') {
+      if (state.selectedRankingDataScale.value === 'worldwide') {
         label = `Worldwide ${label}`
         data = rankCovidData([...state.covidCountryData], 'country', subtypes)
-      } else if (state.selectedRankingType.value === 'nationwide') {
+      } else if (state.selectedRankingDataScale.value === 'nationwide') {
         label = `USA ${label}`
         data = rankCovidData([...state.covidStateData], 'state', subtypes)
       } else {
@@ -165,9 +167,9 @@ export const getters = {
   getCovidChartLabels: (state: CovidStateType): string[] => {
     let historicalData: CovidHistoricalData
 
-    if (state.selectedDataScale.value === 'nationwide') {
+    if (state.selectedGraphDataScale.value === 'nationwide') {
       historicalData = state.covidHistoricalCountryData
-    } else if (state.selectedDataScale.value === 'statewide') {
+    } else if (state.selectedGraphDataScale.value === 'statewide') {
       historicalData = state.covidHistoricalStateData
     } else {
       historicalData = state.covidHistoricalCountyData
@@ -186,9 +188,9 @@ export const getters = {
     const result: CovidLineChart[] = []
     let historicalData: CovidHistoricalData
 
-    if (state.selectedDataScale.value === 'nationwide') {
+    if (state.selectedGraphDataScale.value === 'nationwide') {
       historicalData = state.covidHistoricalCountryData
-    } else if (state.selectedDataScale.value === 'statewide') {
+    } else if (state.selectedGraphDataScale.value === 'statewide') {
       historicalData = state.covidHistoricalStateData
     } else {
       historicalData = state.covidHistoricalCountyData
@@ -200,7 +202,7 @@ export const getters = {
           label: type.name,
           data: determineCovidChartData(
             historicalData.timeline[type.value],
-            state.selectedResultType
+            state.selectedGraphMeasurementType
           )
         })
       })

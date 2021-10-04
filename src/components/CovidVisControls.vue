@@ -18,7 +18,6 @@
       </div>
 
       <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
-        <!-- Country dropdown -->
         <dropdown
           :label="'Country'"
           :selectedItemLabel="getSelectedCountry"
@@ -32,7 +31,7 @@
             />
           </template>
         </dropdown>
-        <!-- State dropdown -->
+
         <transition name="fade">
           <dropdown
             v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
@@ -49,7 +48,7 @@
             </template>
           </dropdown>
         </transition>
-        <!-- County dropdown -->
+
         <transition name="fade">
           <dropdown
             v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
@@ -76,13 +75,25 @@
 
       <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
         <dropdown
-          :label="'Ranking Type'"
-          :selectedItemLabel="getSelectedRankingType.name"
+          :label="dataScaleLabel"
+          :selectedItemLabel="getSelectedRankingDataScale.name"
         >
           <template v-slot="{ toggleDropdown }">
             <single-select
-              :items="getRankingTypes"
-              @itemSelect="setSelectedRankingType($event); toggleDropdown()"
+              :items="getRankingDataScales"
+              @itemSelect="setSelectedRankingDataScale($event); toggleDropdown()"
+            />
+          </template>
+        </dropdown>
+
+        <dropdown
+          :label="measurementTypeLabel"
+          :selectedItemLabel="getSelectedRankingMeasurementType.name"
+        >
+          <template v-slot="{ toggleDropdown }">
+            <single-select
+              :items="rankingMeasurementTypes"
+              @itemSelect="setSelectedRankingMeasurementType($event); toggleDropdown()"
             />
           </template>
         </dropdown>
@@ -96,20 +107,19 @@
 
       <template v-if="getSelectedCountry">
         <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
-          <!-- Data Scale dropdown -->
           <dropdown
             v-if="getSelectedCountry === 'USA'"
-            :label="'Scale of Data'"
-            :selectedItemLabel="getSelectedDataScale.name"
+            :label="dataScaleLabel"
+            :selectedItemLabel="getSelectedGraphDataScale.name"
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
                 :items="getDataScales"
-                @itemSelect="setSelectedDataScale($event); toggleDropdown()"
+                @itemSelect="setSelectedGraphDataScale($event); toggleDropdown()"
               />
             </template>
           </dropdown>
-          <!-- Data type dropdown -->
+
           <dropdown
             :label="'Data Types'"
             :selectedItemLabel="getNumberOfSelectedCovidDataTypes"
@@ -123,19 +133,19 @@
               />
             </template>
           </dropdown>
-          <!-- Result type dropdown -->
+
           <dropdown
-            :label="'Results Type'"
-            :selectedItemLabel="getSelectedResultType.name"
+            :label="measurementTypeLabel"
+            :selectedItemLabel="getSelectedGraphMeasurementType.name"
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
-                :items="resultTypes"
-                @itemSelect="setSelectedResultType($event); toggleDropdown()"
+                :items="graphMeasurementTypes"
+                @itemSelect="setSelectedGraphMeasurementType($event); toggleDropdown()"
               />
             </template>
           </dropdown>
-          <!-- Type of graph dropdown -->
+
           <dropdown
             :label="'Graph Type'"
             :selectedItemLabel="getSelectedGraphType.name"
@@ -148,7 +158,6 @@
             </template>
           </dropdown>
 
-          <!-- Date picker dropdown -->
           <date-picker
             :label="'Dates'"
             :selectedDates="getSelectedDates"
@@ -170,7 +179,7 @@
 
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-import { DateRange, ResultType, GraphType, SelectItem, RankingType } from '@/types'
+import { DateRange, MeasurementType, GraphType, SelectItem, DataScale } from '@/types'
 import Dropdown from '@/shared/components/Dropdown.vue'
 import DatePicker from '@/shared/components/DatePicker.vue'
 import MultiSelect from '@/shared/components/selects/MultiSelect.vue'
@@ -189,15 +198,16 @@ export default Vue.extend({
   computed: {
     ...mapGetters([
       'getDataScales',
-      'getRankingTypes',
+      'getRankingDataScales',
       'getSelectedDates',
       'getSelectedState',
       'getSelectedCounty',
       'getSelectedCountry',
-      'getSelectedDataScale',
+      'getSelectedGraphDataScale',
       'getSelectedGraphType',
-      'getSelectedResultType',
-      'getSelectedRankingType',
+      'getSelectedGraphMeasurementType',
+      'getSelectedRankingMeasurementType',
+      'getSelectedRankingDataScale',
       'getAllAffectedCountries',
       'getAllAffectedStates',
       'getStatesAffectedCounties',
@@ -207,9 +217,13 @@ export default Vue.extend({
   },
 
   data: () => ({
-    resultTypes: [
+    graphMeasurementTypes: [
       { name: 'Total', value: 'total' },
       { name: 'Total Per Day', value: 'totalPerDay' }
+    ],
+    rankingMeasurementTypes: [
+      { name: 'Total', value: 'total' },
+      { name: 'Total Per Population', value: 'totalPerPopulation' }
     ],
     dataTypes: [
       { name: 'Cases', value: 'cases' },
@@ -224,6 +238,8 @@ export default Vue.extend({
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
     rankingsLabel: 'RANKINGS',
+    dataScaleLabel: 'Scale of Data',
+    measurementTypeLabel: 'Measurement Type',
     noCountrySelected: 'Select a Country...',
     searchbarPlaceholder: 'Enter the name of a'
   }),
@@ -241,8 +257,8 @@ export default Vue.extend({
          * other nations provinces is not yet available. */
         if (this.getSelectedState.length > 0) this.$store.commit('setSelectedState', { name: '', value: '' })
         if (this.getSelectedCounty.length > 0) this.$store.commit('setSelectedCounty', { name: '', value: '' })
-        if (this.getSelectedRankingType.value === 'nationwide') {
-          this.$store.commit('setSelectedRankingType', { name: 'Worldwide', value: 'worldwide' })
+        if (this.getSelectedRankingDataScale.value === 'nationwide') {
+          this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
         }
       } else {
         /*
@@ -271,9 +287,9 @@ export default Vue.extend({
     setSelectedDateRange: async function(dates: DateRange): Promise<void> {
       this.$store.commit('setSelectedDates', dates)
 
-      if (this.getSelectedDataScale.value === 'nationwide') {
+      if (this.getSelectedGraphDataScale.value === 'nationwide') {
         await this.$store.dispatch('getHistoricalCountryData')
-      } else if (this.getSelectedDataScale.value === 'statewide') {
+      } else if (this.getSelectedGraphDataScale.value === 'statewide') {
         await this.$store.dispatch('getHistoricalStateData')
       } else {
         await this.$store.dispatch('getHistoricalCountyData')
@@ -284,30 +300,34 @@ export default Vue.extend({
       this.$store.commit('setSelectedCovidDataType', dataType)
     },
 
-    setSelectedResultType: function(resultType: ResultType): void {
-      this.$store.commit('setSelectedResultType', resultType)
+    setSelectedRankingMeasurementType: function(measurement: MeasurementType): void {
+      this.$store.commit('setSelectedRankingMeasurementType', measurement)
+    },
+
+    setSelectedGraphMeasurementType: function(measurement: MeasurementType): void {
+      this.$store.commit('setSelectedGraphMeasurementType', measurement)
     },
 
     setSelectedGraphType: function(graphType: GraphType): void {
       this.$store.commit('setSelectedGraphType', graphType)
     },
 
-    setSelectedRankingType: async function(rankingType: RankingType): Promise<void> {
+    setSelectedRankingDataScale: async function(scale: DataScale): Promise<void> {
       /*
        * If we change the rankings to nationwide and we do not have state data, fetch the data. */
-      if (rankingType.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
+      if (scale.value === 'nationwide' && this.getAllAffectedStates.length < 1) {
         await this.$store.dispatch('getCovidStateData')
       }
 
-      this.$store.commit('setSelectedRankingType', rankingType)
+      this.$store.commit('setSelectedRankingDataScale', scale)
     },
 
-    setSelectedDataScale: async function(scale: RankingType): Promise<void> {
-      if (this.getSelectedDataScale.value !== scale.value) {
+    setSelectedGraphDataScale: async function(scale: DataScale): Promise<void> {
+      if (this.getSelectedGraphDataScale.value !== scale.value) {
         if (scale.value === 'nationwide') await this.$store.dispatch('getHistoricalCountryData')
         if (scale.value === 'statewide') await this.$store.dispatch('getHistoricalStateData')
         // if (scale.value === 'countywide')
-        this.$store.commit('setSelectedDataScale', scale)
+        this.$store.commit('setSelectedGraphDataScale', scale)
       }
     },
 

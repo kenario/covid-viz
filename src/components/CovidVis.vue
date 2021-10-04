@@ -186,15 +186,16 @@ export default Vue.extend({
    */
   created() {
     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
-    this.$store.commit('setSelectedResultType', { name: 'Total', value: 'total' })
-    this.$store.commit('setSelectedRankingType', { name: 'Worldwide', value: 'worldwide' })
+    this.$store.commit('setSelectedGraphMeasurementType', { name: 'Total', value: 'total' })
+    this.$store.commit('setSelectedRankingMeasurementType', { name: 'Total', value: 'total' })
+    this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
     this.$store.commit('setSelectedCovidDataType', [
       { name: 'Cases', value: 'cases' },
       { name: 'Recovered', value: 'recovered' },
       { name: 'Deaths', value: 'deaths' },
       { name: 'Vaccinated', value: 'vaccinated' }
     ])
-    this.$store.commit('setSelectedDataScale', this.initialDataScale)
+    this.$store.commit('setSelectedGraphDataScale', this.initialDataScale)
     this.$store.commit('addDataScale', this.initialDataScale)
     /*
      * Conditional rendering of components to allow for transitions.

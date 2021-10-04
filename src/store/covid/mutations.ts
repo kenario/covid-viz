@@ -5,8 +5,8 @@ import {
   DateRange,
   GraphType,
   SelectItem,
-  ResultType,
-  RankingType
+  MeasurementType,
+  DataScale
 } from '@/types'
 
 import {
@@ -115,28 +115,32 @@ export const mutations = {
     state.selectedCovidDataType = dataType
   },
 
-  setSelectedResultType: (state: CovidStateType, resultType: ResultType): void => {
-    state.selectedResultType = resultType
+  setSelectedRankingMeasurementType: (state: CovidStateType, measurement: MeasurementType): void => {
+    state.selectedRankingMeasurementType = measurement
+  },
+
+  setSelectedGraphMeasurementType: (state: CovidStateType, measurement: MeasurementType): void => {
+    state.selectedGraphMeasurementType = measurement
   },
 
   setSelectedGraphType: (state: CovidStateType, graphType: GraphType): void => {
     state.selectedGraphType = graphType
   },
 
-  setSelectedRankingType: (state: CovidStateType, rankingType: RankingType): void => {
-    state.selectedRankingType = rankingType
+  setSelectedRankingDataScale: (state: CovidStateType, dataScale: DataScale): void => {
+    state.selectedRankingDataScale = dataScale
   },
 
-  setSelectedDataScale: (state: CovidStateType, scale: RankingType): void => {
-    state.selectedDataScale = scale
+  setSelectedGraphDataScale: (state: CovidStateType, scale: DataScale): void => {
+    state.selectedGraphDataScale = scale
   },
 
-  addDataScale: (state: CovidStateType, scale: RankingType): void => {
+  addDataScale: (state: CovidStateType, scale: DataScale): void => {
     state.dataScales.push(scale)
   },
 
-  removeDataScale: (state: CovidStateType, scale: RankingType): void => {
-    state.dataScales.splice(state.dataScales.findIndex((data: RankingType): boolean => data.value === scale.value), 1)
+  removeDataScale: (state: CovidStateType, scale: DataScale): void => {
+    state.dataScales.splice(state.dataScales.findIndex((data: DataScale): boolean => data.value === scale.value), 1)
   },
 
   setIsLoading: (state: CovidStateType, isLoading: boolean): void => {

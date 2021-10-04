@@ -38,7 +38,7 @@ describe('CovidStoreGetters', (): void => {
 
   it('gets chart labels needed for covid chart', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
-    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
+    covidState.selectedGraphDataScale = { name: 'Nationwide', value: 'nationwide' }
     expect(getCovidChartLabels(covidState)).to
       .eql(covidConstants.datesAndValues().map((d: DateValue): string => d.date))
   })
@@ -58,8 +58,8 @@ describe('CovidStoreGetters', (): void => {
   it('gets covid chart data that are overall totals', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
-    covidState.selectedResultType = { name: 'Total', value: 'total' }
-    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
+    covidState.selectedGraphMeasurementType = { name: 'Total', value: 'total' }
+    covidState.selectedGraphDataScale = { name: 'Nationwide', value: 'nationwide' }
 
     const expected: CovidLineChart = {
       label: 'Cases',
@@ -72,8 +72,8 @@ describe('CovidStoreGetters', (): void => {
   it('gets covid chart data that are totalPerDay', (): void => {
     covidState.covidHistoricalCountryData = covidStateMocks.generateCovidHistoricalCountryData()
     covidState.selectedCovidDataType = [{ name: 'Cases', value: 'cases' }]
-    covidState.selectedResultType = { name: 'Total Per Day', value: 'totalPerDay' }
-    covidState.selectedDataScale = { name: 'Nationwide', value: 'nationwide' }
+    covidState.selectedGraphMeasurementType = { name: 'Total Per Day', value: 'totalPerDay' }
+    covidState.selectedGraphDataScale = { name: 'Nationwide', value: 'nationwide' }
 
     const expected: CovidLineChart = {
       label: 'Cases',
@@ -88,7 +88,7 @@ describe('CovidStoreGetters', (): void => {
       ...covidStateMocks.generateCovidDataAllCountries(),
       ...covidStateMocks.generateCovidDataAllCountries()
     ]
-    covidState.selectedRankingType = { name: 'Worldwide', value: 'worldwide' }
+    covidState.selectedRankingDataScale = { name: 'Worldwide', value: 'worldwide' }
     const countriesWithHighestCases = getCovidRankings(covidState)[0].data
     let isDescendingOrder = true
     /*
