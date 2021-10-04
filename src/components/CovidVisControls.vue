@@ -18,6 +18,7 @@
       </div>
 
       <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
+        <!-- Country dropdown -->
         <dropdown
           :label="'Country'"
           :selectedItemLabel="getSelectedCountry"
@@ -31,7 +32,7 @@
             />
           </template>
         </dropdown>
-
+        <!-- State dropdown -->
         <transition name="fade">
           <dropdown
             v-if="getSelectedCountry === 'USA' && getAllAffectedStates.length > 0"
@@ -48,7 +49,7 @@
             </template>
           </dropdown>
         </transition>
-
+        <!-- County dropdown -->
         <transition name="fade">
           <dropdown
             v-if="getSelectedCountry === 'USA' && getSelectedState.length > 0"
@@ -75,25 +76,13 @@
 
       <div class="covid-vis-controls-rankings-filters covid-vis-controls-filters-styling">
         <dropdown
-          :label="dataScaleLabel"
+          :label="'Scale of Data'"
           :selectedItemLabel="getSelectedRankingDataScale.name"
         >
           <template v-slot="{ toggleDropdown }">
             <single-select
               :items="getRankingDataScales"
               @itemSelect="setSelectedRankingDataScale($event); toggleDropdown()"
-            />
-          </template>
-        </dropdown>
-
-        <dropdown
-          :label="measurementTypeLabel"
-          :selectedItemLabel="getSelectedRankingMeasurementType.name"
-        >
-          <template v-slot="{ toggleDropdown }">
-            <single-select
-              :items="rankingMeasurementTypes"
-              @itemSelect="setSelectedRankingMeasurementType($event); toggleDropdown()"
             />
           </template>
         </dropdown>
@@ -107,9 +96,10 @@
 
       <template v-if="getSelectedCountry">
         <div class="covid-vis-controls-graph-filters covid-vis-controls-filters-styling">
+          <!-- Data Scale dropdown -->
           <dropdown
             v-if="getSelectedCountry === 'USA'"
-            :label="dataScaleLabel"
+            :label="'Scale of Data'"
             :selectedItemLabel="getSelectedGraphDataScale.name"
           >
             <template v-slot="{ toggleDropdown }">
@@ -119,7 +109,7 @@
               />
             </template>
           </dropdown>
-
+          <!-- Data type dropdown -->
           <dropdown
             :label="'Data Types'"
             :selectedItemLabel="getNumberOfSelectedCovidDataTypes"
@@ -133,19 +123,19 @@
               />
             </template>
           </dropdown>
-
+          <!-- Result type dropdown -->
           <dropdown
-            :label="measurementTypeLabel"
+            :label="'Results Type'"
             :selectedItemLabel="getSelectedGraphMeasurementType.name"
           >
             <template v-slot="{ toggleDropdown }">
               <single-select
-                :items="graphMeasurementTypes"
+                :items="resultTypes"
                 @itemSelect="setSelectedGraphMeasurementType($event); toggleDropdown()"
               />
             </template>
           </dropdown>
-
+          <!-- Type of graph dropdown -->
           <dropdown
             :label="'Graph Type'"
             :selectedItemLabel="getSelectedGraphType.name"
@@ -158,6 +148,7 @@
             </template>
           </dropdown>
 
+          <!-- Date picker dropdown -->
           <date-picker
             :label="'Dates'"
             :selectedDates="getSelectedDates"
@@ -206,7 +197,6 @@ export default Vue.extend({
       'getSelectedGraphDataScale',
       'getSelectedGraphType',
       'getSelectedGraphMeasurementType',
-      'getSelectedRankingMeasurementType',
       'getSelectedRankingDataScale',
       'getAllAffectedCountries',
       'getAllAffectedStates',
@@ -217,13 +207,9 @@ export default Vue.extend({
   },
 
   data: () => ({
-    graphMeasurementTypes: [
+    resultTypes: [
       { name: 'Total', value: 'total' },
       { name: 'Total Per Day', value: 'totalPerDay' }
-    ],
-    rankingMeasurementTypes: [
-      { name: 'Total', value: 'total' },
-      { name: 'Total Per Population', value: 'totalPerPopulation' }
     ],
     dataTypes: [
       { name: 'Cases', value: 'cases' },
@@ -238,8 +224,6 @@ export default Vue.extend({
     generalLabel: 'GENERAL',
     graphLabel: 'GRAPH',
     rankingsLabel: 'RANKINGS',
-    dataScaleLabel: 'Scale of Data',
-    measurementTypeLabel: 'Measurement Type',
     noCountrySelected: 'Select a Country...',
     searchbarPlaceholder: 'Enter the name of a'
   }),
@@ -298,10 +282,6 @@ export default Vue.extend({
 
     setSelectedDataType: function(dataType: SelectItem[]): void {
       this.$store.commit('setSelectedCovidDataType', dataType)
-    },
-
-    setSelectedRankingMeasurementType: function(measurement: MeasurementType): void {
-      this.$store.commit('setSelectedRankingMeasurementType', measurement)
     },
 
     setSelectedGraphMeasurementType: function(measurement: MeasurementType): void {

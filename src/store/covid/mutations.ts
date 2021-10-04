@@ -115,10 +115,6 @@ export const mutations = {
     state.selectedCovidDataType = dataType
   },
 
-  setSelectedRankingMeasurementType: (state: CovidStateType, measurement: MeasurementType): void => {
-    state.selectedRankingMeasurementType = measurement
-  },
-
   setSelectedGraphMeasurementType: (state: CovidStateType, measurement: MeasurementType): void => {
     state.selectedGraphMeasurementType = measurement
   },
