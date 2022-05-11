@@ -100,6 +100,14 @@ body {
   /* reset css */
   margin: 0 !important;
   padding: 0 !important;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: var(--surface-0);
+  font-family: var(--font-family);
+  font-weight: 400;
+  color: var(--text-color);
+
 }
 // .covid-filter-layout {
 //   position: fixed;

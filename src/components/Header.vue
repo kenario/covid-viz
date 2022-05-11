@@ -1,16 +1,16 @@
 <template>
-  <div class="covid-header-container">
-    <div class="covid-header-title">
-      <span class="covid-header-title-part-one">
+  <section class="covid-header-container flex align-items-center">
+    <header class="covid-header-title flex align-items-end ml-3">
+      <h1 class="covid-header-title-part-one">
         {{ titlePartOne }}
-      </span>
+      </h1>
 
-      <span class="covid-header-title-part-two secondary-header-font-style">
+      <h5 class="covid-header-title-part-two ml-1 mb-1">
         {{ titlePartTwo }}
-      </span>
-    </div>
+      </h5>
+    </header>
 
-    <div
+    <!-- <div
       class="covid-filters-button"
       @click="emitFilterButtonClick"
     >
@@ -21,8 +21,8 @@
       <span class="covid-filters-button-label secondary-header-font-style">
         {{ filterButtonName }}
       </span>
-    </div>
-  </div>
+    </div> -->
+  </section>
 </template>
 
 <script lang="ts">
@@ -48,68 +48,61 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/main';
 
 .covid-header-container {
-  background-color: $primary-color;
+  background-color: var(--surface-50);
   height: 70px;
-  display: grid;
-  align-items: center;
-  grid-template-columns: 260px auto 107px;
-  position: fixed;
-  width: 100%;
 }
 .covid-header-title {
-  grid-column: 1 / 2;
-  margin-left: 15px;
+  font-size: 1.5rem;
+}
+.covid-header-title h1 {
+  margin: 0;
+}
+.covid-header-title h5 {
+  margin: 0;
 }
 .covid-header-title-part-one {
-  color: $accent-color;
-  font-size: 2.25rem;
-  font-weight: 600;
+  color: var(--primary-color);
 }
 .covid-header-title-part-two {
-  font-size: 1.60rem;
   font-weight: 400;
-  position: relative;
-  left: -7px;
-  top: -4px;
 }
-.covid-filters-button {
-  grid-column: 3 / 4;
-  font-size: 1.25rem;
-  border: 0.13rem solid white;
-  border-radius: 5px;
-  padding: 2px 0 4px 13px;
-  position: relative;
-  right: 20px;
-}
-.covid-filters-button:hover {
-  cursor: pointer;
-  background-color: #3d8aa7;
-}
-.covid-filters-button-icon {
-  color: white;
-  position: relative;
-  top: 3px;
-}
-/* styling used by both title part two and filter button */
-.secondary-header-font-style {
-  color: white;
-  font-family: 'Big Shoulders Display', cursive;
-  letter-spacing: 1px;
-}
+// .covid-filters-button {
+//   grid-column: 3 / 4;
+//   font-size: 1.25rem;
+//   border: 0.13rem solid white;
+//   border-radius: 5px;
+//   padding: 2px 0 4px 13px;
+//   position: relative;
+//   right: 20px;
+// }
+// .covid-filters-button:hover {
+//   cursor: pointer;
+//   background-color: #3d8aa7;
+// }
+// .covid-filters-button-icon {
+//   color: white;
+//   position: relative;
+//   top: 3px;
+// }
+// /* styling used by both title part two and filter button */
+// .secondary-header-font-style {
+//   color: white;
+//   font-family: 'Big Shoulders Display', cursive;
+//   letter-spacing: 1px;
+// }
 
-// Reduce filter button size and remove filter label in mobile view.
-@media only screen and (max-width: 768px) {
-  .covid-filters-button-label {
-    display: none;
-  }
-  .covid-header-container {
-    grid-template-columns: 260px auto 40px;
-  }
-  .covid-filters-button {
-    padding: 2px 5px 4px 5px;
-  }
-}
+// // Reduce filter button size and remove filter label in mobile view.
+// @media only screen and (max-width: 768px) {
+//   .covid-filters-button-label {
+//     display: none;
+//   }
+//   .covid-header-container {
+//     grid-template-columns: 260px auto 40px;
+//   }
+//   .covid-filters-button {
+//     padding: 2px 5px 4px 5px;
+//   }
+// }
 </style>
