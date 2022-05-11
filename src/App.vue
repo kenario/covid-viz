@@ -1,14 +1,11 @@
 <template>
   <div>
-    <transition name="fade-slide-down">
       <Header
         v-if="renderHeader"
         @filterButtonClick="toggleFilters"
       />
-    </transition>
 
-    <transition name="slide-left">
-      <div
+      <!-- <div
         v-if="showFilters"
         class="covid-filter-layout"
         :class="{
@@ -20,36 +17,35 @@
             @closeButtonClick="toggleFilters"
             v-click-outside="closeOpenedFilters"
           />
-      </div>
-    </transition>
+      </div> -->
 
-    <div
+    <!-- <div
       v-if="getHasError"
       class="covid-vis-error"
     >
       <error-modal @closeErrorModal="onCloseErrorModal" />
-    </div>
+    </div> -->
 
-    <covid-vis/>
+    <!-- <covid-vis/> -->
   </div>
 </template>
 
 <script lang="ts">
 
-import Vue from 'vue'
-import CovidVis from './components/CovidVis.vue'
-import CovidVisControls from './components/CovidVisControls.vue'
-import ErrorModal from './shared/components/ErrorModal.vue'
+import { defineComponent } from 'vue'
+// import CovidVis from './components/CovidVis.vue'
+// import CovidVisControls from './components/CovidVisControls.vue'
+// import ErrorModal from './shared/components/ErrorModal.vue'
 import Header from './components/Header.vue'
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'App',
 
   components: {
-    CovidVisControls,
-    ErrorModal,
-    CovidVis,
+    // CovidVisControls,
+    // ErrorModal,
+    // CovidVis,
     Header
   },
 
@@ -63,9 +59,9 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters([
-      'getHasError'
-    ])
+    // ...mapGetters([
+    //   'getHasError'
+    // ])
   },
 
   methods: {
@@ -74,7 +70,7 @@ export default Vue.extend({
     },
 
     onCloseErrorModal() {
-      this.$store.commit('setHasError', false)
+      // this.$store.commit('setHasError', false)
     },
 
     /*
@@ -113,20 +109,17 @@ html, body, html * {
   font-family: 'Roboto', sans-serif;
 }
 .fade-slide-down-enter-active, .fade-slide-down-leave-active {
-  transition: all 1s ease;
 }
 .fade-slide-down-enter, .fade-slide-down-leave-to {
   transform: translateY(-70px);
   opacity: 0.5;
 }
 .slide-left-enter-active, .slide-left-leave-active {
-  transition: all 1s ease;
 }
 .slide-left-enter, .slide-left-leave-to {
   transform: translateX(300px);
 }
 .fade-enter-active, .fade-leave-active {
-  transition: all 1.5s ease;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -145,7 +138,6 @@ html, body, html * {
   }
 
   &--z-index-slow {
-    transition: z-index 2s;
     z-index: 0;
   }
 }

@@ -8,32 +8,25 @@
     </div>
 
     <div class="covid-intro-layout">
-      <transition name="fade">
         <covid-intro v-if="renderComponents" />
-      </transition>
     </div>
     <!-- Covid Totals header -->
     <div class="covid-totals-title-layout section-title-font">
-      <transition name="fade">
         <div
           v-if="renderComponents"
           class="covid-totals-title"
         >
           {{ totalsTitle }}
         </div>
-      </transition>
     </div>
     <!-- Covid Totals -->
     <div class="covid-totals-layout">
-      <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Worldwide'"
           :totals="getCovidGlobalTotals"
         />
-      </transition>
 
-      <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Nationwide'"
@@ -41,9 +34,7 @@
         >
           {{ countryNotification }}
         </covid-totals>
-      </transition>
 
-      <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Statewide'"
@@ -51,9 +42,7 @@
         >
           {{ totalsStateNotification }}
         </covid-totals>
-      </transition>
 
-      <transition name="fade-slide-left">
         <covid-totals
           v-if="renderComponents"
           :title="'Countywide'"
@@ -61,23 +50,19 @@
         >
           {{ totalsCountyNotification }}
         </covid-totals>
-      </transition>
     </div>
     <!-- Covid Rankings header -->
     <div class="covid-ranking-title-layout">
-      <transition name="fade">
         <div
           v-if="renderComponents"
           class="covid-ranking-title section-title-font"
         >
           {{ rankingTitle }}
         </div>
-      </transition>
     </div>
     <!-- Covid Rankings -->
     <div class="covid-ranking-layout">
       <template v-for="(rankings, index) in getCovidRankings">
-        <transition
           name="fade-slide-left"
           :key="index"
         >
@@ -86,22 +71,18 @@
             :title="rankings.label"
             :items="rankings.data"
           />
-        </transition>
       </template>
     </div>
     <!--  Covid Graph header -->
     <div class="covid-graph-title-layout">
-      <transition name="fade">
         <div
           v-if="renderComponents"
           class="covid-graph-title section-title-font"
         >
           {{ graphTitle }}
         </div>
-      </transition>
     </div>
     <!--  Covid Graph -->
-    <transition name="fade">
       <div
         v-if="renderComponents"
         class="covid-graph-layout"
@@ -110,7 +91,6 @@
           {{ countryNotification }}
         </covid-chart>
       </div>
-    </transition>
 
     <!-- <Footer /> -->
   </div>
@@ -270,14 +250,12 @@ export default Vue.extend({
 @import '../styles/main';
 
 .fade-slide-left-enter-active, .fade-slide-left-leave-active {
-  transition: all 1.5s ease;
 }
 .fade-slide-left-enter, .fade-slide-left-leave-to {
   transform: translateX(200px);
   opacity: 0;
 }
 .fade-slide-left-move {
-  transition: transform 1s;
 }
 .covid-vis-container {
   display: grid;
@@ -309,7 +287,6 @@ export default Vue.extend({
   grid-column-gap: 1rem;
   grid-template-columns: repeat(auto-fit, 300px);
   padding: 0 10% 0 10%;
-  transition: 2s;
 }
 .covid-ranking-title-layout {
   /* parent grid */
