@@ -1,5 +1,5 @@
 <template>
-  <section class="covid-header-container flex align-items-center">
+  <section class="covid-header-container flex justify-content-between align-items-center">
     <header class="covid-header-title flex align-items-end ml-3">
       <h1 class="covid-header-title-part-one">
         {{ titlePartOne }}
@@ -10,45 +10,25 @@
       </h5>
     </header>
 
-    <!-- <div
-      class="covid-filters-button"
-      @click="emitFilterButtonClick"
-    >
-      <span class="material-icons covid-filters-button-icon">
-        filter_list
-      </span>
-
-      <span class="covid-filters-button-label secondary-header-font-style">
-        {{ filterButtonName }}
-      </span>
-    </div> -->
+    <Button 
+      class="mr-3"
+      :label="filtersButtonName"
+      icon="pi pi-filter"
+      iconPos="left"
+      @click="emitFiltersButtonClick"
+    />
   </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+const titlePartOne = 'CORONA'
+const titlePartTwo = 'TRENDS'
+const filtersButtonName = 'Filters'
 
-import { defineComponent } from "vue"
-
-export default defineComponent({
-  name: 'Header',
-
-  data: () => ({
-    titlePartOne: 'CORONA',
-    titlePartTwo: 'TRENDS',
-    filterButtonName: 'Filters',
-    showFilters: false
-  }),
-
-  methods: {
-    emitFilterButtonClick() {
-      this.$emit('filterButtonClick')
-    }
-  }
-})
+const emitFiltersButtonClick = () => {}
 </script>
 
 <style lang="scss" scoped>
-
 .covid-header-container {
   background-color: var(--surface-50);
   height: 70px;
@@ -68,41 +48,4 @@ export default defineComponent({
 .covid-header-title-part-two {
   font-weight: 400;
 }
-// .covid-filters-button {
-//   grid-column: 3 / 4;
-//   font-size: 1.25rem;
-//   border: 0.13rem solid white;
-//   border-radius: 5px;
-//   padding: 2px 0 4px 13px;
-//   position: relative;
-//   right: 20px;
-// }
-// .covid-filters-button:hover {
-//   cursor: pointer;
-//   background-color: #3d8aa7;
-// }
-// .covid-filters-button-icon {
-//   color: white;
-//   position: relative;
-//   top: 3px;
-// }
-// /* styling used by both title part two and filter button */
-// .secondary-header-font-style {
-//   color: white;
-//   font-family: 'Big Shoulders Display', cursive;
-//   letter-spacing: 1px;
-// }
-
-// // Reduce filter button size and remove filter label in mobile view.
-// @media only screen and (max-width: 768px) {
-//   .covid-filters-button-label {
-//     display: none;
-//   }
-//   .covid-header-container {
-//     grid-template-columns: 260px auto 40px;
-//   }
-//   .covid-filters-button {
-//     padding: 2px 5px 4px 5px;
-//   }
-// }
 </style>
