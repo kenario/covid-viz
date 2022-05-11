@@ -25,7 +25,11 @@ const titlePartOne = 'CORONA'
 const titlePartTwo = 'TRENDS'
 const filtersButtonName = 'Filters'
 
-const emitFiltersButtonClick = () => {}
+const emit = defineEmits(['filtersButtonClick'])
+
+const emitFiltersButtonClick = () => {
+  emit('filtersButtonClick')
+}
 </script>
 
 <style lang="scss" scoped>
