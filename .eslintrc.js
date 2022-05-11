@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    es2021: true,
   },
   extends: [
     'plugin:vue/essential',
@@ -12,8 +12,8 @@ module.exports = {
     ecmaVersion: 2020
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': import.meta.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': import.meta.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-function-paren': 0,
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': 0,
