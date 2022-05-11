@@ -96,85 +96,55 @@ export default defineComponent({
 
 <style lang="scss">
 
-@import './styles/main';
-
 body {
-  background-color: $secondary-color;
   /* reset css */
   margin: 0 !important;
   padding: 0 !important;
 }
-/* declare global font */
-html, body, html * {
-  font-family: 'Roboto', sans-serif;
-}
-.fade-slide-down-enter-active, .fade-slide-down-leave-active {
-}
-.fade-slide-down-enter, .fade-slide-down-leave-to {
-  transform: translateY(-70px);
-  opacity: 0.5;
-}
-.slide-left-enter-active, .slide-left-leave-active {
-}
-.slide-left-enter, .slide-left-leave-to {
-  transform: translateX(300px);
-}
-.fade-enter-active, .fade-leave-active {
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-.covid-filter-layout {
-  background-color: $primary-color;
-  position: fixed;
-  height: 100%;
-  width: 300px;
-  right: 0px;
-  overflow: auto;
-  top: 70px;
+// .covid-filter-layout {
+//   position: fixed;
+//   height: 100%;
+//   width: 300px;
+//   right: 0px;
+//   overflow: auto;
+//   top: 70px;
 
-  &--z-index {
-    z-index: 1;
-  }
+//   &--z-index {
+//     z-index: 1;
+//   }
 
-  &--z-index-slow {
-    z-index: 0;
-  }
-}
-.section-title-font {
-  color: $primary-color;
-  font-weight: 600;
-  font-size: 3rem;
-}
-.section-subtitle-font {
-  color: $primary-color;
-  font-size: 1.75rem;
-  font-weight: 600;
-}
-.standard-font {
-  color: $primary-color;
-  font-weight: 500;
-  font-size: 1.25rem;
-}
-.info-font {
-  color: $primary-color;
-  font-weight: 500;
-  font-size: 1.5rem;
-}
-.label-font {
-  color: $accent-color;
-  font-weight: 600;
-  font-size: 1.25rem;
-}
-.notification-font {
-  color: $accent-color;
-  font-weight: 500;
-  font-size: 1.25rem;
-}
-.covid-vis-error {
-  position: fixed;
-  top: 50%;
-  left: 45%;
-}
+//   &--z-index-slow {
+//     z-index: 0;
+//   }
+// }
+// .section-title-font {
+//   font-weight: 600;
+//   font-size: 3rem;
+// }
+// .section-subtitle-font {
+//   font-size: 1.75rem;
+//   font-weight: 600;
+// }
+// .standard-font {
+//   font-weight: 500;
+//   font-size: 1.25rem;
+// }
+// .info-font {
+//   font-weight: 500;
+//   font-size: 1.5rem;
+// }
+// .label-font {
+//   font-weight: 600;
+//   font-size: 1.25rem;
+// }
+// .notification-font {
+//   font-weight: 500;
+//   font-size: 1.25rem;
+// }
+// .covid-vis-error {
+//   position: fixed;
+//   top: 50%;
+//   left: 45%;
+// }
 
 </style>
