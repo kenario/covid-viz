@@ -14,7 +14,7 @@
       class="p-button-text mr-3"
       :label="filtersButtonName"
       icon="pi pi-filter"
-      iconPos="left"
+      icon-pos="left"
       @click="emitFiltersButtonClick"
     />
   </section>

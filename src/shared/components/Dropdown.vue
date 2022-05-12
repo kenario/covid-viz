@@ -1,7 +1,7 @@
 <template>
   <div
-    class="dropdown-container"
     v-click-outside="closeOpenedDropdown"
+    class="dropdown-container"
   >
     <div class="dropdown-label">
       {{ label }}
@@ -26,10 +26,10 @@
 
     <transition name="fade-slide-down">
       <div
-        class="dropdown-content"
         v-if="displayDropdown"
+        class="dropdown-content"
       >
-        <slot :toggleDropdown="toggleDropdown" />
+        <slot :toggle-dropdown="toggleDropdown" />
       </div>
     </transition>
   </div>

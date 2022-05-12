@@ -1,14 +1,14 @@
 <template>
   <div>
-      <Header
-        @filtersButtonClick="showFilters = !showFilters"
-      />
+    <Header
+      @filtersButtonClick="showFilters = !showFilters"
+    />
 
-      <SideBar
-        class="p-sidebar-sm"
-        v-model:visible="showFilters"
-        position="right"
-      />
+    <SideBar
+      v-model:visible="showFilters"
+      class="p-sidebar-sm"
+      position="right"
+    />
 
     <!-- <div
       v-if="getHasError"
