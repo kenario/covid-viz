@@ -5,23 +5,10 @@
       />
 
       <SideBar
+        class="p-sidebar-sm"
         v-model:visible="showFilters"
         position="right"
       />
-
-      <!-- <div
-        v-if="showFilters"
-        class="covid-filter-layout"
-        :class="{
-          'covid-filter-layout--z-index': showFilters === true,
-          'covid-filter-layout--z-index-slow': showFilters === false
-        }"
-      >
-          <covid-vis-controls
-            @closeButtonClick="toggleFilters"
-            v-click-outside="closeOpenedFilters"
-          />
-      </div> -->
 
     <!-- <div
       v-if="getHasError"
@@ -59,7 +46,6 @@ body {
   font-family: var(--font-family);
   font-weight: 400;
   color: var(--text-color);
-
 }
 // .section-title-font {
 //   font-weight: 600;

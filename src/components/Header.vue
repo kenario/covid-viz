@@ -11,7 +11,7 @@
     </header>
 
     <Button 
-      class="mr-3"
+      class="p-button-text mr-3"
       :label="filtersButtonName"
       icon="pi pi-filter"
       iconPos="left"
