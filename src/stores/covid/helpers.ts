@@ -221,19 +221,31 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
 }
 
 /**
- * Iterate through the data and find a match.  If the selected data is an empty string then the search will
- * return undefined.  If undefined is returned, then the function will return an empty object.
- *
- * @param selectedData - state.selectedCountry | state.selectedState | state.selectedCounty
- * @param data - state.selectedCovidCountryData | state.selectedCovidStateData | state.selectedCovidCountyData
- * @param type - 'country' | 'state' | 'county'
- * @returns - CovidCountryData | CovidStateData | CovidCountyData | {}
+ * Searches for covid data that matches the country, state, or county given.
+ * 
+ * @param {string} name - country, state, or county name of the data.
+ * @param {T} data - CovidCountryData, CovidStateData, CovidCountyData
+ * @returns {T} - If no data is found, an empty object is returned.
  */
-export const searchForSelectedData = (selectedData: string, data: any[], type: string): CovidDataType =>
+export const findCovidData = <T extends CovidDataType>(name: string, data: T[]): T => {
+  
+  return data.find((d: CovidDataType): boolean => {
+    let result = false
 
-  data.find((d: any): boolean =>
-    selectedData !== '' && d[type]!.toLowerCase().includes(selectedData.toLowerCase())
-  )! || {}
+    /*
+     * If a specific scale of data is available, then that is what we compare the given name
+     * to. */
+    if ((d as CovidCountryData).country !== undefined) {
+      result = (d as CovidCountryData).country.toLowerCase() === name.toLowerCase()
+    } else if ((d as CovidStateData).state !== undefined) {
+      result = (d as CovidStateData).state.toLowerCase() === name.toLowerCase()
+    } else if ((d as CovidCountyData).county !== undefined) {
+      result = (d as CovidCountyData).county.toLowerCase() === name.toLowerCase()
+    }
+
+    return result
+  }) || {} as T
+}
 
 /**
  * Transforms vaccination data to a map that contains the 'country' or 'state' as the key

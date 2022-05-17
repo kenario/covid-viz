@@ -17,7 +17,7 @@ import {
   CovidHistoricalData
 } from '@/types/covid'
 
-import { searchForSelectedData } from './helpers'
+import { findCovidData } from './helpers'
 
 export const mutations = {
   setSelectedCountry: (state: CovidStateType, country: SelectItem): void => {
@@ -30,31 +30,19 @@ export const mutations = {
 
   setSelectedCounty: (state: CovidStateType, county: SelectItem): void => {
     state.selectedCounty = county.name
-    state.selectedCovidCountyData = searchForSelectedData(county.name, state.covidCountyData, 'county') as CovidCountyData
+    state.selectedCovidCountyData = findCovidData<CovidCountyData>(county.name, state.covidCountyData)
   },
 
   setSelectedCovidCountryData: (state: CovidStateType, country: SelectItem): void => {
-    state.selectedCovidCountryData = searchForSelectedData(
-      country.name,
-      state.covidCountryData,
-      'country'
-    ) as CovidCountryData
+    state.selectedCovidCountryData = findCovidData<CovidCountryData>(country.name, state.covidCountryData)
   },
 
   setSelectedCovidStateData: (state: CovidStateType, usaState: SelectItem): void => {
-    state.selectedCovidStateData = searchForSelectedData(
-      usaState.name,
-      state.covidStateData,
-      'state'
-    ) as CovidStateData
+    state.selectedCovidStateData = findCovidData<CovidStateData>(usaState.name, state.covidStateData)
   },
 
   setSelectedCovidCountyData: (state: CovidStateType, county: SelectItem): void => {
-    state.selectedCovidCountyData = searchForSelectedData(
-      county.name,
-      state.covidCountyData,
-      'county'
-    ) as CovidCountyData
+    state.selectedCovidCountyData = findCovidData<CovidCountyData>(county.name, state.covidCountyData)
   },
 
   setSelectedDates: (state: CovidStateType, dates: DateRange): void => {

@@ -1,5 +1,6 @@
 export * from './CovidData'
 export * from './CovidTotals'
+export * from './CovidRAnkings'
 export * from './CovidStateData'
 export * from './CovidLineChart'
 export * from './CovidCountyData'
