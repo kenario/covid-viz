@@ -6,7 +6,8 @@ import {
   CovidCountyData,
   CovidTotals,
   CovidHistoricalData,
-  CovidRawHistoricalData
+  CovidRawHistoricalData,
+  CovidVaccineData
 } from '@/types/covid'
 import { MeasurementType, DateValue } from '@/types'
 import moment from 'moment'
@@ -251,14 +252,18 @@ export const findCovidData = <T extends CovidDataType>(name: string, data: T[]):
  * Transforms vaccination data to a map that contains the 'country' or 'state' as the key
  * and the current vaccination coverage as the value.
  *
- * @param data - example: { 'state': 'Alabama', 'timeline': { '8/21/21': 715503 } }
- * @returns - Map<string, number>
+ * @param {CovidVaccineData[]} data - example: { 'state': 'Alabama', 'timeline': { '8/21/21': 715503 } }
+ * @returns {Map<string, number>}
  */
-export const transformVaccineDataToMap = (data: any, type: string): Map<string, number> => {
+export const transformVaccineDataToMap = (data: CovidVaccineData[]): Map<string, number> => {
   const result: Map<string, number> = new Map<string, number>()
 
-  data.forEach((d: any): void => {
-    result.set(d[type].toLowerCase(), Object.values(d.timeline)[0] as number)
+  data.forEach((d: CovidVaccineData): void => {
+    if (d.country !== undefined) {
+      result.set(d.country.toLowerCase(), Object.values(d.timeline)[0])
+    } else if (d.state !== undefined) {
+      result.set(d.state.toLowerCase(), Object.values(d.timeline)[0])
+    }
   })
 
   return result
