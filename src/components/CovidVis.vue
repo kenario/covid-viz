@@ -1,26 +1,26 @@
 <template>
-  <div class="covid-vis-container">
-    <div
+  <section class="flex justify-content-center">
+    <!-- <div
       v-if="getIsLoading"
       class="covid-vis-loading-indicator"
     >
       <vue-loaders-ball-beat :color="'#206c87'" :scale="2"/>
-    </div>
+    </div> -->
 
-    <div class="covid-intro-layout">
-        <covid-intro v-if="renderComponents" />
-    </div>
+    <article class="w-10 mt-5">
+      <CovidIntro />
+    </article>
     <!-- Covid Totals header -->
-    <div class="covid-totals-title-layout section-title-font">
+    <!-- <div class="covid-totals-title-layout section-title-font">
         <div
           v-if="renderComponents"
           class="covid-totals-title"
         >
           {{ totalsTitle }}
         </div>
-    </div>
+    </div> -->
     <!-- Covid Totals -->
-    <div class="covid-totals-layout">
+    <!-- <div class="covid-totals-layout">
         <covid-totals
           v-if="renderComponents"
           :title="'Worldwide'"
@@ -50,18 +50,18 @@
         >
           {{ totalsCountyNotification }}
         </covid-totals>
-    </div>
+    </div> -->
     <!-- Covid Rankings header -->
-    <div class="covid-ranking-title-layout">
+    <!-- <div class="covid-ranking-title-layout">
         <div
           v-if="renderComponents"
           class="covid-ranking-title section-title-font"
         >
           {{ rankingTitle }}
         </div>
-    </div>
+    </div> -->
     <!-- Covid Rankings -->
-    <div class="covid-ranking-layout">
+    <!-- <div class="covid-ranking-layout">
       <template v-for="(rankings, index) in getCovidRankings">
           name="fade-slide-left"
           :key="index"
@@ -72,38 +72,37 @@
             :items="rankings.data"
           />
       </template>
-    </div>
+    </div> -->
     <!--  Covid Graph header -->
-    <div class="covid-graph-title-layout">
+    <!-- <div class="covid-graph-title-layout">
         <div
           v-if="renderComponents"
           class="covid-graph-title section-title-font"
         >
           {{ graphTitle }}
         </div>
-    </div>
+    </div> -->
     <!--  Covid Graph -->
-      <div
+      <!-- <div
         v-if="renderComponents"
         class="covid-graph-layout"
       >
         <covid-chart>
           {{ countryNotification }}
         </covid-chart>
-      </div>
+      </div> -->
 
     <!-- <Footer /> -->
-  </div>
+  </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 
 import Vue from 'vue'
 import CovidChart from './CovidChart.vue'
 import CovidIntro from './CovidIntro.vue'
 import CovidRanking from '@/shared/components/CovidRanking.vue'
 import CovidTotals from '@/shared/components/CovidTotals.vue'
-import { mapGetters } from 'vuex'
 import axios, { AxiosResponse } from 'axios'
 import { geolocationEP } from '@/shared/constants/geolocationEP'
 import {
@@ -112,224 +111,139 @@ import {
   GeolocationPosition
 } from '@/types'
 
-export default Vue.extend({
-  name: 'CovidVis',
+// export default Vue.extend({
+//   name: 'CovidVis',
 
-  components: {
-    CovidTotals,
-    CovidRanking,
-    CovidChart,
-    CovidIntro
-  },
+//   components: {
+//     CovidTotals,
+//     CovidRanking,
+//     CovidChart,
+//     CovidIntro
+//   },
 
-  computed: {
-    ...mapGetters([
-      'getIsLoading',
-      'getCovidRankings',
-      'getSelectedState',
-      'renderStateTotals',
-      'getSelectedCounty',
-      'renderCountyTotals',
-      'getSelectedCountry',
-      'getCovidStateTotals',
-      'getAllAffectedStates',
-      'getCovidGlobalTotals',
-      'getCovidCountyTotals',
-      'getCovidCountryTotals',
-      'getAllAffectedCountries',
-      'getStatesAffectedCounties'
-    ]),
-    totalsStateNotification: function(): string {
-      return this.getSelectedCountry === 'USA'
-        ? 'Select a state or allow location access.'
-        : `State ${this.usaOnlyNotification}`
-    },
-    totalsCountyNotification: function(): string {
-      return this.getSelectedCountry && this.getSelectedState
-        ? 'Select a county or allow location access.'
-        : (`County ${this.usaOnlyNotification} and a State has been selected.`).replace('.', '')
-    }
-  },
+//   computed: {
+//     ...mapGetters([
+//       'getIsLoading',
+//       'getCovidRankings',
+//       'getSelectedState',
+//       'renderStateTotals',
+//       'getSelectedCounty',
+//       'renderCountyTotals',
+//       'getSelectedCountry',
+//       'getCovidStateTotals',
+//       'getAllAffectedStates',
+//       'getCovidGlobalTotals',
+//       'getCovidCountyTotals',
+//       'getCovidCountryTotals',
+//       'getAllAffectedCountries',
+//       'getStatesAffectedCounties'
+//     ]),
+//     totalsStateNotification: function(): string {
+//       return this.getSelectedCountry === 'USA'
+//         ? 'Select a state or allow location access.'
+//         : `State ${this.usaOnlyNotification}`
+//     },
+//     totalsCountyNotification: function(): string {
+//       return this.getSelectedCountry && this.getSelectedState
+//         ? 'Select a county or allow location access.'
+//         : (`County ${this.usaOnlyNotification} and a State has been selected.`).replace('.', '')
+//     }
+//   },
 
-  data: () => ({
-    geolocationCountry: '',
-    renderComponents: false,
-    usaOnlyNotification: 'data is only available if the country selected is USA.',
-    totalsTitle: 'TOTALS',
-    countryNotification: 'Select a country or allow location access.',
-    rankingTitle: 'RANKINGS',
-    graphTitle: 'GRAPH',
-    initialDataScale: { name: 'Nationwide', value: 'nationwide' }
-  }),
-  /*
-   * Created and Mount hook represent the Vuex store's entry point for initializing default state.
-   */
-  created() {
-    this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
-    this.$store.commit('setSelectedGraphMeasurementType', { name: 'Total', value: 'total' })
-    this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
-    this.$store.commit('setSelectedCovidDataType', [
-      { name: 'Cases', value: 'cases' },
-      { name: 'Recovered', value: 'recovered' },
-      { name: 'Deaths', value: 'deaths' },
-      { name: 'Vaccinated', value: 'vaccinated' }
-    ])
-    this.$store.commit('setSelectedGraphDataScale', this.initialDataScale)
-    this.$store.commit('addDataScale', this.initialDataScale)
-    /*
-     * Conditional rendering of components to allow for transitions.
-     */
-    setTimeout(() => { this.renderComponents = true }, 500)
-  },
+//   data: () => ({
+//     geolocationCountry: '',
+//     renderComponents: false,
+//     usaOnlyNotification: 'data is only available if the country selected is USA.',
+//     totalsTitle: 'TOTALS',
+//     countryNotification: 'Select a country or allow location access.',
+//     rankingTitle: 'RANKINGS',
+//     graphTitle: 'GRAPH',
+//     initialDataScale: { name: 'Nationwide', value: 'nationwide' }
+//   }),
+//   /*
+//    * Created and Mount hook represent the Vuex store's entry point for initializing default state.
+//    */
+//   created() {
+//     this.$store.commit('setSelectedGraphType', { name: 'Line', value: 'line' })
+//     this.$store.commit('setSelectedGraphMeasurementType', { name: 'Total', value: 'total' })
+//     this.$store.commit('setSelectedRankingDataScale', { name: 'Worldwide', value: 'worldwide' })
+//     this.$store.commit('setSelectedCovidDataType', [
+//       { name: 'Cases', value: 'cases' },
+//       { name: 'Recovered', value: 'recovered' },
+//       { name: 'Deaths', value: 'deaths' },
+//       { name: 'Vaccinated', value: 'vaccinated' }
+//     ])
+//     this.$store.commit('setSelectedGraphDataScale', this.initialDataScale)
+//     this.$store.commit('addDataScale', this.initialDataScale)
+//     /*
+//      * Conditional rendering of components to allow for transitions.
+//      */
+//     setTimeout(() => { this.renderComponents = true }, 500)
+//   },
 
-  async mounted() {
-    await Promise.all([
-      this.$store.dispatch('getCovidGlobalData'),
-      this.$store.dispatch('getCovidCountryData')
-    ])
-    await Promise.all([
-      this.$store.dispatch('getCovidVaccineGlobalData'),
-      this.$store.dispatch('getCovidVaccineCountryData')
-    ])
-    this.locateUser()
-  },
+//   async mounted() {
+//     await Promise.all([
+//       this.$store.dispatch('getCovidGlobalData'),
+//       this.$store.dispatch('getCovidCountryData')
+//     ])
+//     await Promise.all([
+//       this.$store.dispatch('getCovidVaccineGlobalData'),
+//       this.$store.dispatch('getCovidVaccineCountryData')
+//     ])
+//     this.locateUser()
+//   },
 
-  methods: {
-    /* If geolocation is available and the user clicks allow then we compare the location to the
-       country codes of the countries affected by covid. */
-    locateUser(): void {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
-          const res: AxiosResponse<GeolocationResponse> = await axios
-            .get(geolocationEP(position.coords.latitude, position.coords.longitude))
+//   methods: {
+//     /* If geolocation is available and the user clicks allow then we compare the location to the
+//        country codes of the countries affected by covid. */
+//     locateUser(): void {
+//       if (navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
+//           const res: AxiosResponse<GeolocationResponse> = await axios
+//             .get(geolocationEP(position.coords.latitude, position.coords.longitude))
 
-          /* Find the countries name by using the country code given. */
-          this.geolocationCountry = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
-            res.data.address.country_code.toUpperCase() === countryInfo.countryCode).name
+//           /* Find the countries name by using the country code given. */
+//           this.geolocationCountry = this.getAllAffectedCountries.find((countryInfo: CountryInfo): boolean =>
+//             res.data.address.country_code.toUpperCase() === countryInfo.countryCode).name
 
-          /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
-             that countries historical data if we don't already have it. */
-          this.$store.dispatch('setCountryDependents', {
-            name: this.geolocationCountry,
-            value: this.geolocationCountry.toLowerCase()
-          })
-          await this.$store.dispatch('getHistoricalCountryData')
+//           /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
+//              that countries historical data if we don't already have it. */
+//           this.$store.dispatch('setCountryDependents', {
+//             name: this.geolocationCountry,
+//             value: this.geolocationCountry.toLowerCase()
+//           })
+//           await this.$store.dispatch('getHistoricalCountryData')
 
-          /*
-           * If the users geolocation is the United States, we also fetch the users state and county data
-           * if we don't already have it. */
-          if (this.geolocationCountry.toLowerCase() === 'usa') {
-            const state = res.data.address.state
-            const county = res.data.address.county?.replace(' County', '')
+//           /*
+//            * If the users geolocation is the United States, we also fetch the users state and county data
+//            * if we don't already have it. */
+//           if (this.geolocationCountry.toLowerCase() === 'usa') {
+//             const state = res.data.address.state
+//             const county = res.data.address.county?.replace(' County', '')
 
-            if (this.getAllAffectedStates.length < 1) {
-              await this.$store.dispatch('getCovidStateData')
-              await this.$store.dispatch('getCovidVaccineStateData')
-              await this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
-            }
+//             if (this.getAllAffectedStates.length < 1) {
+//               await this.$store.dispatch('getCovidStateData')
+//               await this.$store.dispatch('getCovidVaccineStateData')
+//               await this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
+//             }
 
-            if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
+//             if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
 
-            /*
-             * Somtimes when pinging the geolocation API, county data is not available, we have this check
-             * just in case. */
-            if (county) {
-              this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
-              await this.$store.dispatch('setUsaCountyDependents', { name: county, value: county.toLowerCase() })
-            }
-          }
-        })
-      }
-    }
-  }
-})
+//             /*
+//              * Somtimes when pinging the geolocation API, county data is not available, we have this check
+//              * just in case. */
+//             if (county) {
+//               this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+//               await this.$store.dispatch('setUsaCountyDependents', { name: county, value: county.toLowerCase() })
+//             }
+//           }
+//         })
+//       }
+//     }
+//   }
+// })
 </script>
 
 <style lang="scss" scoped>
-
-@import '../styles/main';
-
-.fade-slide-left-enter-active, .fade-slide-left-leave-active {
-}
-.fade-slide-left-enter, .fade-slide-left-leave-to {
-  transform: translateX(200px);
-  opacity: 0;
-}
-.fade-slide-left-move {
-}
-.covid-vis-container {
-  display: grid;
-  grid-gap: 1.5rem;
-  grid-auto-rows: auto;
-  padding: 70px 0 70px 0;
-}
-.covid-intro-layout {
-  grid-row-start: 2;
-  grid-row-end: 3;
-}
-.covid-totals-title-layout {
-  /* parent grid */
-  grid-row: 3 / 4;
-}
-.covid-totals-title {
-  /* totals title grid */
-  display: grid;
-  justify-content: center;
-  margin: 10px 0 10px 0;
-}
-.covid-totals-layout {
-  /* parent grid */
-  grid-row: 4 / 5;
-  /* totals grid */
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  grid-column-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, 300px);
-  padding: 0 10% 0 10%;
-}
-.covid-ranking-title-layout {
-  /* parent grid */
-  grid-row: 5 / 6;
-}
-.covid-ranking-title {
-  display: grid;
-  justify-content: center;
-  margin: 10px 0 10px 0;
-}
-.covid-ranking-layout {
-  /* parent grid */
-  grid-row: 6 / 7;
-  /* ranking grid */
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  grid-column-gap: 1rem;
-  grid-template-columns: repeat(auto-fit, 300px);
-  padding: 0 10% 0 10%;
-}
-.covid-graph-title-layout {
-  /* parent grid */
-  grid-row: 7 / 8;
-}
-.covid-graph-title {
-  display: grid;
-  justify-content: center;
-  margin: 10px 0 10px 0;
-}
-.covid-graph-layout {
-  /* parent grid */
-  grid-row: 8 / 9;
-}
-.covid-graph-notification-layout {
-  /* parent grid */
-  grid-row: 8 / 9;
-  margin: auto;
-}
-.covid-vis-loading-indicator {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-}
 
 </style>
