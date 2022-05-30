@@ -1,3 +1,4 @@
+import { createPinia } from 'pinia'
 import { createApp, h } from 'vue'
 import App from './App.vue'
 import PrimeVue from 'primevue/config'
@@ -12,7 +13,9 @@ import 'primeflex/primeflex.css';
 const app = createApp({
   render: () => h(App)
 })
+const pinia = createPinia()
 
+app.use(pinia)
 app.use(PrimeVue)
 app.component('Button', Button)
 app.component('SideBar', SideBar)

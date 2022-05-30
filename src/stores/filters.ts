@@ -5,7 +5,7 @@ import {
   GraphType,
   DataScale,
   MeasurementType,
-  SelectItem
+  FilterItem
 } from '@/types'
 
 import {
@@ -23,7 +23,7 @@ interface FiltersState {
   selectedRankingDataScale: DataScale
   selectedGraphDataScale: DataScale
   selectedDates: DateRange
-  selectedCovidDataType: SelectItem[]
+  selectedCovidDataType: FilterItem[]
   selectedCovidCountryData: CovidCountryData
   selectedCovidStateData: CovidStateData
   selectedCovidCountyData: CovidCountyData
@@ -42,6 +42,6 @@ export const useFiltersStore = defineStore('filters', {
     selectedCovidCountryData: {} as CovidCountryData,
     selectedCovidStateData: {} as CovidStateData,
     selectedCovidCountyData: {} as CovidCountyData,
-    selectedCovidDataType: [] as SelectItem[],
+    selectedCovidDataType: [] as FilterItem[],
   })
 })

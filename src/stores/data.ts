@@ -16,7 +16,7 @@ import {
 
 import { 
   DataScale,
-  SelectItem,
+  FilterItem,
   CountryInfo,
 } from '@/types'
 
@@ -34,6 +34,7 @@ import {
   CovidHistoricalData,
   CovidRawHistoricalData,
 } from '@/types/covid'
+import { computed, reactive, ref } from 'vue'
 
 interface DataState {
   covidGlobalData: CovidGlobalData
@@ -46,10 +47,10 @@ interface DataState {
   dataScales: DataScale[]
 }
 
-const filtersStore = useFiltersStore()
+export const useDataStore = defineStore('data', () => {
+  const filtersStore = useFiltersStore()
 
-export const useDataStore = defineStore('d', {
-  state: (): DataState => ({
+  const state: DataState = reactive({
     covidGlobalData: {} as CovidGlobalData,
     covidCountryData: [] as CovidCountryData[],
     covidStateData: [] as CovidStateData[],
@@ -58,50 +59,51 @@ export const useDataStore = defineStore('d', {
     covidHistoricalStateData: {} as CovidHistoricalData,
     covidHistoricalCountyData: {} as CovidHistoricalData,
     dataScales: [] as DataScale[],
-  }),
+  })
 
-  getters: {
-    allAffectedCountries: (s: DataState): CountryInfo[] =>
-      s.covidCountryData.map((d: CovidCountryData): CountryInfo => {
+  const getters = {
+    allAffectedCountries: computed((): CountryInfo[] =>
+      state.covidCountryData.map((d: CovidCountryData): CountryInfo => {
         return { name: d.country!, countryCode: d.countryInfo?.iso2! }
-      }),
-    allAffectedStates: (s: DataState): SelectItem[] =>
-      s.covidStateData.map((d: CovidStateData): SelectItem => {
+      })),
+    allAffectedStates: computed((): FilterItem[] =>
+      state.covidStateData.map((d: CovidStateData): FilterItem => {
         return { name: d.state, value: d.state.toLowerCase() }
-      }),
-    statesAffectedCounties: (s: DataState): SelectItem[] => {
-      return s.covidCountyData
+      })),
+    statesAffectedCounties: computed((): FilterItem[] => {
+      return state.covidCountyData
         .filter((d: CovidCountyData): boolean => d.state === filtersStore.selectedState)
-        .map((d: CovidCountyData): SelectItem => {
+        .map((d: CovidCountyData): FilterItem => {
           return { name: d.county, value: d.county.toLowerCase() }
         })
-    },
-    globalTotals: (s: DataState): CovidTotals => mapCovidTotals(s.covidGlobalData),
+    }),
+    globalTotals: (): CovidTotals => mapCovidTotals(state.covidGlobalData),
+    // globalTotals: computed((): CovidTotals => mapCovidTotals(state.covidGlobalData)),
 
-    countryTotals: (): CovidTotals => {
+    countryTotals: computed((): CovidTotals => {
       return mapCovidTotals(
         filtersStore.selectedCovidCountryData, 
         { country: filtersStore.selectedCovidCountryData.country }
       )
-    },
-    stateTotals: (): CovidTotals => {
+    }),
+    stateTotals: computed((): CovidTotals => {
       return mapCovidTotals(
         filtersStore.selectedCovidStateData, 
         { state: filtersStore.selectedCovidStateData.state }
       )
-    },
-    countyTotals: (): CovidTotals => {
+    }),
+    countyTotals: computed((): CovidTotals => {
       return mapCovidTotals(
         filtersStore.selectedCovidCountyData, 
         { county: filtersStore.selectedCovidCountyData.county }
       )
-    },
+    }),
     /**
      * RankingTypes is pulled from the data scale data structure + an added worldwide scale.
      *
      * @returns - DataScale[]
      */
-    rankingDataScales: (s: DataState): DataScale[] => {
+    rankingDataScales: computed((s: DataState): DataScale[] => {
       let result: DataScale[] = [
         { name: 'Worldwide', value: 'worldwide' },
         ...s.dataScales
@@ -124,8 +126,8 @@ export const useDataStore = defineStore('d', {
       }
 
       return result
-    },
-    covidRankings: (s: DataState): CovidRankings[] => {
+    }),
+    covidRankings: computed((s: DataState): CovidRankings[] => {
       const result: CovidRankings[] = []
       const rankingSubtypes = [
         'cases',
@@ -149,7 +151,7 @@ export const useDataStore = defineStore('d', {
         } else {
           /*
            * County data does not currently contain test and vaccinations, so we skip making rankings
-           * for this. */
+           * for state. */
           if (t === 'tests' || t === 'vaccinated') return
           const countyData: CovidCountyData[] = s.covidCountyData
             .filter((county: CovidCountyData): boolean => county.state === filtersStore.selectedState)
@@ -164,45 +166,45 @@ export const useDataStore = defineStore('d', {
       })
   
       return result
-    },
-  },
+    }),
+  }
 
-  actions: {
-    setSelectedCovidCountryData(country: SelectItem): void {
-      filtersStore.selectedCovidCountryData = findCovidData<CovidCountryData>(country.name, this.covidCountryData)
+  const actions = {
+    setSelectedCovidCountryData(country: FilterItem): void {
+      filtersStore.selectedCovidCountryData = findCovidData<CovidCountryData>(country.name, state.covidCountryData)
     },
-    setSelectedCovidStateData(usaState: SelectItem): void  {
-      filtersStore.selectedCovidStateData = findCovidData<CovidStateData>(usaState.name, this.covidStateData)
+    setSelectedCovidStateData(usaState: FilterItem): void  {
+      filtersStore.selectedCovidStateData = findCovidData<CovidStateData>(usaState.name, state.covidStateData)
     },
-    setSelectedCovidCountyData(county: SelectItem): void {
-      filtersStore.selectedCovidCountyData = findCovidData<CovidCountyData>(county.name, this.covidCountyData)
+    setSelectedCovidCountyData(county: FilterItem): void {
+      filtersStore.selectedCovidCountyData = findCovidData<CovidCountyData>(county.name, state.covidCountyData)
     },
     setCovidVaccineCountryData(data: Map<string, number>): void {
-      this.covidCountryData.forEach((d: CovidCountryData): void => {
+      state.covidCountryData.forEach((d: CovidCountryData): void => {
         d.baseData.vaccinated = data.get(d.country.toLowerCase())
       })
     },
     setCovidVaccineStateData(data: Map<string, number>): void {
-      this.covidStateData.forEach((d: CovidStateData): void => {
+      state.covidStateData.forEach((d: CovidStateData): void => {
         d.baseData.vaccinated = data.get(d.state.toLowerCase())
       })
     },
     addDataScale(scale: DataScale): void {
-      this.dataScales.push(scale)
+      state.dataScales.push(scale)
     },
     removeDataScale(scale: DataScale): void  {
-      this.dataScales.splice(this.dataScales.findIndex((data: DataScale): boolean => data.value === scale.value), 1)
+      state.dataScales.splice(state.dataScales.findIndex((data: DataScale): boolean => data.value === scale.value), 1)
     },
     async fetchCovidGlobalData(): Promise<void> {
       const covidGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_GLOBAL_TOTALS
       const res: AxiosResponse<CovidData> = await axios.get(covidGlobalDataEP)
       res.data.updated = moment(res.data.updated).format('MMM D, YYYY, h:mm:ss a')
-      this.covidGlobalData = CovidDataMapper.map<CovidGlobalData>(res.data)
+      state.covidGlobalData = CovidDataMapper.map<CovidGlobalData>(res.data)
     },
     async fetchCovidCountryData(): Promise<void> {
       const covidCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_ALL_COUNTRIES
       const res: AxiosResponse<CovidData[]> = await axios.get(covidCountryDataEP)
-      this.covidCountryData = res.data.map((d: CovidData): CovidCountryData => {
+      state.covidCountryData = res.data.map((d: CovidData): CovidCountryData => {
         d.updated = moment(d.updated).format('MMM D, YYYY, h:mm:ss a')
         return CovidDataMapper.map<CovidCountryData>(d)
       })
@@ -210,7 +212,7 @@ export const useDataStore = defineStore('d', {
     async fetchCovidStateData(): Promise<void> {
       const covidStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_STATE_TOTALS
       const res: AxiosResponse<CovidData[]> = await axios.get(covidStateDataEP)
-      this.covidStateData = res.data.map((d: CovidData): CovidStateData => {
+      state.covidStateData = res.data.map((d: CovidData): CovidStateData => {
         d.updated = moment(d.updated).format('MMM D, YYYY, h:mm:ss a')
         return CovidDataMapper.map<CovidStateData>(d)
       })
@@ -218,7 +220,7 @@ export const useDataStore = defineStore('d', {
     async fetchCovidCountyData(): Promise<void> {
       const covidCountyDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_COUNTY_TOTALS
       const res: AxiosResponse<CovidCountyDataRaw[]> = await axios.get(covidCountyDataEP)
-      this.covidCountyData = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
+      state.covidCountyData = res.data.map((d: CovidCountyDataRaw): CovidCountyData => {
         return CovidDataMapper.map<CovidCountyData>({
           country: d.country,
           state: d.province,
@@ -237,7 +239,7 @@ export const useDataStore = defineStore('d', {
       const vaccineGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS
       const res = await axios.get(vaccineGlobalDataEP)
       Object.keys(res.data).forEach((key: string): void => {
-        this.covidGlobalData.baseData.vaccinated = res.data[key]      
+        state.covidGlobalData.baseData.vaccinated = res.data[key]      
       })
     },
     // Process vaccination data into a map with the country or state it belongs to as the key and the vaccination
@@ -245,12 +247,12 @@ export const useDataStore = defineStore('d', {
     async fetchCovidVaccineCountryData():Promise<void> {
       const vaccineCountryDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_COUNTRIES
       const res: AxiosResponse<CovidVaccineData[]> = await axios.get(vaccineCountryDataEP)
-      this.setCovidVaccineCountryData(transformVaccineDataToMap(res.data))
+      actions.setCovidVaccineCountryData(transformVaccineDataToMap(res.data))
     },
     async fetchCovidVaccineStateData(): Promise<void> {
       const vaccineStateDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_ALL_STATES      
       const res: AxiosResponse<CovidVaccineData[]> = await axios.get(vaccineStateDataEP)
-      this.setCovidVaccineStateData(transformVaccineDataToMap(res.data))
+      actions.setCovidVaccineStateData(transformVaccineDataToMap(res.data))
     },
     async fetchHistoricalCountryData(): Promise<void> {
       let numOfDays = ''
@@ -282,7 +284,7 @@ export const useDataStore = defineStore('d', {
       rawData.country = baseDataRes.data.country
       rawData.timeline = baseDataRes.data.timeline
       rawData.timeline.vaccinated = vaccineDataRes.data.timeline
-      this.covidHistoricalCountryData = processHistoricalData(rawData, startDate, endDate)
+      state.covidHistoricalCountryData = processHistoricalData(rawData, startDate, endDate)
     },
     async fetchHistoricalStateData(): Promise<void> {
       let numOfDays = '30'
@@ -320,7 +322,7 @@ export const useDataStore = defineStore('d', {
   
       rawData.state = vaccineDataRes.data.state
       rawData.timeline.vaccinated = vaccineDataRes.data.timeline
-      this.covidHistoricalStateData = processHistoricalData(rawData, startDate, endDate)
+      state.covidHistoricalStateData = processHistoricalData(rawData, startDate, endDate)
     },
     async fetchHistoricalCountyData(): Promise<void> {
       let numOfDays = '30'
@@ -339,7 +341,7 @@ export const useDataStore = defineStore('d', {
         .replace('{county}', filtersStore.selectedCounty)
         .replace('numOfDays', numOfDays)
         
-      // We wrap the https request in a try catch for this specific action, since querying county data past 30 days
+      // We wrap the https request in a try catch for state specific action, since querying county data past 30 days
       // seems to produce a 504 from the end point.
       try {
         // commit('setIsLoading', true)
@@ -355,51 +357,57 @@ export const useDataStore = defineStore('d', {
         })
   
         rawData.county = baseDataRes.data[0].county
-        this.covidHistoricalCountyData = processHistoricalData(rawData, startDate, endDate)
+        state.covidHistoricalCountyData = processHistoricalData(rawData, startDate, endDate)
       } catch (e) {
         // commit('setIsLoading', false)
         // commit('setHasError', true)
       }
     },
-    setCountryDependents(country: SelectItem): void {
+    setCountryDependents(country: FilterItem): void {
       filtersStore.selectedCountry = country.name
-      this.setSelectedCovidCountryData(country)
+      actions.setSelectedCovidCountryData(country)
     },
-    async setUsaStateDependents(usaState: SelectItem): Promise<void> {
+    async setUsaStateDependents(usaState: FilterItem): Promise<void> {
       const statewide: DataScale = { name: 'Statewide', value: 'statewide' }
-      const containsStatewide = this.dataScales
+      const containsStatewide = state.dataScales
         .map((scale: DataScale): string => scale.value)
         .includes(statewide.value)
   
       filtersStore.selectedState = usaState.name
-      this.setSelectedCovidStateData(usaState)
+      actions.setSelectedCovidStateData(usaState)
   
       if (filtersStore.selectedCountry.toLowerCase() === 'usa') {
          // Statewide scale should only be added if the array does not contain it.
-        if (!containsStatewide) this.addDataScale(statewide)
+        if (!containsStatewide) actions.addDataScale(statewide)
       } else {
-        this.removeDataScale(statewide)
+        actions.removeDataScale(statewide)
       }
   
-      await this.fetchHistoricalStateData()
+      await actions.fetchHistoricalStateData()
     },
-    async setUsaCountyDependents(county: SelectItem): Promise<void> {
+    async setUsaCountyDependents(county: FilterItem): Promise<void> {
       const countywide: DataScale = { name: 'Countywide', value: 'countywide' }
-      const containsCountywide = this.dataScales
+      const containsCountywide = state.dataScales
         .map((scale: DataScale): string => scale.value)
         .includes(countywide.value)
   
       filtersStore.selectedCounty = county.name
-      this.setSelectedCovidCountyData(county)
+      actions.setSelectedCovidCountyData(county)
   
       if (filtersStore.selectedCountry.toLowerCase() === 'usa') {
          // Countywide scale should only be added if the array does not contain it.
-        if (!containsCountywide) this.addDataScale(countywide)
+        if (!containsCountywide) actions.addDataScale(countywide)
       } else {
-        this.removeDataScale(countywide)
+        actions.removeDataScale(countywide)
       }
   
-      await this.fetchHistoricalCountyData()
+      await actions.fetchHistoricalCountyData()
     }
+  }
+
+  return {
+    state,
+    getters,
+    actions
   }
 })

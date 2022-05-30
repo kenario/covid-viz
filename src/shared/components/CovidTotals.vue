@@ -1,5 +1,23 @@
 <template>
-  <div class="covid-totals-container">
+  <section>
+    <h1 class="cvd-totals-section-header">
+      {{ title }}
+    </h1>
+
+    <div v-if="totals > 0">
+      <div
+        v-for="(t, i) in totalsKeyValue"
+        :key="i"
+      >
+        <!-- {{ firstLetterUppercase(l) }} -->
+        {{ firstLetterUppercase(t[0]) }}
+
+        {{ t[1]?.toLocaleString() }}
+        <!-- {{ totals[l].toLocaleString('en-US') }} -->
+      </div>
+    </div>
+  </section>
+  <!-- <div class="covid-totals-container">
     <div class="covid-totals-title section-subtitle-font">
       {{ title }}
     </div>
@@ -10,7 +28,7 @@
     >
       <div
         class="covid-total"
-        v-for="(label, l) in infoLabels"
+        v-for="(label, l) in keys"
         :key="l"
       >
         <div
@@ -36,65 +54,35 @@
         {{ defaultNotification }}
       </slot>
     </div>
-  </div>
+  </div> -->
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import Vue from 'vue'
 import moment from 'moment'
 import { CovidTotals } from '@/types/covid'
+import { computed } from '@vue/reactivity'
 
-export default Vue.extend({
-
-  name: 'CovidTotals',
-
-  props: {
-    title: String,
-    totals: {} as () => CovidTotals
+const props = defineProps({
+  title: {
+    type: String,
+    required: true
   },
-
-  data: () => ({
-    defaultNotification: 'Data unavailable'
-  }),
-
-  computed: {
-    isTotalsPopulated: function(): boolean {
-      return Object.keys(this.totals).length > 0
-    },
-    infoLabels: function(): string[] {
-      return Object.keys(this.totals)
-    }
-  },
-
-  filters: {
-    turnFirstLetterUppercase: (word: string): string => word.charAt(0).toUpperCase() + word.slice(1)
-  },
-
-  methods: {
-    moment: (time: number) => moment(time)
+  totals: {
+    type: {} as () => CovidTotals,
+    required: true
   }
 })
+
+const defaultNotification = 'Data unavailable'
+
+const totalsKeyValue = computed((): [string, string | number][] | undefined => Object.entries(props.totals))
+// const keys = computed((): string[] | undefined => Object.keys(props.totals))
+// const values = computed((): string[] | undefined => Object.values(props.totals))
+const firstLetterUppercase = (w: string): string => w.charAt(0).toUpperCase() + w.slice(1)
+
+const moment_ = (t: number) => moment(t)
 </script>
 
 <style lang="scss" scoped>
-
-@import '../../styles/main';
-
-.covid-totals-container {
-  height: 100%;
-  width: 300px;
-  margin: 10px 0 10px 0;
-}
-.covid-totals-title {
-  height: 30px;
-  display: grid;
-  align-content: center;
-  border-radius: 8px;
-}
-.covid-total-item {
-  margin: 10px 0 10px 10px;
-}
-.covid-totals-notification {
-  margin: 10px 0 10px 10px;
-}
 </style>

@@ -1,25 +1,18 @@
 <template>
-  <section class="flex justify-content-center">
-    <!-- <div
-      v-if="getIsLoading"
-      class="covid-vis-loading-indicator"
-    >
-      <vue-loaders-ball-beat :color="'#206c87'" :scale="2"/>
-    </div> -->
+  <section class="cvd-intro flex justify-content-center">
+    <CovidIntro class="w-10 mt-5"/>
+  </section>
 
-    <article class="w-10 mt-5">
-      <CovidIntro />
-    </article>
-    <!-- Covid Totals header -->
-    <!-- <div class="covid-totals-title-layout section-title-font">
-        <div
-          v-if="renderComponents"
-          class="covid-totals-title"
-        >
-          {{ totalsTitle }}
-        </div>
-    </div> -->
-    <!-- Covid Totals -->
+  <section class="cvd-totals-container">
+    <h1 class="cvd-totals-header flex justify-content-center">
+      {{ totalsHeader }}
+    </h1>
+    {{ globalTotals() }}
+    <!-- <CovidTotals
+      title="Worldwide"
+      :totals="globalTotals"
+    /> -->
+  </section>
     <!-- <div class="covid-totals-layout">
         <covid-totals
           v-if="renderComponents"
@@ -93,13 +86,11 @@
       </div> -->
 
     <!-- <Footer /> -->
-  </section>
+  <!-- </section> -->
 </template>
 
 <script setup lang="ts">
-
-import Vue from 'vue'
-import CovidChart from './CovidChart.vue'
+import Vue, { onMounted, reactive, ref } from 'vue'
 import CovidIntro from './CovidIntro.vue'
 import CovidRanking from '@/shared/components/CovidRanking.vue'
 import CovidTotals from '@/shared/components/CovidTotals.vue'
@@ -110,6 +101,31 @@ import {
   GeolocationResponse,
   GeolocationPosition
 } from '@/types'
+
+import { Store } from 'pinia'
+import { useDataStore } from '@/stores/data'
+// import { useFiltersStore } from '@/stores/filters'
+
+// const filtersStore = useFiltersStore()
+const dataStore = useDataStore()
+const { globalTotals } = dataStore.getters
+const { fetchCovidGlobalData } = dataStore.actions
+
+const chartHeader = 'TREND'
+const totalsHeader = 'TOTALS'
+const rankingsHeader = 'RANKINGS'
+const usaOnlyNotification = 'data is only available if the country selected is USA.'
+const countryNotification = 'Select a country or allow location access.'
+
+const geolocationCountry = ref('')
+const initialDataScale = reactive({ name: 'Nationwide', value: 'nationwide' })
+
+console.log('before: ', globalTotals())
+onMounted(async () => {
+  await fetchCovidGlobalData()
+  console.log('here: ', globalTotals())
+})
+// filtersStore.selectedGraphType = { name: 'Line', value: 'line' }
 
 // export default Vue.extend({
 //   name: 'CovidVis',
@@ -154,7 +170,7 @@ import {
 //     geolocationCountry: '',
 //     renderComponents: false,
 //     usaOnlyNotification: 'data is only available if the country selected is USA.',
-//     totalsTitle: 'TOTALS',
+//     totalsHeader: 'TOTALS',
 //     countryNotification: 'Select a country or allow location access.',
 //     rankingTitle: 'RANKINGS',
 //     graphTitle: 'GRAPH',
@@ -243,7 +259,3 @@ import {
 //   }
 // })
 </script>
-
-<style lang="scss" scoped>
-
-</style>
