@@ -7,11 +7,11 @@
     <h1 class="cvd-totals-header flex justify-content-center">
       {{ totalsHeader }}
     </h1>
-    {{ globalTotals() }}
-    <!-- <CovidTotals
+    
+    <CovidTotals
       title="Worldwide"
-      :totals="globalTotals"
-    /> -->
+      :totals="dataStore.getters.globalTotals"
+    />
   </section>
     <!-- <div class="covid-totals-layout">
         <covid-totals
@@ -43,7 +43,7 @@
         >
           {{ totalsCountyNotification }}
         </covid-totals>
-    </div> -->
+    `</div> -->
     <!-- Covid Rankings header -->
     <!-- <div class="covid-ranking-title-layout">
         <div
@@ -103,13 +103,11 @@ import {
 } from '@/types'
 
 import { Store } from 'pinia'
-import { useDataStore } from '@/stores/data'
+import { useDataStore } from '@/stores'
 // import { useFiltersStore } from '@/stores/filters'
 
 // const filtersStore = useFiltersStore()
 const dataStore = useDataStore()
-const { globalTotals } = dataStore.getters
-const { fetchCovidGlobalData } = dataStore.actions
 
 const chartHeader = 'TREND'
 const totalsHeader = 'TOTALS'
@@ -120,10 +118,8 @@ const countryNotification = 'Select a country or allow location access.'
 const geolocationCountry = ref('')
 const initialDataScale = reactive({ name: 'Nationwide', value: 'nationwide' })
 
-console.log('before: ', globalTotals())
 onMounted(async () => {
-  await fetchCovidGlobalData()
-  console.log('here: ', globalTotals())
+  await dataStore.actions.fetchCovidGlobalData()
 })
 // filtersStore.selectedGraphType = { name: 'Line', value: 'line' }
 
@@ -259,3 +255,9 @@ onMounted(async () => {
 //   }
 // })
 </script>
+
+<style lang="scss" scoped>
+.cvd-totals-header {
+  color: var(--primary-color)
+}
+</style>

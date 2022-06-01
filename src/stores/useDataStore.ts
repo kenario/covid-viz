@@ -1,8 +1,10 @@
 import moment from 'moment'
 import { defineStore } from 'pinia'
-import { useFiltersStore } from './filters'
-import { covidEP } from '@/shared/constants'
+import { computed, reactive } from 'vue'
 import axios, { AxiosResponse } from 'axios'
+
+import { covidEP } from '@/shared/constants'
+import { useFiltersStore } from './useFiltersStore'
 import { CovidDataMapper } from '@/shared/CovidDataMapper'
 import { 
   findCovidData,
@@ -13,13 +15,11 @@ import {
   transformDashDateToSlashDate,
   generateEmptyCovidRawHistoricalData,
 } from './helpers'
-
 import { 
   DataScale,
   FilterItem,
   CountryInfo,
 } from '@/types'
-
 import {
   CovidData,
   CovidTotals,
@@ -34,7 +34,6 @@ import {
   CovidHistoricalData,
   CovidRawHistoricalData,
 } from '@/types/covid'
-import { computed, reactive, ref } from 'vue'
 
 interface DataState {
   covidGlobalData: CovidGlobalData
@@ -77,8 +76,7 @@ export const useDataStore = defineStore('data', () => {
           return { name: d.county, value: d.county.toLowerCase() }
         })
     }),
-    globalTotals: (): CovidTotals => mapCovidTotals(state.covidGlobalData),
-    // globalTotals: computed((): CovidTotals => mapCovidTotals(state.covidGlobalData)),
+    globalTotals: computed((): CovidTotals => mapCovidTotals(state.covidGlobalData)),
 
     countryTotals: computed((): CovidTotals => {
       return mapCovidTotals(
