@@ -1,6 +1,6 @@
 <template>
   <section class="cvd-totals-container w-15rem flex-column pt-1 pb-5 border-round-lg">
-    <h3 class="cvd-totals-section-header flex justify-content-start">
+    <h3 class="cvd-totals-section-header cvd-totals-indent flex justify-content-start">
       {{ title }}
     </h3>
 
@@ -8,12 +8,12 @@
       v-for="(v, k) in totals"
       :key="k"
     >
-      <h3 class="cvd-totals-key flex justify-content-start font-semibold mb-2">
+      <h3 class="cvd-totals-key cvd-totals-indent flex justify-content-start font-semibold mb-2">
         {{ firstLetterUppercase(k) }}
       </h3>
 
-      <div class="cvd-totals-value flex justify-content-start">
-        {{ v === undefined ? 'Data unavailable' : v.toLocaleString() }}
+      <div class="cvd-totals-value cvd-totals-indent flex justify-content-start">
+        {{ v === undefined || v === 0 ? 'Data unavailable' : v.toLocaleString() }}
       </div>
     </div>
   </section>
@@ -42,5 +42,9 @@ const firstLetterUppercase = (w: string): string => w.charAt(0).toUpperCase() + 
 <style lang="scss" scoped>
 .cvd-totals-key {
   color: var(--orange-300);
+}
+.cvd-totals-indent {
+  position: relative;
+  left: 4rem;
 }
 </style>

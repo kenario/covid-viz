@@ -71,7 +71,7 @@ export const useDataStore = defineStore('data', () => {
       })),
     statesAffectedCounties: computed((): FilterItem[] => {
       return state.covidCountyData
-        .filter((d: CovidCountyData): boolean => d.state === filtersStore.selectedState)
+        .filter((d: CovidCountyData): boolean => d.state === filtersStore.selectedState.name)
         .map((d: CovidCountyData): FilterItem => {
           return { name: d.county, value: d.county.toLowerCase() }
         })
@@ -108,7 +108,7 @@ export const useDataStore = defineStore('data', () => {
        * The data scales are determined by their own operations but in the case of RankingTypes, we
        * need to make sure worldwide is the only one present when the country is not USA since it is
        * not a part of the normal data scales. */
-      if (filtersStore.selectedCountry.toLowerCase() !== 'usa') {
+      if (filtersStore.selectedCountry.code !== 'US') {
         result = [{ name: 'Worldwide', value: 'worldwide' }]
       }
       /*
@@ -150,7 +150,7 @@ export const useDataStore = defineStore('data', () => {
            * for state. */
           if (t === 'tests' || t === 'vaccinated') return
           const countyData: CovidCountyData[] = s.covidCountyData
-            .filter((county: CovidCountyData): boolean => county.state === filtersStore.selectedState)
+            .filter((county: CovidCountyData): boolean => county.state === filtersStore.selectedState.name)
           label = `${filtersStore.selectedState} ${label}`
           data = rankCovidData(countyData, 'county', t)
         }
@@ -169,8 +169,8 @@ export const useDataStore = defineStore('data', () => {
     setSelectedCovidCountryData(country: string): void {
       filtersStore.selectedCovidCountryData = findCovidData<CovidCountryData>(country, state.covidCountryData)
     },
-    setSelectedCovidStateData(usaState: FilterItem): void  {
-      filtersStore.selectedCovidStateData = findCovidData<CovidStateData>(usaState.name, state.covidStateData)
+    setSelectedCovidStateData(stateName: string): void  {
+      filtersStore.selectedCovidStateData = findCovidData<CovidStateData>(stateName, state.covidStateData)
     },
     setSelectedCovidCountyData(county: FilterItem): void {
       filtersStore.selectedCovidCountyData = findCovidData<CovidCountyData>(county.name, state.covidCountyData)
@@ -264,10 +264,10 @@ export const useDataStore = defineStore('data', () => {
       }
   
       const baseDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_DATA
-        .replace('country', filtersStore.selectedCountry)
+        .replace('country', filtersStore.selectedCountry.name)
         .replace('numOfDays', numOfDays)
       const vaccineDataPath = covidEP.COVID_API_HISTORICAL_COUNTRY_VACCINE
-        .replace('country', filtersStore.selectedCountry)
+        .replace('country', filtersStore.selectedCountry.name)
         .replace('numOfDays', numOfDays)
   
       // commit('setIsLoading', true)
@@ -296,10 +296,10 @@ export const useDataStore = defineStore('data', () => {
       }
   
       const baseDataPath = covidEP.COVID_API_HISTORICAL_STATE_DATA
-        .replace('{state}', filtersStore.selectedState)
+        .replace('{state}', filtersStore.selectedState.name)
         .replace('numOfDays', numOfDays)
       const vaccineDataPath = covidEP.COVID_API_HISTORICAL_STATE_VACCINE
-        .replace('{state}', filtersStore.selectedState)
+        .replace('{state}', filtersStore.selectedState.name)
         .replace('numOfDays', numOfDays)
   
       // commit('setIsLoading', true)
@@ -365,10 +365,10 @@ export const useDataStore = defineStore('data', () => {
         .map((scale: DataScale): string => scale.value)
         .includes(statewide.value)
   
-      filtersStore.selectedState = usaState.name
-      actions.setSelectedCovidStateData(usaState)
+      filtersStore.selectedState.name = usaState.name
+      actions.setSelectedCovidStateData(usaState.name)
   
-      if (filtersStore.selectedCountry.toLowerCase() === 'usa') {
+      if (filtersStore.selectedCountry.code === 'US') {
          // Statewide scale should only be added if the array does not contain it.
         if (!containsStatewide) actions.addDataScale(statewide)
       } else {
@@ -386,7 +386,7 @@ export const useDataStore = defineStore('data', () => {
       filtersStore.selectedCounty = county.name
       actions.setSelectedCovidCountyData(county)
   
-      if (filtersStore.selectedCountry.toLowerCase() === 'usa') {
+      if (filtersStore.selectedCountry.code === 'US') {
          // Countywide scale should only be added if the array does not contain it.
         if (!containsCountywide) actions.addDataScale(countywide)
       } else {

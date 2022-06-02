@@ -200,7 +200,7 @@ export function rankCovidData(covidData: CovidDataType[], scope: string, covidDa
 export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): CovidTotals => {
   const isPopulated = Object.keys(data).length > 0
   let result: CovidTotals
-
+  
   if (isPopulated) {
     result = {
       cases: data.baseData.cases,
@@ -229,10 +229,9 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
  * @returns {T} - If no data is found, an empty object is returned.
  */
 export const findCovidData = <T extends CovidDataType>(name: string, data: T[]): T => {
-  
   return data.find((d: CovidDataType): boolean => {
     let result = false
-
+    
     /*
      * If a specific scale of data is available, then that is what we compare the given name
      * to. */

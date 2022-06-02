@@ -2,16 +2,34 @@
   <div class="cvd-filters-container">
     <h4 class="cvd-header">{{ generalHeader }}</h4>
 
-    <div class="mb-2">{{ countryLabel }}</div>
-    <Dropdown
-      v-model="filtersStore.selectedCountry"
-      :placeholder="countryPlaceholder"
-      :options="dataStore.getters.allAffectedCountries"
-      :optionLabel="'name'"
-      :filter="true"
-      :filter-placeholder="countrySearchbarPlaceholder"
-      @update:model-value="onCountryChange"
-    ></Dropdown>
+    <div class="mb-3">
+      <div class="mb-2">{{ countryLabel }}</div>
+      <Dropdown
+        v-model="filtersStore.selectedCountry"
+        :placeholder="countryPlaceholder"
+        :options="dataStore.getters.allAffectedCountries"
+        :option-label="'name'"
+        :filter="true"
+        :filter-placeholder="countrySearchbarPlaceholder"
+        @update:model-value="onCountryChange"
+      />
+    </div>
+
+    <div
+      v-if="filtersStore.selectedCountry.code === 'US'"
+      class="mb-3"
+    >
+      <div class="mb-2">{{ stateLabel }}</div>
+      <Dropdown
+        v-model="filtersStore.selectedState"
+        :placeholder="statePlaceholder"
+        :options="dataStore.getters.allAffectedStates"
+        :option-label="'name'"
+        :filter="true"
+        :filter-placeholder="stateSearchbarPlaceholder"
+        @update:model-value="onStateChange"
+      />
+    </div>
       <!-- <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
         <dropdown
           :label="'Country'"
@@ -162,9 +180,12 @@ const dataStore = useDataStore()
 const filtersStore = useFiltersStore()
 
 const generalHeader = 'GENERAL'
+const countryLabel = 'Country'
 const countryPlaceholder = 'Select a country'
 const countrySearchbarPlaceholder = 'Search for a country'
-const countryLabel = 'Country'
+const stateLabel = 'State'
+const statePlaceholder = 'Select a state'
+const stateSearchbarPlaceholder = 'Search for a state'
 const graphLabel = 'GRAPH'
 const rankingsLabel = 'RANKINGS'
 const noCountrySelected = 'Select a Country...'
@@ -199,9 +220,22 @@ const dataTypes: FilterItem[] = reactive([
   },
 ])
 
-const onCountryChange = (v: CountryInfo): void => {
-  if (v.code !== filtersStore.selectedCovidCountryData.countryInfo?.iso2) {
-    dataStore.actions.setSelectedCovidCountryData(v.name)
+const onCountryChange = async (c: CountryInfo): Promise<void> => {
+  if (c.code !== filtersStore.selectedCovidCountryData.countryInfo?.iso2) {
+    dataStore.actions.setSelectedCovidCountryData(c.name)
+    
+    if (c.code === 'US' && dataStore.state.covidStateData.length < 1) {
+      await Promise.all([
+        dataStore.actions.fetchCovidStateData(),
+        dataStore.actions.fetchCovidVaccineStateData()
+      ])
+    }
+  }
+}
+
+const onStateChange = async (s: FilterItem): Promise<void> => {
+  if (s.name !== filtersStore.selectedCovidStateData.state) {
+    dataStore.actions.setSelectedCovidStateData(s.name)
   }
 }
     

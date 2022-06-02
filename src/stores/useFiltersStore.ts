@@ -4,8 +4,9 @@ import {
   DateRange,
   GraphType,
   DataScale,
+  FilterItem,
+  CountryInfo,
   MeasurementType,
-  FilterItem
 } from '@/types'
 
 import {
@@ -15,8 +16,8 @@ import {
 } from '@/types/covid'
 
 interface FiltersState {
-  selectedCountry: string
-  selectedState: string
+  selectedCountry: CountryInfo
+  selectedState: FilterItem
   selectedCounty: string
   selectedGraphType: GraphType
   selectedGraphMeasurementType: MeasurementType
@@ -31,8 +32,8 @@ interface FiltersState {
 
 export const useFiltersStore = defineStore('filters', {
   state: (): FiltersState => ({
-    selectedCountry: '',
-    selectedState: '',
+    selectedCountry: {} as CountryInfo,
+    selectedState: {} as FilterItem,
     selectedCounty: '',
     selectedGraphType: {} as GraphType,
     selectedGraphMeasurementType: {} as MeasurementType,

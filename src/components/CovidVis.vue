@@ -9,22 +9,29 @@
     </h1>
     
     <div class="grid">
-      <div class="col"></div>
+      <div class="lg:col"></div>
 
       <CovidTotals
-        class="col-fixed"
+        class="lg:col-fixed sm:col-12"
         title="Worldwide"
         :totals="dataStore.getters.globalTotals"
       />
   
       <CovidTotals
-        v-if="filtersStore.selectedCountry !== ''"
+        v-if="filtersStore.selectedCountry.code !== undefined"
         class="col-fixed"
         title="Countrywide"
         :totals="dataStore.getters.countryTotals"
       />
 
-      <div class="col"></div>
+      <CovidTotals
+        v-if="filtersStore.selectedState.value !== undefined"
+        class="col-fixed"
+        title="Statewide"
+        :totals="dataStore.getters.stateTotals"
+      />      
+
+      <div class="lg:col"></div>
     </div>
   </section>
     <!-- <div class="covid-totals-layout">
@@ -137,7 +144,7 @@ onMounted(async () => {
     dataStore.actions.fetchCovidGlobalData(),
     dataStore.actions.fetchCovidCountryData(),
     dataStore.actions.fetchCovidVaccineGlobalData(),
-    dataStore.actions.fetchCovidVaccineCountryData()
+    dataStore.actions.fetchCovidVaccineCountryData(),
   ])
 })
 
