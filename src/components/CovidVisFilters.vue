@@ -1,23 +1,18 @@
 <template>
-  <!-- <div class="covid-vis-controls-container">
-    <div
-      class="covid-vis-controls-close-button"
-      :class="{ 'covid-vis-controls-close-button--add-margin-top': getSelectedCountry }"
-    >
-      <div
-        class="material-icons covid-vis-controls-close-icon"
-        @click="closeButtonClick"
-      >
-        close
-      </div>
-    </div>
+  <div class="cvd-filters-container">
+    <h4 class="cvd-header">{{ generalHeader }}</h4>
 
-    <div class="covid-vis-controls-general">
-      <div class="covid-vis-controls-general-label covid-vis-controls-label-styling">
-        {{ generalLabel }}
-      </div>
-
-      <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
+    <div class="mb-2">{{ countryLabel }}</div>
+    <Dropdown
+      v-model="filtersStore.selectedCountry"
+      :placeholder="countryPlaceholder"
+      :options="dataStore.getters.allAffectedCountries"
+      :optionLabel="'name'"
+      :filter="true"
+      :filter-placeholder="countrySearchbarPlaceholder"
+      @update:model-value="onCountryChange"
+    ></Dropdown>
+      <!-- <div class="covid-vis-controls-general-filters covid-vis-controls-filters-styling">
         <dropdown
           :label="'Country'"
           :selectedItemLabel="getSelectedCountry"
@@ -154,15 +149,22 @@
           {{ noCountrySelected }}
         </div>
       </template>
-    </div>
-  </div> -->
+    </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">
-import Vue, { reactive } from 'vue'
-import { FilterItem } from '@/types'
+import Vue, { reactive, ref } from 'vue'
+import { CountryInfo, FilterItem } from '@/types'
+import { useDataStore, useFiltersStore } from '@/stores';
 
-const generalLabel = 'GENERAL'
+const dataStore = useDataStore()
+const filtersStore = useFiltersStore()
+
+const generalHeader = 'GENERAL'
+const countryPlaceholder = 'Select a country'
+const countrySearchbarPlaceholder = 'Search for a country'
+const countryLabel = 'Country'
 const graphLabel = 'GRAPH'
 const rankingsLabel = 'RANKINGS'
 const noCountrySelected = 'Select a Country...'
@@ -196,6 +198,12 @@ const dataTypes: FilterItem[] = reactive([
     value: 'vaccinated'
   },
 ])
+
+const onCountryChange = (v: CountryInfo): void => {
+  if (v.code !== filtersStore.selectedCovidCountryData.countryInfo?.iso2) {
+    dataStore.actions.setSelectedCovidCountryData(v.name)
+  }
+}
     
 // import { mapGetters } from 'vuex'
 // import { DateRange, MeasurementType, GraphType, FilterItem, DataScale } from '@/types'
@@ -249,7 +257,7 @@ const dataTypes: FilterItem[] = reactive([
 //       { name: 'Line', value: 'line' },
 //       { name: 'Bar', value: 'bar' }
 //     ],
-//     generalLabel: 'GENERAL',
+//     generalHeader: 'GENERAL',
 //     graphLabel: 'GRAPH',
 //     rankingsLabel: 'RANKINGS',
 //     noCountrySelected: 'Select a Country...',
@@ -264,7 +272,7 @@ const dataTypes: FilterItem[] = reactive([
 
 //       if (this.getSelectedCountry !== 'USA') {
 //         /*
-//          * If the country is not the USA and we have a selected state and county, we unset.
+//          *` If the country is not the USA and we have a selected state and county, we unset.
 //          * If our selected ranking type is nationwide, then we set to worldwide since data for
 //          * other nations provinces is not yet available. */
 //         if (this.getSelectedState.length > 0) this.$store.commit('setSelectedState', { name: '', value: '' })
@@ -345,3 +353,13 @@ const dataTypes: FilterItem[] = reactive([
 //   }
 // })
 </script>
+
+<style lang="scss" scoped>
+.cvd-header {
+  color: var(--primary-color);
+}
+// p-dropdown belongs to the primevue dropdown component.
+.p-dropdown {
+  width: 18rem;
+}
+</style>

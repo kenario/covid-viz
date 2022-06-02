@@ -8,10 +8,24 @@
       {{ totalsHeader }}
     </h1>
     
-    <CovidTotals
-      title="Worldwide"
-      :totals="dataStore.getters.globalTotals"
-    />
+    <div class="grid">
+      <div class="col"></div>
+
+      <CovidTotals
+        class="col-fixed"
+        title="Worldwide"
+        :totals="dataStore.getters.globalTotals"
+      />
+  
+      <CovidTotals
+        v-if="filtersStore.selectedCountry !== ''"
+        class="col-fixed"
+        title="Countrywide"
+        :totals="dataStore.getters.countryTotals"
+      />
+
+      <div class="col"></div>
+    </div>
   </section>
     <!-- <div class="covid-totals-layout">
         <covid-totals
@@ -104,10 +118,10 @@ import {
 
 import { Store } from 'pinia'
 import { useDataStore } from '@/stores'
-// import { useFiltersStore } from '@/stores/filters'
+import { useFiltersStore } from '@/stores'
 
-// const filtersStore = useFiltersStore()
 const dataStore = useDataStore()
+const filtersStore = useFiltersStore()
 
 const chartHeader = 'TREND'
 const totalsHeader = 'TOTALS'
@@ -119,8 +133,60 @@ const geolocationCountry = ref('')
 const initialDataScale = reactive({ name: 'Nationwide', value: 'nationwide' })
 
 onMounted(async () => {
-  await dataStore.actions.fetchCovidGlobalData()
+  await Promise.all([
+    dataStore.actions.fetchCovidGlobalData(),
+    dataStore.actions.fetchCovidCountryData(),
+    dataStore.actions.fetchCovidVaccineGlobalData(),
+    dataStore.actions.fetchCovidVaccineCountryData()
+  ])
 })
+
+/* If geolocation is available and the user clicks allow then we compare the location to the
+   country codes of the countries affected by covid. */
+// const locateUser = () => {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition): Promise<void> => {
+//       const res: AxiosResponse<GeolocationResponse> = await axios
+//         .get(geolocationEP(position.coords.latitude, position.coords.longitude))
+
+//       /* Find the countries name by using the country code given. */
+//       geolocationCountry = dataStore.getters.allAffectedCountries.find((countryInfo: CountryInfo): boolean =>
+//         res.data.address.country_code.toUpperCase() === countryInfo.countryCode).name
+
+//       /* Set the selectedCountry and selectedCovidCountryData with that country.  Afterwards we ping
+//           that countries historical data if we don't already have it. */
+//       this.$store.dispatch('setCountryDependents', {
+//         name: this.geolocationCountry,
+//         value: this.geolocationCountry.toLowerCase()
+//       })
+//       await this.$store.dispatch('getHistoricalCountryData')
+
+//       /*
+//         * If the users geolocation is the United States, we also fetch the users state and county data
+//         * if we don't already have it. */
+//       if (this.geolocationCountry.toLowerCase() === 'usa') {
+//         const state = res.data.address.state
+//         const county = res.data.address.county?.replace(' County', '')
+
+//         if (this.getAllAffectedStates.length < 1) {
+//           await this.$store.dispatch('getCovidStateData')
+//           await this.$store.dispatch('getCovidVaccineStateData')
+//           await this.$store.dispatch('setUsaStateDependents', { name: state, value: state.toLowerCase() })
+//         }
+
+//         if (this.getStatesAffectedCounties.length < 1) await this.$store.dispatch('getCovidCountyData')
+
+//         /*
+//           * Somtimes when pinging the geolocation API, county data is not available, we have this check
+//           * just in case. */
+//         if (county) {
+//           this.$store.commit('setSelectedCounty', { name: county, value: county.toLowerCase() })
+//           await this.$store.dispatch('setUsaCountyDependents', { name: county, value: county.toLowerCase() })
+//         }
+//       }
+//     })
+//   }
+// }
 // filtersStore.selectedGraphType = { name: 'Line', value: 'line' }
 
 // export default Vue.extend({

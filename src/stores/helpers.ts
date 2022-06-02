@@ -207,7 +207,7 @@ export const mapCovidTotals = (data: CovidDataType, scopeTotals?: CovidTotals): 
       recovered: data.baseData.recovered,
       deaths: data.baseData.deaths,
       tests: data.baseData.tests,
-      vaccinated: data.baseData.vaccinated,
+      vaccines: data.baseData.vaccines,
       updated: data.baseData.updated
     }
 

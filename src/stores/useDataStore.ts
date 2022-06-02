@@ -63,7 +63,7 @@ export const useDataStore = defineStore('data', () => {
   const getters = {
     allAffectedCountries: computed((): CountryInfo[] =>
       state.covidCountryData.map((d: CovidCountryData): CountryInfo => {
-        return { name: d.country!, countryCode: d.countryInfo?.iso2! }
+        return { name: d.country!, code: d.countryInfo?.iso2! }
       })),
     allAffectedStates: computed((): FilterItem[] =>
       state.covidStateData.map((d: CovidStateData): FilterItem => {
@@ -78,12 +78,10 @@ export const useDataStore = defineStore('data', () => {
     }),
     globalTotals: computed((): CovidTotals => mapCovidTotals(state.covidGlobalData)),
 
-    countryTotals: computed((): CovidTotals => {
-      return mapCovidTotals(
-        filtersStore.selectedCovidCountryData, 
-        { country: filtersStore.selectedCovidCountryData.country }
-      )
-    }),
+    countryTotals: computed((): CovidTotals => mapCovidTotals(
+      filtersStore.selectedCovidCountryData, 
+      { country: filtersStore.selectedCovidCountryData.country }
+    )),
     stateTotals: computed((): CovidTotals => {
       return mapCovidTotals(
         filtersStore.selectedCovidStateData, 
@@ -168,8 +166,8 @@ export const useDataStore = defineStore('data', () => {
   }
 
   const actions = {
-    setSelectedCovidCountryData(country: FilterItem): void {
-      filtersStore.selectedCovidCountryData = findCovidData<CovidCountryData>(country.name, state.covidCountryData)
+    setSelectedCovidCountryData(country: string): void {
+      filtersStore.selectedCovidCountryData = findCovidData<CovidCountryData>(country, state.covidCountryData)
     },
     setSelectedCovidStateData(usaState: FilterItem): void  {
       filtersStore.selectedCovidStateData = findCovidData<CovidStateData>(usaState.name, state.covidStateData)
@@ -179,12 +177,12 @@ export const useDataStore = defineStore('data', () => {
     },
     setCovidVaccineCountryData(data: Map<string, number>): void {
       state.covidCountryData.forEach((d: CovidCountryData): void => {
-        d.baseData.vaccinated = data.get(d.country.toLowerCase())
+        d.baseData.vaccines = data.get(d.country.toLowerCase())
       })
     },
     setCovidVaccineStateData(data: Map<string, number>): void {
       state.covidStateData.forEach((d: CovidStateData): void => {
-        d.baseData.vaccinated = data.get(d.state.toLowerCase())
+        d.baseData.vaccines = data.get(d.state.toLowerCase())
       })
     },
     addDataScale(scale: DataScale): void {
@@ -237,7 +235,7 @@ export const useDataStore = defineStore('data', () => {
       const vaccineGlobalDataEP = covidEP.COVID_API_BASE_URL + covidEP.COVID_API_VACCINE_GLOBAL_TOTALS
       const res = await axios.get(vaccineGlobalDataEP)
       Object.keys(res.data).forEach((key: string): void => {
-        state.covidGlobalData.baseData.vaccinated = res.data[key]      
+        state.covidGlobalData.baseData.vaccines = res.data[key]      
       })
     },
     // Process vaccination data into a map with the country or state it belongs to as the key and the vaccination
@@ -360,10 +358,6 @@ export const useDataStore = defineStore('data', () => {
         // commit('setIsLoading', false)
         // commit('setHasError', true)
       }
-    },
-    setCountryDependents(country: FilterItem): void {
-      filtersStore.selectedCountry = country.name
-      actions.setSelectedCovidCountryData(country)
     },
     async setUsaStateDependents(usaState: FilterItem): Promise<void> {
       const statewide: DataScale = { name: 'Statewide', value: 'statewide' }

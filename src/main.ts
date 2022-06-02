@@ -1,6 +1,8 @@
 import { createPinia } from 'pinia'
 import { createApp, h } from 'vue'
 import App from './App.vue'
+
+import Dropdown from 'primevue/dropdown'
 import PrimeVue from 'primevue/config'
 import SideBar from 'primevue/sidebar'
 import Button from 'primevue/button'
@@ -19,5 +21,6 @@ app.use(pinia)
 app.use(PrimeVue)
 app.component('Button', Button)
 app.component('SideBar', SideBar)
+app.component('Dropdown', Dropdown)
 
 app.mount('#app')

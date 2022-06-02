@@ -8,7 +8,9 @@
       v-model:visible="showFilters"
       class="p-sidebar-sm"
       position="right"
-    />
+    >
+      <CovidVisFilters />
+    </SideBar>
 
     <!-- <div
       v-if="getHasError"
@@ -26,6 +28,7 @@
 import { ref } from 'vue'
 import Header from './components/Header.vue'
 import CovidVis from './components/CovidVis.vue'
+import CovidVisFilters from './components/CovidVisFilters.vue';
 // import CovidVisControls from './components/CovidVisControls.vue'
 // import ErrorModal from './shared/components/ErrorModal.vue'
 

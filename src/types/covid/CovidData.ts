@@ -9,7 +9,7 @@ export interface CovidData {
   todayRecovered?: number;
   deaths?: number;
   todayDeaths?: number;
-  vaccinated?: number;
+  vaccines?: number;
   active?: number;
   casesPerOneMillion?: number;
   deathsPerOneMillion?: number;

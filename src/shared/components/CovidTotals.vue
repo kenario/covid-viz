@@ -1,6 +1,6 @@
 <template>
   <section class="cvd-totals-container w-15rem flex-column pt-1 pb-5 border-round-lg">
-    <h3 class="cvd-totals-section-header flex justify-content-center">
+    <h3 class="cvd-totals-section-header flex justify-content-start">
       {{ title }}
     </h3>
 
@@ -8,11 +8,11 @@
       v-for="(v, k) in totals"
       :key="k"
     >
-      <h3 class="cvd-totals-key flex justify-content-center font-semibold mb-2">
+      <h3 class="cvd-totals-key flex justify-content-start font-semibold mb-2">
         {{ firstLetterUppercase(k) }}
       </h3>
 
-      <div class="cvd-totals-value flex justify-content-center">
+      <div class="cvd-totals-value flex justify-content-start">
         {{ v === undefined ? 'Data unavailable' : v.toLocaleString() }}
       </div>
     </div>
